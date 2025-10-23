@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Progress Member - ETS Web')
+@section('title', 'Progress Member - MyPH')
 
 @push('styles')
     <style>
@@ -55,12 +55,26 @@
             backdrop-filter: blur(10px);
         }
 
+        /* Dark mode sticky columns */
+        .dark .sticky-table td.sticky-col-1,
+        .dark .sticky-table td.sticky-col-2,
+        .dark .sticky-table td.sticky-col-3 {
+            background-color: rgb(30 41 59); /* slate-800 */
+        }
+
         /* Beautiful Hover Effects */
         .sticky-table tr:hover td.sticky-col-1,
         .sticky-table tr:hover td.sticky-col-2,
         .sticky-table tr:hover td.sticky-col-3 {
             background-color: #f0f9ff;
             transition: all 0.2s ease-in-out;
+        }
+
+        /* Dark mode hover effects */
+        .dark .sticky-table tr:hover td.sticky-col-1,
+        .dark .sticky-table tr:hover td.sticky-col-2,
+        .dark .sticky-table tr:hover td.sticky-col-3 {
+            background-color: rgb(51 65 85); /* slate-600 */
         }
 
         /* Table Structure */
@@ -127,10 +141,19 @@
             transition: all 0.2s ease-in-out;
         }
 
+        .dark .table-row {
+            border-bottom: 1px solid rgb(51 65 85); /* slate-600 */
+        }
+
         .table-row:hover {
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             transform: translateX(2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .table-row:hover {
+            background: linear-gradient(135deg, rgb(51 65 85) 0%, rgb(30 41 59) 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         /* Responsive Design */
@@ -168,10 +191,10 @@
                     </div>
                     <div>
                         <h2
-                            class="text-3xl font-bold bg-gradient-to-r from-blue-700 to-cyan-600 bg-clip-text text-transparent">
+                            class="text-3xl font-bold bg-gradient-to-r from-blue-700 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
                             Progress Pengumpulan Tugas
                         </h2>
-                        <p class="text-gray-600 font-medium">Lihat status pengumpulan tugas semua member dengan tampilan yang
+                        <p class="text-gray-600 dark:text-slate-400 font-medium">Lihat status pengumpulan tugas semua member dengan tampilan yang
                             lebih modern</p>
                     </div>
                 </div>
@@ -186,16 +209,16 @@
                         </div>
                         <input type="text" name="search" value="{{ request('search') }}"
                             placeholder="Cari nama atau NRP member..."
-                            class="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white shadow-sm" />
+                            class="block w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all duration-200 shadow-sm" />
                     </div>
                     <button type="submit"
-                        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl hover:from-blue-700 hover:to-cyan-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-medium">
+                        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-600 dark:to-cyan-600 text-white rounded-xl hover:from-blue-700 hover:to-cyan-700 dark:hover:from-blue-700 dark:hover:to-cyan-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-medium">
                         <i data-feather="search" class="w-4 h-4 mr-2 inline-block"></i>
                         Cari
                     </button>
                     @if (request('search'))
                         <a href="{{ route('submissions.table') }}"
-                            class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 shadow-sm hover:shadow-md font-medium">
+                            class="px-6 py-3 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-300 rounded-xl hover:bg-gray-200 dark:hover:bg-slate-600 transition-all duration-200 shadow-sm hover:shadow-md font-medium">
                             <i data-feather="x" class="w-4 h-4 mr-2 inline-block"></i>
                             Reset
                         </a>
@@ -207,7 +230,7 @@
             <div
                 class="bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden transition-colors duration-300">
                 <div class="sticky-table overflow-x-auto">
-                    <table class="w-full divide-y divide-gray-100">
+                    <table class="w-full divide-y divide-gray-100 dark:divide-slate-700">
                         <thead>
                             <tr>
                                 <!-- Modern Sticky Columns -->
@@ -262,8 +285,7 @@
                     </th>
                 @endforeach
                 </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-50">
+                </thead>                        <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-50 dark:divide-slate-700">
                     @foreach ($members as $index => $member)
                         <tr class="table-row">
                             <!-- Enhanced Sticky Columns -->
@@ -276,18 +298,18 @@
                             <td class="sticky-col sticky-col-2 px-6 py-5 whitespace-nowrap">
                                 <div class="flex items-center space-x-3">
                                     <div
-                                        class="w-10 h-10 bg-gradient-to-r from-gray-400 to-gray-500 rounded-full flex items-center justify-center text-white font-bold">
+                                        class="w-10 h-10 bg-gradient-to-r from-gray-400 to-gray-500 dark:from-slate-500 dark:to-slate-600 rounded-full flex items-center justify-center text-white font-bold">
                                         {{ strtoupper(substr($member->name, 0, 1)) }}
                                     </div>
                                     <div>
-                                        <div class="text-sm font-bold text-gray-900">{{ $member->name }}</div>
-                                        <div class="text-xs text-gray-500">Member</div>
+                                        <div class="text-sm font-bold text-gray-900 dark:text-slate-100">{{ $member->name }}</div>
+                                        <div class="text-xs text-gray-500 dark:text-slate-400">Member</div>
                                     </div>
                                 </div>
                             </td>
                             <td class="sticky-col sticky-col-3 px-6 py-5 whitespace-nowrap">
                                 <div
-                                    class="text-sm font-mono font-semibold text-gray-700 bg-gray-100 px-3 py-1 rounded-lg inline-block">
+                                    class="text-sm font-mono font-semibold text-gray-700 dark:text-slate-300 bg-gray-100 dark:bg-slate-700 px-3 py-1 rounded-lg inline-block">
                                     {{ $member->nrp ?? '-' }}
                                 </div>
                             </td>
@@ -325,8 +347,8 @@
                     class="w-24 h-24 bg-gradient-to-r from-blue-100 to-cyan-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <i data-feather="users" class="w-12 h-12 text-blue-600"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-3">Belum Ada Member</h3>
-                <p class="text-gray-600 mb-6 max-w-md mx-auto">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-slate-100 mb-3">Belum Ada Member</h3>
+                <p class="text-gray-600 dark:text-slate-400 mb-6 max-w-md mx-auto">
                     Belum ada member yang terdaftar dalam sistem.
                     Silakan tambahkan member terlebih dahulu untuk melihat progress pengumpulan tugas.
                 </p>

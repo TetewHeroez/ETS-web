@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard - ETS Web')
+@section('title', 'Dashboard - MyPH')
 
 @section('content')
     <!-- Navbar Top -->
@@ -21,7 +21,7 @@
                 </div>
                 <div class="ml-3 flex-1">
                     <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Selamat Datang!</h3>
-                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Anda berhasil login ke sistem ETS Web.</p>
+                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Anda berhasil login ke sistem MyPH.</p>
                 </div>
                 <button onclick="closeNotification()"
                     class="ml-3 flex-shrink-0 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition">
@@ -51,7 +51,7 @@
                             <div class="ml-4 flex-1">
                                 <h2 class="text-xl font-bold text-white mb-2">Pengumuman Penting</h2>
                                 <p class="text-white text-opacity-95 leading-relaxed">
-                                    Selamat datang di sistem ETS Web! Pastikan untuk selalu mengumpulkan tugas sebelum
+                                    Selamat datang di sistem MyPH! Pastikan untuk selalu mengumpulkan tugas sebelum
                                     deadline.
                                     Periksa reminder di bawah untuk melihat tugas yang akan datang.
                                 </p>
@@ -365,7 +365,7 @@
             <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 mt-8">
                 <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                     <p class="text-center text-sm text-slate-500 dark:text-slate-400">
-                        © {{ date('Y') }} ETS Web. Powered by Laravel & Tailwind CSS.
+                        © {{ date('Y') }} MyPH. Powered by Laravel & Tailwind CSS.
                     </p>
                 </div>
             </footer>

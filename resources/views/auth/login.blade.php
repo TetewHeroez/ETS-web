@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login - ETS Web')
+@section('title', 'Login - MyPH')
 
 @section('body-class', 'min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center transition-colors
     duration-300')

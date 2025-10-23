@@ -31,8 +31,7 @@
                 class="relative h-10 w-10 object-contain">
         </div>
         <span
-            class="text-xl font-heading font-bold bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">ETS
-            Web</span>
+            class="text-xl font-heading font-bold bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">MyPH</span>
     </a>
 
     <!-- Actions & User Profile -->

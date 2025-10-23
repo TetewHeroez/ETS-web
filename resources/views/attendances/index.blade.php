@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kelola Absensi - ETS Web')
+@section('title', 'Kelola Absensi - MyPH')
 
 @section('content')
     <!-- Navbar Top -->

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Profil Saya - ETS Web')
+@section('title', 'Profil Saya - MyPH')
 
 @section('content')
     <!-- Navbar Top -->

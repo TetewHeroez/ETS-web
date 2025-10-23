@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kelola Tugas - ETS Web')
+@section('title', 'Kelola Tugas - MyPH')
 
 @section('content')
     @include('components.navbar')

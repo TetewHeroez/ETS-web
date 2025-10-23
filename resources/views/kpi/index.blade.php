@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'KPI & Performance Indicator - ETS Web')
+@section('title', 'KPI & Performance Indicator - MyPH')
 
 @section('content')
     <!-- Navbar Top -->
@@ -204,11 +204,11 @@
                         <div class="flex-1">
                             <input type="text" name="search" value="{{ request('search') }}"
                                 placeholder="Cari nama atau NRP..."
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                class="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400">
                         </div>
                         <div>
                             <select name="kelompok"
-                                class="w-full md:w-48 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                class="w-full md:w-48 px-4 py-2 border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400">
                                 <option value="">Semua Kelompok</option>
                                 @foreach ($kelompoks as $kelompok)
                                     <option value="{{ $kelompok }}"
@@ -220,12 +220,12 @@
                         </div>
                         <div class="flex gap-2">
                             <button type="submit"
-                                class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
+                                class="px-6 py-2 bg-blue-600 dark:bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 dark:hover:bg-blue-700 transition">
                                 <i data-feather="search" class="w-5 h-5 inline mr-1"></i>
                                 Cari
                             </button>
                             <a href="{{ route('kpi.index') }}"
-                                class="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition">
+                                class="px-6 py-2 bg-gray-600 dark:bg-slate-600 text-white font-semibold rounded-lg hover:bg-gray-700 dark:hover:bg-slate-700 transition">
                                 Reset
                             </a>
                         </div>
@@ -278,87 +278,87 @@
                                             <i data-feather="{{ request('direction') === 'asc' ? 'chevron-up' : 'chevron-down' }}"
                                                 class="w-4 h-4 ml-1"></i>
                                         @else
-                                            <i data-feather="chevrons-up-down" class="w-4 h-4 ml-1 text-gray-400"></i>
+                                            <i data-feather="chevrons-up-down" class="w-4 h-4 ml-1 text-slate-400 dark:text-slate-500"></i>
                                         @endif
                                     </a>
                                 </th>
-                                <th class="px-6 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                                     Kehadiran
                                 </th>
-                                <th class="px-6 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                                     Tugas
                                 </th>
-                                <th class="px-6 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                                     Rata-rata Nilai
                                 </th>
-                                <th class="px-6 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'total_pi', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}"
-                                        class="flex items-center justify-center hover:text-blue-600">
+                                        class="flex items-center justify-center hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
                                         Total PI
                                         @if (request('sort') === 'total_pi' || !request('sort'))
                                             <i data-feather="{{ request('direction') === 'asc' ? 'chevron-up' : 'chevron-down' }}"
                                                 class="w-4 h-4 ml-1"></i>
                                         @else
-                                            <i data-feather="chevrons-up-down" class="w-4 h-4 ml-1 text-gray-400"></i>
+                                            <i data-feather="chevrons-up-down" class="w-4 h-4 ml-1 text-slate-400 dark:text-slate-500"></i>
                                         @endif
                                     </a>
                                 </th>
-                                <th class="px-6 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                                     Kategori
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
                             @forelse ($members as $index => $member)
-                                <tr class="hover:bg-gray-50 transition">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-700 transition">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-slate-100">
                                         {{ $members->firstItem() + $index }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900">{{ $member->name }}</div>
+                                        <div class="text-sm font-medium text-gray-900 dark:text-slate-100">{{ $member->name }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900 font-mono">{{ $member->nrp ?? '-' }}</div>
+                                        <div class="text-sm text-gray-900 dark:text-slate-100 font-mono">{{ $member->nrp ?? '-' }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span
-                                            class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300">
                                             {{ $member->kelompok ?? '-' }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
-                                        <span class="text-sm font-semibold text-blue-700">
+                                        <span class="text-sm font-semibold text-blue-700 dark:text-blue-400">
                                             {{ number_format($member->attendance_score, 1) }}%
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
-                                        <span class="text-sm font-semibold text-purple-700">
+                                        <span class="text-sm font-semibold text-purple-700 dark:text-purple-400">
                                             {{ number_format($member->submission_score, 1) }}%
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
-                                        <span class="text-sm font-semibold text-cyan-700">
+                                        <span class="text-sm font-semibold text-cyan-700 dark:text-cyan-400">
                                             {{ number_format($member->average_score, 1) }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
-                                        <span class="text-lg font-bold text-green-700">
+                                        <span class="text-lg font-bold text-green-700 dark:text-green-400">
                                             {{ number_format($member->total_pi, 2) }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                         @if ($member->total_pi >= 90)
                                             <span
-                                                class="px-3 py-1 text-xs font-bold rounded-full bg-blue-100 text-blue-800">
+                                                class="px-3 py-1 text-xs font-bold rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300">
                                                 GOAT
                                             </span>
                                         @elseif($member->total_pi >= 75)
                                             <span
-                                                class="px-3 py-1 text-xs font-bold rounded-full bg-green-100 text-green-800">
+                                                class="px-3 py-1 text-xs font-bold rounded-full bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300">
                                                 Lulus
                                             </span>
                                         @else
-                                            <span class="px-3 py-1 text-xs font-bold rounded-full bg-red-100 text-red-800">
+                                            <span class="px-3 py-1 text-xs font-bold rounded-full bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300">
                                                 Perlu Aksel
                                             </span>
                                         @endif
@@ -366,8 +366,8 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="9" class="px-6 py-8 text-center text-gray-500">
-                                        <i data-feather="inbox" class="w-12 h-12 mx-auto mb-2 text-gray-400"></i>
+                                    <td colspan="9" class="px-6 py-8 text-center text-gray-500 dark:text-slate-400">
+                                        <i data-feather="inbox" class="w-12 h-12 mx-auto mb-2 text-gray-400 dark:text-slate-500"></i>
                                         <p class="text-sm">Tidak ada data PPH ditemukan</p>
                                     </td>
                                 </tr>
