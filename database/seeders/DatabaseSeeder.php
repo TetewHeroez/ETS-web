@@ -46,12 +46,22 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory()->create([
+            'name' => 'Fajar Adie Santosa',
+            'email' => 'fajardios01@gmail.com',
+            'password' => bcrypt('password123'),
+            'role' => 'admin',
+            'nrp' => '5002221145',
+            'jabatan' => 'SC',
+            'status' => 'aktif',
+        ]);
+
+        User::factory()->create([
             'name' => 'Eka Nur Fitriawati',
             'email' => 'pitkanur@gmail.com',
             'password' => bcrypt('password123'),
             'role' => 'admin',
             'nrp' => '5002221121',
-            'jabatan' => 'IC',
+            'jabatan' => '-',
             'status' => 'aktif',
         ]);
 
@@ -61,7 +71,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password123'),
             'role' => 'admin',
             'nrp' => '5002221140',
-            'jabatan' => 'OC',
+            'jabatan' => '-',
             'status' => 'aktif',
         ]);
 

@@ -9,27 +9,67 @@
     <!-- Sidebar -->
     @include('components.sidebar')
 
-    <!-- Pop-up Notification (Muncul dari Atas) -->
-    <div id="notification-popup"
-        class="fixed top-0 right-6 z-50 bg-white dark:bg-slate-800 rounded-b-lg shadow-2xl border-l-4 border-cyan-400 max-w-md transform -translate-y-full transition-all duration-500 ease-out">
-        <div class="p-4">
-            <div class="flex items-start">
-                <div class="flex-shrink-0">
-                    <div class="h-10 w-10 bg-cyan-100 dark:bg-cyan-900 rounded-full flex items-center justify-center">
-                        <i data-feather="info" class="h-6 w-6 text-cyan-600 dark:text-cyan-400"></i>
+    <!-- Kontrak Dialog (Centered Modal) -->
+    @php
+        $activeContract = \App\Models\Contract::getActive();
+    @endphp
+
+    @if ($activeContract)
+        <div id="contract-dialog"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+            <div
+                class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden transform scale-95 transition-transform duration-300">
+                <!-- Header -->
+                <div
+                    class="bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500 dark:from-blue-800 dark:to-cyan-700 px-8 py-6">
+                    <h2 class="text-2xl font-bold text-white text-center">{{ $activeContract->title }}</h2>
+                </div>
+
+                <!-- Content -->
+                <div class="p-8 overflow-y-auto max-h-[calc(90vh-200px)] custom-scrollbar">
+                    <div class="space-y-6">
+                        @if ($activeContract->description)
+                            <div class="bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-600 p-4 rounded-r-lg mb-4">
+                                <p class="text-sm text-blue-900 dark:text-blue-200 font-semibold">
+                                    {{ $activeContract->description }}
+                                </p>
+                            </div>
+                        @endif
+
+                        <ol class="space-y-4 text-slate-700 dark:text-slate-300">
+                            @foreach ($activeContract->rules as $index => $rule)
+                                <li class="flex items-start">
+                                    <span
+                                        class="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-blue-600 to-cyan-500 text-white rounded-full flex items-center justify-center font-bold text-sm mr-3">{{ $index + 1 }}</span>
+                                    <p class="pt-1"><strong
+                                            class="text-slate-900 dark:text-slate-100">{{ $rule }}</strong></p>
+                                </li>
+                            @endforeach
+                        </ol>
+
+                        <div
+                            class="mt-8 p-6 bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 rounded-xl border border-cyan-200 dark:border-cyan-700">
+                            <p class="text-center text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+                                Dengan menekan tombol <strong class="text-blue-700 dark:text-blue-400">"Saya
+                                    Setuju"</strong>,
+                                Anda menyatakan telah membaca, memahami, dan menyetujui seluruh ketentuan kontrak di atas.
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div class="ml-3 flex-1">
-                    <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Selamat Datang!</h3>
-                    <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">Anda berhasil login ke sistem MyPH.</p>
+
+                <!-- Footer Buttons -->
+                <div
+                    class="px-8 py-6 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 flex justify-end gap-4">
+                    <button onclick="closeContract()" id="agreeButton"
+                        class="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-700 dark:to-cyan-600 text-white font-bold rounded-lg hover:from-blue-700 hover:to-cyan-600 dark:hover:from-blue-800 dark:hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                        <i data-feather="check-circle" class="w-5 h-5 inline mr-2"></i>
+                        Saya Setuju
+                    </button>
                 </div>
-                <button onclick="closeNotification()"
-                    class="ml-3 flex-shrink-0 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition">
-                    <i data-feather="x" class="h-5 w-5"></i>
-                </button>
             </div>
         </div>
-    </div>
+    @endif
 
     <!-- Main Content -->
     <div
@@ -53,7 +93,7 @@
                                 <p class="text-white text-opacity-95 leading-relaxed">
                                     Selamat datang di sistem MyPH! Pastikan untuk selalu mengumpulkan tugas sebelum
                                     deadline.
-                                    Periksa reminder di bawah untuk melihat tugas yang akan datang.
+                                    Periksa reminder di bawah untuk melihat panggilan yang akan datang.
                                 </p>
                             </div>
                         </div>
@@ -72,7 +112,7 @@
 
                 <div class="px-4 sm:px-0 mb-8">
                     <div
-                        class="bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-600 dark:to-purple-700 rounded-lg shadow-lg p-6 mb-6">
+                        class="bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-700 dark:to-cyan-600 rounded-lg shadow-lg p-6 mb-6">
                         <h3 class="text-xl font-heading font-bold text-white mb-4 flex items-center">
                             <i data-feather="user-check" class="w-6 h-6 mr-2"></i>
                             Statistik Kehadiran Anda
@@ -110,14 +150,14 @@
 
                             <!-- Alpa -->
                             <div
-                                class="bg-white bg-opacity-20 backdrop-blur-sm rounded-lg p-4 border border-white border-opacity-30">
+                                class="bg-white/20 dark:bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/30 dark:border-white/20">
                                 <div class="flex items-center justify-between">
                                     <div>
                                         <p class="text-sm font-semibold text-white uppercase opacity-90">Alpa</p>
                                         <p class="text-3xl font-bold text-white mt-1">{{ $alpaCount }}</p>
                                         <p class="text-xs text-white opacity-75 mt-1">Hari</p>
                                     </div>
-                                    <div class="bg-red-500 rounded-full p-3">
+                                    <div class="bg-red-500 dark:bg-red-600 rounded-full p-3">
                                         <i data-feather="x-circle" class="w-6 h-6 text-white"></i>
                                     </div>
                                 </div>
@@ -125,7 +165,7 @@
                         </div>
                         <div class="mt-4">
                             <a href="{{ route('my-attendance') }}"
-                                class="inline-flex items-center px-4 py-2 bg-white text-indigo-600 font-semibold rounded-lg hover:bg-opacity-90 transition">
+                                class="inline-flex items-center px-4 py-2 bg-white text-blue-700 font-semibold rounded-lg hover:bg-opacity-90 transition">
                                 <i data-feather="calendar" class="w-4 h-4 mr-2"></i>
                                 Lihat Detail Kehadiran
                             </a>
@@ -291,29 +331,6 @@
                         </div>
                     </div>
 
-                    <!-- Status Card -->
-                    <div
-                        class="bg-white dark:bg-slate-800 overflow-hidden shadow rounded-lg border border-slate-200 dark:border-slate-700">
-                        <div class="p-5">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0">
-                                    <div
-                                        class="h-10 w-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                                        <i data-feather="check-circle"
-                                            class="h-6 w-6 text-green-600 dark:text-green-400"></i>
-                                    </div>
-                                </div>
-                                <div class="ml-5 w-0 flex-1">
-                                    <dl>
-                                        <dt class="text-sm font-medium text-slate-500 dark:text-slate-400 truncate">Status
-                                        </dt>
-                                        <dd class="text-lg font-medium text-slate-900 dark:text-slate-100">Online</dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Last Login Card -->
                     <div
                         class="bg-white dark:bg-slate-800 overflow-hidden shadow rounded-lg border border-slate-200 dark:border-slate-700">
@@ -337,27 +354,7 @@
                         </div>
                     </div>
 
-                    <!-- Version Card -->
-                    <div
-                        class="bg-white dark:bg-slate-800 overflow-hidden shadow rounded-lg border border-slate-200 dark:border-slate-700 lg:col-span-2">
-                        <div class="p-5">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0">
-                                    <div
-                                        class="h-10 w-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                                        <i data-feather="zap" class="h-6 w-6 text-purple-600 dark:text-purple-400"></i>
-                                    </div>
-                                </div>
-                                <div class="ml-5 w-0 flex-1">
-                                    <dl>
-                                        <dt class="text-sm font-medium text-slate-500 dark:text-slate-400 truncate">Version
-                                        </dt>
-                                        <dd class="text-lg font-medium text-slate-900 dark:text-slate-100">1.0.0</dd>
-                                    </dl>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
 
@@ -372,34 +369,43 @@
         </div>
     </div>
 
-    <!-- Pop-up JavaScript -->
+    <!-- Contract Dialog JavaScript -->
     <script>
-        // Tampilkan popup dengan animasi slide down dari atas
+        // Tampilkan contract dialog dengan animasi
         document.addEventListener('DOMContentLoaded', function() {
             feather.replace();
 
-            // Slide down popup setelah 100ms
+            // Show contract dialog after 300ms
             setTimeout(() => {
-                const popup = document.getElementById('notification-popup');
-                popup.style.transform = 'translateY(1.5rem)'; // Muncul dengan jarak dari atas
-            }, 100);
+                const dialog = document.getElementById('contract-dialog');
+                dialog.classList.remove('opacity-0', 'pointer-events-none');
+                dialog.querySelector('div').classList.remove('scale-95');
+                dialog.querySelector('div').classList.add('scale-100');
+
+                // Re-render feather icons inside dialog
+                feather.replace();
+            }, 300);
         });
 
-        // Auto-close popup setelah 10 detik
-        setTimeout(() => {
-            closeNotification();
-        }, 10000);
+        function closeContract() {
+            const dialog = document.getElementById('contract-dialog');
+            dialog.classList.add('opacity-0', 'pointer-events-none');
+            dialog.querySelector('div').classList.remove('scale-100');
+            dialog.querySelector('div').classList.add('scale-95');
 
-        function closeNotification() {
-            const popup = document.getElementById('notification-popup');
-            popup.style.transform = 'translateY(-100%)'; // Slide up ke atas
-            popup.style.opacity = '0';
+            // Optional: Save to localStorage that user has agreed
+            localStorage.setItem('contractAgreed', 'true');
 
-            // Hapus dari DOM setelah animasi selesai
+            // Remove from DOM after animation
             setTimeout(() => {
-                popup.remove();
-            }, 500);
+                dialog.remove();
+            }, 300);
         }
+
+        // Optional: Check if user already agreed (you can implement this)
+        // if (localStorage.getItem('contractAgreed') === 'true') {
+        //     document.getElementById('contract-dialog').remove();
+        // }
 
         // Assignment Slider
         let currentIndex = 0;

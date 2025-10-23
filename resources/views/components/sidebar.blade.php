@@ -1,6 +1,6 @@
 <!-- Sidebar -->
 <aside id="sidebar"
-    class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-gradient-to-b from-blue-700 via-blue-800 to-blue-900 dark:from-slate-800 dark:via-slate-900 dark:to-black text-white shadow-2xl flex flex-col z-40 transition-all duration-300 transform md:translate-x-0 -translate-x-full geometric-bg">
+    class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-gradient-to-b from-blue-700 via-blue-800 to-blue-900 dark:from-slate-800 dark:via-slate-900 dark:to-black text-white shadow-2xl flex flex-col z-40 transition-all duration-300 transform md:translate-x-0 -translate-x-full">
 
     <!-- Geometric Background Pattern -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
@@ -33,98 +33,109 @@
     <!-- Navigation -->
     <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto relative z-10">
         <a href="{{ route('dashboard') }}"
-            class="group flex items-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('dashboard') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
+            class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('dashboard') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
             title="Dashboard">
             <div
                 class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             </div>
             <i data-feather="home"
-                class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform mr-3"></i>
-            <span class="font-medium sidebar-text relative z-10">Dashboard</span>
+                class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform sidebar-icon"></i>
+            <span class="font-medium sidebar-text relative z-10 ml-3">Dashboard</span>
         </a>
 
         @if (Auth::user()->isMember())
             <a href="{{ route('submissions.create') }}"
-                class="group flex items-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('submissions.create') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
+                class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('submissions.create') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
                 title="Kumpulkan Tugas">
                 <div
                     class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 </div>
                 <i data-feather="upload"
-                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform mr-3"></i>
-                <span class="font-medium sidebar-text relative z-10">Kumpulkan Tugas</span>
+                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform sidebar-icon"></i>
+                <span class="font-medium sidebar-text relative z-10 ml-3">Kumpulkan Tugas</span>
             </a>
         @endif
 
         @if (Auth::user()->isAdmin() || Auth::user()->isSuperadmin())
             <a href="{{ route('assignments.index') }}"
-                class="group flex items-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('assignments.*') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
+                class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('assignments.*') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
                 title="Kelola Tugas">
                 <div
                     class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 </div>
                 <i data-feather="file-text"
-                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform mr-3"></i>
-                <span class="font-medium sidebar-text relative z-10">Kelola Tugas</span>
+                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform sidebar-icon"></i>
+                <span class="font-medium sidebar-text relative z-10 ml-3">Kelola Tugas</span>
             </a>
         @endif
 
         <a href="{{ route('submissions.table') }}"
-            class="group flex items-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('submissions.table') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
+            class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('submissions.table') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
             title="Progress Member">
             <div
                 class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             </div>
             <i data-feather="bar-chart-2"
-                class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform mr-3"></i>
-            <span class="font-medium sidebar-text relative z-10">Progress</span>
+                class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform sidebar-icon"></i>
+            <span class="font-medium sidebar-text relative z-10 ml-3">Progress</span>
         </a>
 
         @if (Auth::user()->isAdmin() || Auth::user()->isSuperadmin())
             <a href="{{ route('attendances.index') }}"
-                class="group flex items-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('attendances.index') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
+                class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('attendances.index') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
                 title="Kelola Absensi">
                 <div
                     class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 </div>
                 <i data-feather="user-check"
-                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform mr-3"></i>
-                <span class="font-medium sidebar-text relative z-10">Kelola Absensi</span>
+                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform sidebar-icon"></i>
+                <span class="font-medium sidebar-text relative z-10 ml-3">Kelola Absensi</span>
             </a>
 
             <a href="{{ route('users.index') }}"
-                class="group flex items-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('users.*') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
+                class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('users.*') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
                 title="Kelola Member">
                 <div
                     class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 </div>
                 <i data-feather="users"
-                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform mr-3"></i>
-                <span class="font-medium sidebar-text relative z-10">Kelola Member</span>
+                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform sidebar-icon"></i>
+                <span class="font-medium sidebar-text relative z-10 ml-3">Kelola Member</span>
             </a>
 
             <a href="{{ route('kpi.index') }}"
-                class="group flex items-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('kpi.*') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
+                class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('kpi.*') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
                 title="KPI & Performance Indicator">
                 <div
                     class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 </div>
                 <i data-feather="trending-up"
-                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform mr-3"></i>
-                <span class="font-medium sidebar-text relative z-10">KPI & PI</span>
+                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform sidebar-icon"></i>
+                <span class="font-medium sidebar-text relative z-10 ml-3">KPI & PI</span>
+            </a>
+
+            <a href="{{ route('contracts.index') }}"
+                class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('contracts.*') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
+                title="Kelola Kontrak">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                </div>
+                <i data-feather="file-text"
+                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform sidebar-icon"></i>
+                <span class="font-medium sidebar-text relative z-10 ml-3">Kelola Kontrak</span>
             </a>
         @endif
 
         @if (Auth::user()->isMember())
             <a href="{{ route('my-attendance') }}"
-                class="group flex items-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('my-attendance') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
+                class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('my-attendance') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
                 title="Kehadiran Saya">
                 <div
                     class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 </div>
                 <i data-feather="calendar"
-                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform mr-3"></i>
-                <span class="font-medium sidebar-text relative z-10">Kehadiran Saya</span>
+                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform sidebar-icon"></i>
+                <span class="font-medium sidebar-text relative z-10 ml-3">Kehadiran Saya</span>
             </a>
         @endif
     </nav>
@@ -133,7 +144,7 @@
     <div class="p-4 border-t border-white border-opacity-20 space-y-2">
         <!-- Profil (All users) -->
         <a href="{{ route('profile.show') }}"
-            class="flex items-center  justify-center space-x-2 px-4 py-3 rounded-lg transition {{ request()->routeIs('profile.*') ? 'bg-white bg-opacity-20' : 'hover:bg-white hover:bg-opacity-10' }}"
+            class="flex items-center justify-center space-x-2 px-4 py-3 rounded-lg transition {{ request()->routeIs('profile.*') ? 'bg-white bg-opacity-20' : 'hover:bg-white hover:bg-opacity-10' }}"
             title="Profil Saya">
             <i data-feather="user-check" class="w-5 h-5 flex-shrink-0"></i>
             <span class="font-medium sidebar-text">Profil</span>
@@ -143,7 +154,7 @@
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit"
-                class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition"
+                class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-red-500/80 hover:bg-red-600/90 dark:bg-red-600/80 dark:hover:bg-red-700/90 text-white rounded-lg transition shadow-md hover:shadow-lg"
                 title="Logout">
                 <i data-feather="log-out" class="w-5 h-5 flex-shrink-0"></i>
                 <span class="font-medium sidebar-text">Logout</span>
@@ -164,7 +175,7 @@
         if (!backdrop) {
             backdrop = document.createElement('div');
             backdrop.id = 'sidebarBackdrop';
-            backdrop.className = 'fixed inset-0 bg-black bg-opacity-40 z-30 md:hidden hidden';
+            backdrop.className = 'fixed inset-0 bg-black/50 z-30 md:hidden hidden';
             document.body.appendChild(backdrop);
             backdrop.addEventListener('click', closeMobileSidebar);
         }
@@ -174,15 +185,19 @@
         }
 
         function openMobileSidebar() {
-            sidebar.classList.remove('-translate-x-full');
-            sidebar.classList.add('translate-x-0');
-            backdrop.classList.remove('hidden');
+            if (!isDesktop()) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                backdrop.classList.remove('hidden');
+            }
         }
 
         function closeMobileSidebar() {
-            sidebar.classList.remove('translate-x-0');
-            sidebar.classList.add('-translate-x-full');
-            backdrop.classList.add('hidden');
+            if (!isDesktop()) {
+                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
         }
 
         if (mobileToggle) {
@@ -291,14 +306,14 @@
             if (isDesktop()) {
                 backdrop.classList.add('hidden');
                 sidebar.classList.remove('-translate-x-full');
-                sidebar.classList.add('translate-x-0');
+                sidebar.classList.add('md:translate-x-0');
+                restoreCollapsed();
             } else {
                 // hide sidebar on mobile by default
                 sidebar.classList.add('-translate-x-full');
                 sidebar.classList.remove('translate-x-0');
                 backdrop.classList.add('hidden');
             }
-            restoreCollapsed();
         });
     });
 </script>

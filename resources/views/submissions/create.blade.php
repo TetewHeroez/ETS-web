@@ -41,11 +41,12 @@
 
                         <!-- Assignment Selection -->
                         <div class="mb-4">
-                            <label for="assignment_id" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="assignment_id"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Pilih Tugas <span class="text-red-500">*</span>
                             </label>
                             <select name="assignment_id" id="assignment_id" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                                 onchange="showAssignmentInfo()">
                                 <option value="">-- Pilih Tugas --</option>
                                 @foreach ($assignments as $assignment)
@@ -64,15 +65,18 @@
                             @enderror
 
                             <!-- Assignment Info Box -->
-                            <div id="assignmentInfo" class="mt-3 p-4 bg-blue-50 border border-blue-200 rounded-lg hidden">
+                            <div id="assignmentInfo"
+                                class="mt-3 p-4 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg hidden">
                                 <div class="flex items-start">
-                                    <i data-feather="info" class="w-5 h-5 text-blue-600 mr-2 mt-0.5"></i>
+                                    <i data-feather="info" class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2 mt-0.5"></i>
                                     <div class="flex-1">
-                                        <p class="text-sm font-medium text-gray-900 mb-1">Deskripsi Tugas:</p>
-                                        <p id="assignmentDescription" class="text-sm text-gray-700 mb-2"></p>
-                                        <p class="text-sm text-gray-600">
+                                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Deskripsi
+                                            Tugas:</p>
+                                        <p id="assignmentDescription" class="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                                        </p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">
                                             <span class="font-medium">Deadline:</span>
-                                            <span id="assignmentDeadline" class="text-red-600"></span>
+                                            <span id="assignmentDeadline" class="text-red-600 dark:text-red-400"></span>
                                         </p>
                                     </div>
                                 </div>
@@ -81,7 +85,7 @@
 
                         <!-- Type Selection -->
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Tipe Pengumpulan <span class="text-red-500">*</span>
                             </label>
                             <div class="grid grid-cols-3 gap-4">
@@ -89,27 +93,30 @@
                                     <input type="radio" name="type" value="pdf" required class="peer hidden"
                                         onclick="showInput('pdf')">
                                     <div
-                                        class="border-2 border-gray-300 rounded-lg p-4 text-center peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:border-blue-300 transition">
-                                        <i data-feather="file-text" class="w-8 h-8 mx-auto mb-2 text-gray-600"></i>
-                                        <span class="text-sm font-medium">PDF</span>
+                                        class="border-2 border-gray-300 dark:border-slate-600 rounded-lg p-4 text-center peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/30 hover:border-blue-300 dark:hover:border-blue-600 transition">
+                                        <i data-feather="file-text"
+                                            class="w-8 h-8 mx-auto mb-2 text-gray-600 dark:text-gray-400"></i>
+                                        <span class="text-sm font-medium text-gray-900 dark:text-gray-100">PDF</span>
                                     </div>
                                 </label>
                                 <label class="cursor-pointer">
                                     <input type="radio" name="type" value="image" required class="peer hidden"
                                         onclick="showInput('image')">
                                     <div
-                                        class="border-2 border-gray-300 rounded-lg p-4 text-center peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:border-blue-300 transition">
-                                        <i data-feather="image" class="w-8 h-8 mx-auto mb-2 text-gray-600"></i>
-                                        <span class="text-sm font-medium">Foto</span>
+                                        class="border-2 border-gray-300 dark:border-slate-600 rounded-lg p-4 text-center peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/30 hover:border-blue-300 dark:hover:border-blue-600 transition">
+                                        <i data-feather="image"
+                                            class="w-8 h-8 mx-auto mb-2 text-gray-600 dark:text-gray-400"></i>
+                                        <span class="text-sm font-medium text-gray-900 dark:text-gray-100">Foto</span>
                                     </div>
                                 </label>
                                 <label class="cursor-pointer">
                                     <input type="radio" name="type" value="link" required class="peer hidden"
                                         onclick="showInput('link')">
                                     <div
-                                        class="border-2 border-gray-300 rounded-lg p-4 text-center peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:border-blue-300 transition">
-                                        <i data-feather="link" class="w-8 h-8 mx-auto mb-2 text-gray-600"></i>
-                                        <span class="text-sm font-medium">Link</span>
+                                        class="border-2 border-gray-300 dark:border-slate-600 rounded-lg p-4 text-center peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/30 hover:border-blue-300 dark:hover:border-blue-600 transition">
+                                        <i data-feather="link"
+                                            class="w-8 h-8 mx-auto mb-2 text-gray-600 dark:text-gray-400"></i>
+                                        <span class="text-sm font-medium text-gray-900 dark:text-gray-100">Link</span>
                                     </div>
                                 </label>
                             </div>
@@ -120,12 +127,12 @@
 
                         <!-- File Upload (PDF/Image) -->
                         <div id="fileInput" class="mb-4 hidden">
-                            <label for="file" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="file" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Upload File <span class="text-red-500">*</span>
                             </label>
                             <input type="file" name="file" id="file" accept=".pdf,image/*"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <p class="text-sm text-gray-500 mt-1">Max 10MB</p>
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Max 10MB</p>
                             @error('file')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
@@ -133,11 +140,11 @@
 
                         <!-- Link Input -->
                         <div id="linkInput" class="mb-6 hidden">
-                            <label for="link" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="link" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Link URL <span class="text-red-500">*</span>
                             </label>
                             <input type="url" name="link" id="link" placeholder="https://example.com/tugas"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
                             @error('link')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
@@ -145,7 +152,7 @@
 
                         <!-- Submit Button -->
                         <button type="submit"
-                            class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg hover:from-blue-600 hover:to-purple-700 transition font-medium">
+                            class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-700 dark:to-cyan-600 text-white py-3 rounded-lg hover:from-blue-700 hover:to-cyan-600 dark:hover:from-blue-800 dark:hover:to-cyan-700 transition font-medium shadow-lg">
                             <i data-feather="send" class="w-4 h-4 inline mr-2"></i>
                             Kumpulkan Tugas
                         </button>
@@ -160,10 +167,11 @@
                     @if ($user->submissions->count() > 0)
                         <div class="space-y-3">
                             @foreach ($user->submissions as $submission)
-                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
                                     <div>
-                                        <p class="font-medium text-gray-800">{{ $submission->assignment->title }}</p>
-                                        <p class="text-sm text-gray-600">
+                                        <p class="font-medium text-gray-800 dark:text-gray-100">
+                                            {{ $submission->assignment->title }}</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">
                                             @if ($submission->type === 'link')
                                                 <i data-feather="link" class="w-3 h-3 inline"></i> Link
                                             @elseif($submission->type === 'pdf')
@@ -174,7 +182,8 @@
                                             · {{ $submission->created_at->format('d M Y H:i') }}
                                         </p>
                                     </div>
-                                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                    <span
+                                        class="px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 text-xs font-medium rounded-full">
                                         ✓ Sudah
                                     </span>
                                 </div>

@@ -9,6 +9,8 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\KpiController;
+use App\Http\Controllers\ContractController;
+use App\Http\Controllers\AttendanceScheduleController;
 
 // Halaman utama redirect ke login jika belum login, atau ke dashboard jika sudah login
 Route::get('/', function () {
@@ -59,6 +61,11 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin,superadmin')->group(function () {
         Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
         Route::post('/attendances/update', [AttendanceController::class, 'updateOrCreate'])->name('attendances.update');
+        
+        // Routes untuk Attendance Schedule Management
+        Route::resource('attendance-schedules', AttendanceScheduleController::class);
+        Route::post('/attendance-schedules/{attendanceSchedule}/toggle-open', [AttendanceScheduleController::class, 'toggleOpen'])->name('attendance-schedules.toggleOpen');
+        Route::post('/attendance-schedules/{attendanceSchedule}/mark-attendance', [AttendanceScheduleController::class, 'markAttendance'])->name('attendance-schedules.markAttendance');
     });
     
     // Route untuk member melihat kehadiran sendiri
@@ -72,6 +79,12 @@ Route::middleware('auth')->group(function () {
     // Routes untuk KPI (hanya admin dan superadmin)
     Route::middleware('role:admin,superadmin')->group(function () {
         Route::get('/kpi', [KpiController::class, 'index'])->name('kpi.index');
+    });
+    
+    // Routes untuk Contract Management (admin dan superadmin)
+    Route::middleware('role:admin,superadmin')->group(function () {
+        Route::resource('contracts', ContractController::class)->except(['show']);
+        Route::post('/contracts/{contract}/toggle-active', [ContractController::class, 'toggleActive'])->name('contracts.toggleActive');
     });
     
     // Routes untuk scoring/penilaian (admin dan superadmin)

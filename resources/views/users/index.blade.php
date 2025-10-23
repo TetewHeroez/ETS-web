@@ -6,13 +6,15 @@
     @include('components.navbar')
     @include('components.sidebar')
 
-    <main class="main-content-wrapper ml-0 md:ml-64 mt-16 min-h-screen bg-gray-50 dark:bg-slate-900 transition-all duration-300">
+    <main
+        class="main-content-wrapper ml-0 md:ml-64 mt-16 min-h-screen bg-gray-50 dark:bg-slate-900 transition-all duration-300">
         <div class="w-full py-4 px-3 md:py-6 md:px-6">
             <!-- Header -->
             <div class="mb-4 md:mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                 <div>
                     <h2 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-slate-100">Kelola Member</h2>
-                    <p class="text-sm md:text-base text-gray-600 dark:text-slate-400">Manajemen user dan member sistem MyPH</p>
+                    <p class="text-sm md:text-base text-gray-600 dark:text-slate-400">Manajemen user dan member sistem MyPH
+                    </p>
                 </div>
                 @if (auth()->user()->isSuperadmin())
                     <a href="{{ route('users.create') }}"
@@ -46,19 +48,23 @@
             <!-- Import Excel Section (Only for Koor SC, Koor IC, and SC) -->
             @if (in_array(auth()->user()->jabatan, ['Koor SC', 'Koor IC', 'SC']))
                 <div class="bg-white dark:bg-slate-800 rounded-lg shadow mb-4 md:mb-6 p-4 md:p-6">
-                    <h3 class="text-base md:text-lg font-semibold text-gray-800 dark:text-slate-100 mb-3 md:mb-4 flex items-center">
-                        <i data-feather="upload" class="w-4 h-4 md:w-5 md:h-5 mr-2 text-green-600 dark:text-green-400 flex-shrink-0"></i>
+                    <h3
+                        class="text-base md:text-lg font-semibold text-gray-800 dark:text-slate-100 mb-3 md:mb-4 flex items-center">
+                        <i data-feather="upload"
+                            class="w-4 h-4 md:w-5 md:h-5 mr-2 text-green-600 dark:text-green-400 flex-shrink-0"></i>
                         Import Data dari Excel
                     </h3>
                     <form method="POST" action="{{ route('users.import') }}" enctype="multipart/form-data"
                         class="flex flex-col md:flex-row gap-3 md:gap-4 md:items-end">
                         @csrf
                         <div class="flex-1">
-                            <label class="block text-xs md:text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">File Excel</label>
+                            <label class="block text-xs md:text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">File
+                                Excel</label>
                             <input type="file" name="file" accept=".xlsx,.xls,.csv"
                                 class="w-full px-3 py-2 text-sm md:text-base border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                                 required>
-                            <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Format: Excel (.xlsx, .xls) atau CSV. Maksimal 2MB</p>
+                            <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Format: Excel (.xlsx, .xls) atau CSV.
+                                Maksimal 2MB</p>
                         </div>
                         <div class="flex gap-2 md:gap-3">
                             <button type="submit"
@@ -80,21 +86,30 @@
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow mb-4 md:mb-6 p-4 md:p-6">
                 <form method="GET" action="{{ route('users.index') }}" class="flex flex-col md:flex-row gap-3 md:gap-4">
                     <div class="flex-1">
-                        <label class="block text-xs md:text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Cari User</label>
+                        <label class="block text-xs md:text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Cari
+                            User</label>
                         <input type="text" name="search" value="{{ request('search') }}"
                             placeholder="Cari nama atau NRP..."
                             class="w-full px-3 py-2 text-sm md:text-base border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400" />
                     </div>
-                    <div class="w-full md:w-48">
-                        <label class="block text-xs md:text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Filter Role</label>
+                    <div class="w-full md:w-36 relative">
+                        <label class="block text-xs md:text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Filter
+                            Role</label>
                         <select name="role"
-                            class="w-full px-3 py-2 text-sm md:text-base border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+                            class="w-full px-3 py-2 text-xs md:text-sm border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 appearance-none pr-10">
                             <option value="">Semua Role</option>
                             <option value="member" {{ request('role') == 'member' ? 'selected' : '' }}>Member</option>
                             <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                             <option value="superadmin" {{ request('role') == 'superadmin' ? 'selected' : '' }}>Superadmin
                             </option>
                         </select>
+
+                        <!-- custom chevron shifted to the right -->
+                        <svg class="pointer-events-none absolute right-3 top-1/2 translate-y-1 w-4 h-4 text-gray-500 dark:text-slate-300"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
                     </div>
                     <div class="flex items-end">
                         <button type="submit"
@@ -110,7 +125,8 @@
             <div class="bg-white dark:bg-slate-800 rounded-lg shadow overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700 text-xs md:text-sm">
-                        <thead class="bg-gradient-to-r from-blue-700 to-cyan-600 dark:from-slate-700 dark:to-slate-800 text-white dark:text-slate-100">
+                        <thead
+                            class="bg-gradient-to-r from-blue-700 to-cyan-600 dark:from-slate-700 dark:to-slate-800 text-white dark:text-slate-100">
                             <tr>
                                 <th
                                     class="px-3 py-2 md:px-6 md:py-3 text-left text-xs font-medium uppercase tracking-wider">
@@ -210,24 +226,29 @@
                             @forelse ($users as $user)
                                 <tr
                                     class="hover:bg-gray-50 dark:hover:bg-slate-700 {{ $user->status === 'nonaktif' ? 'bg-gray-50 dark:bg-slate-700 opacity-60' : '' }}">
-                                    <td class="px-3 py-3 md:px-6 md:py-4 whitespace-nowrap text-gray-900 dark:text-slate-100">
+                                    <td
+                                        class="px-3 py-3 md:px-6 md:py-4 whitespace-nowrap text-gray-900 dark:text-slate-100">
                                         {{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}
                                     </td>
                                     <td class="px-3 py-3 md:px-6 md:py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div
                                                 class="h-8 w-8 md:h-10 md:w-10 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center flex-shrink-0">
-                                                <i data-feather="user" class="w-4 h-4 md:w-5 md:h-5 text-blue-600 dark:text-blue-400"></i>
+                                                <i data-feather="user"
+                                                    class="w-4 h-4 md:w-5 md:h-5 text-blue-600 dark:text-blue-400"></i>
                                             </div>
                                             <div class="ml-2 md:ml-4">
-                                                <div class="font-medium text-gray-900 dark:text-slate-100">{{ $user->name }}</div>
+                                                <div class="font-medium text-gray-900 dark:text-slate-100">
+                                                    {{ $user->name }}</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-3 py-3 md:px-6 md:py-4 whitespace-nowrap text-gray-900 dark:text-slate-100 font-mono">
+                                    <td
+                                        class="px-3 py-3 md:px-6 md:py-4 whitespace-nowrap text-gray-900 dark:text-slate-100 font-mono">
                                         {{ $user->nrp ?? '-' }}
                                     </td>
-                                    <td class="px-3 py-3 md:px-6 md:py-4 whitespace-nowrap text-gray-600 dark:text-slate-300">
+                                    <td
+                                        class="px-3 py-3 md:px-6 md:py-4 whitespace-nowrap text-gray-600 dark:text-slate-300">
                                         {{ $user->email }}
                                     </td>
                                     <td class="px-3 py-3 md:px-6 md:py-4 whitespace-nowrap">
@@ -248,7 +269,8 @@
                                                 {{ $jabatan }}
                                             </span>
                                         @else
-                                            <span class="text-gray-400 dark:text-slate-500 italic text-xs">Belum diatur</span>
+                                            <span class="text-gray-400 dark:text-slate-500 italic text-xs">Belum
+                                                diatur</span>
                                         @endif
                                     </td>
 
@@ -262,7 +284,8 @@
                                             </span>
                                         </td>
                                     @endif
-                                    <td class="px-3 py-3 md:px-6 md:py-4 whitespace-nowrap text-gray-900 dark:text-slate-100">
+                                    <td
+                                        class="px-3 py-3 md:px-6 md:py-4 whitespace-nowrap text-gray-900 dark:text-slate-100">
                                         @if ($user->role === 'member' && $user->kelompok)
                                             <span
                                                 class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-300">
@@ -270,7 +293,8 @@
                                                 {{ $user->kelompok }}
                                             </span>
                                         @elseif($user->role === 'member')
-                                            <span class="text-gray-400 dark:text-slate-500 italic text-xs">Belum ada kelompok</span>
+                                            <span class="text-gray-400 dark:text-slate-500 italic text-xs">Belum ada
+                                                kelompok</span>
                                         @else
                                             <span class="text-gray-400 dark:text-slate-500">-</span>
                                         @endif
@@ -352,7 +376,8 @@
                                         <div class="flex flex-col items-center">
                                             <i data-feather="users"
                                                 class="w-12 h-12 md:w-16 md:h-16 text-gray-400 dark:text-slate-500 mb-3 md:mb-4"></i>
-                                            <p class="text-gray-600 dark:text-slate-400 text-sm md:text-base">Belum ada data user</p>
+                                            <p class="text-gray-600 dark:text-slate-400 text-sm md:text-base">Belum ada
+                                                data user</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -372,33 +397,64 @@
             </div>
 
             <!-- Template Info Modal (Hidden by default) -->
-            <div id="templateModal" class="hidden fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 z-50"
+            <div id="templateModal"
+                class="hidden fixed inset-0 bg-black bg-opacity-50 dark:bg-black dark:bg-opacity-70 z-50"
                 style="display: none; align-items: center; justify-content: center;">
                 <div class="bg-white dark:bg-slate-800 p-6 rounded-lg max-w-2xl w-full mx-4">
-                    <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-slate-100">Template Excel untuk Import Member</h3>
+                    <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-slate-100">Template Excel untuk Import
+                        Member</h3>
                     <div class="bg-gray-100 dark:bg-slate-700 p-4 rounded mb-4">
-                        <p class="font-semibold mb-2 text-gray-900 dark:text-slate-100">Format file Excel harus memiliki header di baris pertama:</p>
+                        <p class="font-semibold mb-2 text-gray-900 dark:text-slate-100">Format file Excel harus memiliki
+                            header di baris pertama:</p>
                         <table class="w-full text-sm border border-gray-300 dark:border-slate-600">
                             <thead>
                                 <tr class="bg-gray-200 dark:bg-slate-600">
-                                    <th class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">nama</th>
-                                    <th class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">email</th>
-                                    <th class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">nrp</th>
-                                    <th class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">role</th>
-                                    <th class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">kelompok</th>
-                                    <th class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">tanggal_lahir</th>
-                                    <th class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">password</th>
+                                    <th
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">
+                                        nama</th>
+                                    <th
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">
+                                        email</th>
+                                    <th
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">
+                                        nrp</th>
+                                    <th
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">
+                                        role</th>
+                                    <th
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">
+                                        kelompok</th>
+                                    <th
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">
+                                        tanggal_lahir</th>
+                                    <th
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-900 dark:text-slate-100">
+                                        password</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">Budi Santoso</td>
-                                    <td class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">budi@example.com</td>
-                                    <td class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">2024001</td>
-                                    <td class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">member</td>
-                                    <td class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">Kelompok A</td>
-                                    <td class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">06/09/2006</td>
-                                    <td class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">password123</td>
+                                    <td
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">
+                                        Budi Santoso</td>
+                                    <td
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">
+                                        budi@example.com</td>
+                                    <td
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">
+                                        2024001</td>
+                                    <td
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">
+                                        member</td>
+                                    <td
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">
+                                        Kelompok A</td>
+                                    <td
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">
+                                        06/09/2006</td>
+                                    <td
+                                        class="border border-gray-300 dark:border-slate-500 px-2 py-1 text-gray-700 dark:text-slate-300">
+                                        password123</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -406,19 +462,36 @@
                     <div class="text-sm text-gray-600 dark:text-slate-400 mb-4">
                         <p><strong>Catatan:</strong></p>
                         <ul class="list-disc list-inside">
-                            <li>Kolom <code class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">nama</code> dan <code class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">email</code> wajib diisi</li>
-                            <li>Kolom <code class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">kelompok</code> wajib diisi untuk role member</li>
-                            <li>Kolom <code class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">role</code> default: member (bisa: member, admin, superadmin)</li>
-                            <li>Kolom <code class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">password</code> default: password123 jika kosong</li>
-                            <li>Kolom <code class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">nrp</code> dan <code class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">no_hp</code> bisa berupa angka atau teks</li>
-                            <li>Format <code class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">tanggal_lahir</code>: DD/MM/YYYY, DD-MM-YYYY, atau DD Bulan YYYY (contoh:
+                            <li>Kolom <code
+                                    class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">nama</code>
+                                dan <code
+                                    class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">email</code>
+                                wajib diisi</li>
+                            <li>Kolom <code
+                                    class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">kelompok</code>
+                                wajib diisi untuk role member</li>
+                            <li>Kolom <code
+                                    class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">role</code>
+                                default: member (bisa: member, admin, superadmin)</li>
+                            <li>Kolom <code
+                                    class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">password</code>
+                                default: password123 jika kosong</li>
+                            <li>Kolom <code
+                                    class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">nrp</code>
+                                dan <code
+                                    class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">no_hp</code>
+                                bisa berupa angka atau teks</li>
+                            <li>Format <code
+                                    class="bg-gray-200 dark:bg-slate-600 px-1 rounded text-gray-800 dark:text-slate-200">tanggal_lahir</code>:
+                                DD/MM/YYYY, DD-MM-YYYY, atau DD Bulan YYYY (contoh:
                                 06/09/2006, 06-09-2006, 06 September 2006)</li>
                             <li>Kolom opsional: hobi, tempat_lahir, tanggal_lahir, jenis_kelamin, alamat_asal,
                                 alamat_surabaya, nama_ortu, alamat_ortu, no_hp_ortu, no_hp
                             </li>
                         </ul>
                     </div>
-                    <button onclick="hideTemplate()" class="px-4 py-2 bg-gray-600 dark:bg-slate-600 text-white rounded hover:bg-gray-700 dark:hover:bg-slate-700 transition">Tutup</button>
+                    <button onclick="hideTemplate()"
+                        class="px-4 py-2 bg-gray-600 dark:bg-slate-600 text-white rounded hover:bg-gray-700 dark:hover:bg-slate-700 transition">Tutup</button>
                 </div>
             </div>
 
@@ -434,13 +507,15 @@
                         </div>
 
                         <!-- Title -->
-                        <h3 class="text-lg md:text-xl font-bold text-gray-900 dark:text-slate-100 text-center mb-2">Konfirmasi Hapus User</h3>
+                        <h3 class="text-lg md:text-xl font-bold text-gray-900 dark:text-slate-100 text-center mb-2">
+                            Konfirmasi Hapus User</h3>
 
                         <!-- Message -->
                         <p class="text-sm md:text-base text-gray-600 dark:text-slate-400 text-center mb-4 md:mb-6">
                             Apakah Anda yakin ingin menghapus user <strong id="deleteUserName"
                                 class="text-gray-900 dark:text-slate-100"></strong>?
-                            <br><span class="text-xs md:text-sm text-red-600 dark:text-red-400 mt-2 block">Tindakan ini tidak dapat
+                            <br><span class="text-xs md:text-sm text-red-600 dark:text-red-400 mt-2 block">Tindakan ini
+                                tidak dapat
                                 dibatalkan.</span>
                         </p>
 
@@ -473,7 +548,8 @@
                         </div>
 
                         <!-- Title -->
-                        <h3 id="toggleStatusTitle" class="text-lg md:text-xl font-bold text-gray-900 dark:text-slate-100 text-center mb-2">
+                        <h3 id="toggleStatusTitle"
+                            class="text-lg md:text-xl font-bold text-gray-900 dark:text-slate-100 text-center mb-2">
                         </h3>
 
                         <!-- Message -->
@@ -650,8 +726,8 @@
 
         <style>
             /* ================================
-                   Elegant Pagination Styling with Dark Mode
-                   ================================ */
+                                               Elegant Pagination Styling with Dark Mode
+                                               ================================ */
             .pagination-wrapper nav {
                 background: transparent !important;
                 display: flex;
@@ -670,7 +746,8 @@
 
             /* Dark mode container */
             .dark .pagination-wrapper .flex {
-                background: rgb(30 41 59) !important; /* slate-800 */
+                background: rgb(30 41 59) !important;
+                /* slate-800 */
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             }
 
@@ -695,8 +772,10 @@
             /* Dark mode buttons and links */
             .dark .pagination-wrapper a,
             .dark .pagination-wrapper span {
-                color: rgb(203 213 225); /* slate-300 */
-                background-color: rgb(30 41 59); /* slate-800 */
+                color: rgb(203 213 225);
+                /* slate-300 */
+                background-color: rgb(30 41 59);
+                /* slate-800 */
             }
 
             /* Hover state */
@@ -709,9 +788,12 @@
 
             /* Dark mode hover state */
             .dark .pagination-wrapper a:hover {
-                background-color: rgb(51 65 85); /* slate-600 */
-                color: rgb(248 250 252); /* slate-50 */
-                border-color: rgb(71 85 105); /* slate-500 */
+                background-color: rgb(51 65 85);
+                /* slate-600 */
+                color: rgb(248 250 252);
+                /* slate-50 */
+                border-color: rgb(71 85 105);
+                /* slate-500 */
             }
 
             /* Active/current page */
@@ -741,9 +823,12 @@
 
             /* Dark mode disabled state */
             .dark .pagination-wrapper span[aria-disabled="true"] {
-                background-color: rgb(51 65 85); /* slate-600 */
-                color: rgb(100 116 139); /* slate-500 */
-                border: 1px solid rgb(71 85 105); /* slate-500 */
+                background-color: rgb(51 65 85);
+                /* slate-600 */
+                color: rgb(100 116 139);
+                /* slate-500 */
+                border: 1px solid rgb(71 85 105);
+                /* slate-500 */
             }
 
             /* Previous/Next buttons */
@@ -773,8 +858,10 @@
             .dark .pagination-wrapper .bg-gray-800,
             .dark .pagination-wrapper .bg-gray-900,
             .dark .pagination-wrapper .text-gray-500 {
-                background-color: rgb(30 41 59) !important; /* slate-800 */
-                color: rgb(203 213 225) !important; /* slate-300 */
+                background-color: rgb(30 41 59) !important;
+                /* slate-800 */
+                color: rgb(203 213 225) !important;
+                /* slate-300 */
             }
         </style>
 

@@ -17,7 +17,7 @@
                         <p class="text-slate-600 dark:text-slate-400 font-body">Buat dan kelola tugas untuk member</p>
                     </div>
                     <a href="{{ route('assignments.create') }}"
-                        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition">
+                        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition">
                         <i data-feather="plus" class="w-4 h-4 mr-2"></i>
                         Buat Tugas Baru
                     </a>

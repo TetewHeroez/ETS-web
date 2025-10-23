@@ -9,6 +9,7 @@ class Attendance extends Model
 {
     protected $fillable = [
         'user_id',
+        'attendance_schedule_id',
         'date',
         'status',
         'keterangan',
@@ -24,5 +25,13 @@ class Attendance extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relasi ke AttendanceSchedule
+     */
+    public function schedule(): BelongsTo
+    {
+        return $this->belongsTo(AttendanceSchedule::class, 'attendance_schedule_id');
     }
 }
