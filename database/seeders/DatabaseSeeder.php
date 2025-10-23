@@ -15,47 +15,79 @@ class DatabaseSeeder extends Seeder
     {
         // Superadmin
         User::factory()->create([
-            'name' => 'Super Admin',
-            'email' => 'superadmin@ets.com',
+            'name' => 'Teosofi Hidayah Agung',
+            'email' => 'teosofihidayahagung@gmail.com',
             'password' => bcrypt('password123'),
             'role' => 'superadmin',
-            'nrp' => null,
+            'nrp' => '5002221132',
+            'jabatan' => 'Koor SC',
+            'status' => 'aktif',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Gabirella Alfa Indahsari',
+            'email' => 'gabriellaalfa312@gmail.com',
+            'password' => bcrypt('password123'),
+            'role' => 'superadmin',
+            'nrp' => '5002221039',
+            'jabatan' => 'Koor IC',
+            'status' => 'aktif',
         ]);
 
         // Admin
         User::factory()->create([
-            'name' => 'Admin ETS',
-            'email' => 'admin@ets.com',
+            'name' => 'Arnelita Putri Febrianti',
+            'email' => 'arnelitaputrifebrianti@gmail.com',
             'password' => bcrypt('password123'),
             'role' => 'admin',
-            'nrp' => null,
+            'nrp' => '5002221112',
+            'jabatan' => 'SC',
+            'status' => 'aktif',
         ]);
 
-        // Member 1
         User::factory()->create([
-            'name' => 'Budi Santoso',
-            'email' => 'budi@ets.com',
-            'password' => bcrypt('password'),
-            'role' => 'member',
-            'nrp' => '2024001',
+            'name' => 'Eka Nur Fitriawati',
+            'email' => 'pitkanur@gmail.com',
+            'password' => bcrypt('password123'),
+            'role' => 'admin',
+            'nrp' => '5002221121',
+            'jabatan' => 'IC',
+            'status' => 'aktif',
         ]);
 
-        // Member 2
         User::factory()->create([
-            'name' => 'Siti Nurhaliza',
-            'email' => 'siti@ets.com',
-            'password' => bcrypt('password'),
-            'role' => 'member',
-            'nrp' => '2024002',
+            'name' => 'Siti Nisrina Salsabila',
+            'email' => 'stnisrinasalsabila@gmail.com',
+            'password' => bcrypt('password123'),
+            'role' => 'admin',
+            'nrp' => '5002221140',
+            'jabatan' => 'OC',
+            'status' => 'aktif',
         ]);
 
-        // Member 3
+        // Member
         User::factory()->create([
-            'name' => 'Ahmad Rizky',
-            'email' => 'ahmad@ets.com',
-            'password' => bcrypt('password'),
+            'name' => 'Galang Pijar Robbany',
+            'email' => 'pijargalang85@gmail.com',
+            'password' => bcrypt('5002241098'),
             'role' => 'member',
-            'nrp' => '2024003',
+            'nrp' => '5002241098',
+            'jabatan' => 'PPH',
+            'status' => 'aktif',
+            'kelompok' => 'Phi',
+            'hobi' => 'Event Organizer',
+            'tempat_lahir' => 'Malang',
+            'tanggal_lahir' => '2006-01-12',
+            'jenis_kelamin' => 'Laki-laki',
+            'alamat_asal' => 'Perumahan Bumi Ardimulyo G-9',
+            'alamat_surabaya' => 'Jl. Keputih Tegal 8, Keputih, Kec. Sukolilo',
+            'nama_ortu' => 'Endang Mirasari',
+            'alamat_ortu' => 'Perumahan bumi ardimulyo G-9',
+            'no_hp_ortu' => '085875801121',
+            'no_hp' => '085159439936',
+            'golongan_darah' => 'B',
+            'alergi' => 'udang, dan beberapa seafood',
+            'riwayat_penyakit' => 'Asam Lambung',
         ]);
     }
 }

@@ -21,15 +21,21 @@ class AttendanceController extends Controller
 
         $date = $request->input('date', now()->format('Y-m-d'));
         
-        // Ambil semua member
-        $users = User::where('role', 'member')->orderBy('name')->get();
+        // Get sorting parameters
+        $sortBy = $request->input('sort_by', 'name');
+        $sortOrder = $request->input('sort_order', 'asc');
+        
+        // Ambil semua member dengan sorting
+        $users = User::where('role', 'member')
+            ->orderBy($sortBy, $sortOrder)
+            ->get();
         
         // Ambil absensi untuk tanggal tertentu
         $attendances = Attendance::where('date', $date)
             ->get()
             ->keyBy('user_id');
 
-        return view('attendances.index', compact('users', 'attendances', 'date'));
+        return view('attendances.index', compact('users', 'attendances', 'date', 'sortBy', 'sortOrder'));
     }
 
     /**

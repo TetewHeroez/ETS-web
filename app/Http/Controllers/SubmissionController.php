@@ -74,10 +74,32 @@ class SubmissionController extends Controller
     /**
      * Display the submission progress table.
      */
-    public function table()
+    public function table(Request $request)
     {
         $assignments = Assignment::where('is_active', true)->get();
-        $members = User::where('role', 'member')->orderBy('name')->get();
+
+        // Support search by name or nrp via query param 'search'
+        $search = $request->input('search');
+
+        // Get sorting parameters
+        $sortBy = $request->input('sort_by', 'name');
+        $sortOrder = $request->input('sort_order', 'asc');
+        
+        // Validate sort column to prevent SQL injection
+        $allowedSorts = ['name', 'nrp', 'kelompok'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'name';
+        }
+
+        $membersQuery = User::where('role', 'member');
+        if ($search) {
+            $membersQuery->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('nrp', 'like', "%{$search}%");
+            });
+        }
+
+        $members = $membersQuery->orderBy($sortBy, $sortOrder)->get();
         
         return view('submissions.table', compact('assignments', 'members'));
     }

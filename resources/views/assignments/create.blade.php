@@ -6,8 +6,8 @@
     @include('components.navbar')
     @include('components.sidebar')
 
-    <main class="main-content-wrapper ml-64 mt-16 min-h-screen bg-gray-50 transition-all duration-300">
-        <div class="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
+    <main class="main-content-wrapper ml-0 md:ml-64 mt-16 min-h-screen bg-gray-50 transition-all duration-300">
+        <div class="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="px-4 sm:px-0">
                 <!-- Header -->
                 <div class="mb-6">
@@ -85,13 +85,13 @@
                         </div>
 
                         <!-- Buttons -->
-                        <div class="flex gap-4">
+                        <div class="flex flex-col sm:flex-row gap-3">
                             <button type="submit"
-                                class="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition">
+                                class="w-full sm:flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition">
                                 Buat Tugas
                             </button>
                             <a href="{{ route('assignments.index') }}"
-                                class="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300 transition text-center">
+                                class="w-full sm:flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300 transition text-center">
                                 Batal
                             </a>
                         </div>

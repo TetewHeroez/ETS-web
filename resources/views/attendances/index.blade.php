@@ -10,21 +10,24 @@
     @include('components.sidebar')
 
     <!-- Main Content -->
-    <div class="main-content-wrapper ml-64 mt-16 min-h-screen bg-gray-50 transition-all duration-300">
+    <div
+        class="main-content-wrapper ml-0 md:ml-64 mt-16 min-h-screen bg-slate-50 dark:bg-slate-900 transition-all duration-300">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
 
             <!-- Header -->
             <div class="mb-6">
-                <h1 class="text-3xl font-bold text-gray-900 flex items-center">
-                    <i data-feather="user-check" class="w-8 h-8 mr-3 text-blue-600"></i>
+                <h1 class="text-3xl font-heading font-bold text-slate-900 dark:text-slate-100 flex items-center">
+                    <i data-feather="user-check" class="w-8 h-8 mr-3 text-blue-600 dark:text-blue-400"></i>
                     Kelola Absensi Kehadiran
                 </h1>
-                <p class="mt-2 text-gray-600">Catat kehadiran, izin, dan ketidakhadiran member</p>
+                <p class="mt-2 text-slate-600 dark:text-slate-400 font-body">Catat kehadiran, izin, dan ketidakhadiran member
+                </p>
             </div>
 
             <!-- Success Message -->
             @if (session('success'))
-                <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg" role="alert">
+                <div class="mb-6 bg-green-100 dark:bg-green-900 border-l-4 border-green-500 dark:border-green-400 text-green-700 dark:text-green-300 p-4 rounded-lg transition-colors duration-300"
+                    role="alert">
                     <div class="flex items-center">
                         <i data-feather="check-circle" class="w-5 h-5 mr-2"></i>
                         <p class="font-semibold">{{ session('success') }}</p>
@@ -33,7 +36,8 @@
             @endif
 
             <!-- Date Filter -->
-            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div
+                class="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-slate-200 dark:border-slate-700 p-6 mb-6 transition-colors duration-300">
                 <form action="{{ route('attendances.index') }}" method="GET" class="flex items-center gap-4">
                     <div class="flex-1">
                         <label for="date" class="block text-sm font-semibold text-gray-700 mb-2">
@@ -54,15 +58,80 @@
                 </form>
             </div>
 
+            <!-- Statistics -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 mb-6">
+                <div
+                    class="bg-green-50 dark:bg-green-900/30 border-l-4 border-green-500 dark:border-green-400 rounded-lg p-6 transition-colors duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-semibold text-green-800 uppercase">Hadir</p>
+                            <p class="text-3xl font-bold text-green-900 mt-2">
+                                {{ $attendances->where('status', 'hadir')->count() }}
+                            </p>
+                        </div>
+                        <i data-feather="check-circle" class="w-12 h-12 text-green-500"></i>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-500 dark:border-yellow-400 rounded-lg p-6 transition-colors duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-semibold text-yellow-800 uppercase">Izin</p>
+                            <p class="text-3xl font-bold text-yellow-900 mt-2">
+                                {{ $attendances->where('status', 'izin')->count() }}
+                            </p>
+                        </div>
+                        <i data-feather="file-text" class="w-12 h-12 text-yellow-500"></i>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 dark:border-red-400 rounded-lg p-6 transition-colors duration-300">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-semibold text-red-800 uppercase">Alpa</p>
+                            <p class="text-3xl font-bold text-red-900 mt-2">
+                                {{ $users->count() - $attendances->whereIn('status', ['hadir', 'izin'])->count() }}
+                            </p>
+                        </div>
+                        <i data-feather="x-circle" class="w-12 h-12 text-red-500"></i>
+                    </div>
+                </div>
+            </div>
+
             <!-- Attendance Table -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div
+                class="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-slate-200 dark:border-slate-700 overflow-hidden transition-colors duration-300">
                 <div class="overflow-x-auto">
                     <table class="w-full">
                         <thead class="bg-gradient-to-r from-blue-700 to-cyan-600 text-white">
                             <tr>
                                 <th class="px-6 py-4 text-left text-sm font-semibold uppercase">No</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold uppercase">Nama Member</th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold uppercase">NRP</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold uppercase">
+                                    <a href="{{ route('attendances.index', ['date' => $date, 'sort_by' => 'name', 'sort_order' => $sortBy === 'name' && $sortOrder === 'asc' ? 'desc' : 'asc']) }}"
+                                        class="flex items-center hover:text-cyan-200 transition">
+                                        Nama Member
+                                        @if ($sortBy === 'name')
+                                            <i data-feather="{{ $sortOrder === 'asc' ? 'chevron-up' : 'chevron-down' }}"
+                                                class="w-4 h-4 ml-1"></i>
+                                        @else
+                                            <i data-feather="chevrons-up-down" class="w-4 h-4 ml-1 opacity-50"></i>
+                                        @endif
+                                    </a>
+                                </th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold uppercase">
+                                    <a href="{{ route('attendances.index', ['date' => $date, 'sort_by' => 'nrp', 'sort_order' => $sortBy === 'nrp' && $sortOrder === 'asc' ? 'desc' : 'asc']) }}"
+                                        class="flex items-center hover:text-cyan-200 transition">
+                                        NRP
+                                        @if ($sortBy === 'nrp')
+                                            <i data-feather="{{ $sortOrder === 'asc' ? 'chevron-up' : 'chevron-down' }}"
+                                                class="w-4 h-4 ml-1"></i>
+                                        @else
+                                            <i data-feather="chevrons-up-down" class="w-4 h-4 ml-1 opacity-50"></i>
+                                        @endif
+                                    </a>
+                                </th>
                                 <th class="px-6 py-4 text-center text-sm font-semibold uppercase">Status</th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold uppercase">Keterangan</th>
                                 <th class="px-6 py-4 text-center text-sm font-semibold uppercase">Aksi</th>
@@ -92,16 +161,22 @@
 
                                             <select name="status" onchange="this.form.submit()"
                                                 class="px-4 py-2 rounded-full text-sm font-semibold focus:ring-2 focus:ring-offset-2 transition
-                                                @if ($status == 'hadir') bg-green-100 text-green-800 focus:ring-green-500
-                                                @elseif($status == 'izin') bg-yellow-100 text-yellow-800 focus:ring-yellow-500
-                                                @else bg-red-100 text-red-800 focus:ring-red-500 @endif">
-                                                <option value="hadir" {{ $status == 'hadir' ? 'selected' : '' }}>✓ Hadir
+    {{ $status == 'hadir'
+        ? 'bg-green-100 text-green-800 focus:ring-green-500'
+        : ($status == 'izin'
+            ? 'bg-yellow-100 text-yellow-800 focus:ring-yellow-500'
+            : 'bg-red-100 text-red-800 focus:ring-red-500') }}">
+                                                <option value="hadir" {{ $status == 'hadir' ? 'selected' : '' }}
+                                                    class="bg-green-100">✅ Hadir
                                                 </option>
-                                                <option value="izin" {{ $status == 'izin' ? 'selected' : '' }}>📋 Izin
+                                                <option value="izin" {{ $status == 'izin' ? 'selected' : '' }}
+                                                    class="bg-yellow-100">📋 Izin
                                                 </option>
-                                                <option value="alpa" {{ $status == 'alpa' ? 'selected' : '' }}>✗ Alpa
+                                                <option value="alpa" {{ $status == 'alpa' ? 'selected' : '' }}
+                                                    class="bg-red-100">❌ Alpa
                                                 </option>
                                             </select>
+
                                         </form>
                                     </td>
                                     <td class="px-6 py-4">
@@ -121,45 +196,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-            </div>
-
-            <!-- Statistics -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                <div class="bg-green-50 border-l-4 border-green-500 rounded-lg p-6">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-semibold text-green-800 uppercase">Hadir</p>
-                            <p class="text-3xl font-bold text-green-900 mt-2">
-                                {{ $attendances->where('status', 'hadir')->count() }}
-                            </p>
-                        </div>
-                        <i data-feather="check-circle" class="w-12 h-12 text-green-500"></i>
-                    </div>
-                </div>
-
-                <div class="bg-yellow-50 border-l-4 border-yellow-500 rounded-lg p-6">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-semibold text-yellow-800 uppercase">Izin</p>
-                            <p class="text-3xl font-bold text-yellow-900 mt-2">
-                                {{ $attendances->where('status', 'izin')->count() }}
-                            </p>
-                        </div>
-                        <i data-feather="file-text" class="w-12 h-12 text-yellow-500"></i>
-                    </div>
-                </div>
-
-                <div class="bg-red-50 border-l-4 border-red-500 rounded-lg p-6">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-semibold text-red-800 uppercase">Alpa</p>
-                            <p class="text-3xl font-bold text-red-900 mt-2">
-                                {{ $users->count() - $attendances->whereIn('status', ['hadir', 'izin'])->count() }}
-                            </p>
-                        </div>
-                        <i data-feather="x-circle" class="w-12 h-12 text-red-500"></i>
-                    </div>
                 </div>
             </div>
 

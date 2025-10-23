@@ -6,30 +6,35 @@
     @include('components.navbar')
     @include('components.sidebar')
 
-    <main class="main-content-wrapper ml-64 mt-16 min-h-screen bg-gray-50 transition-all duration-300">
-        <div class="max-w-3xl mx-auto py-6 sm:px-6 lg:px-8">
+    <main
+        class="main-content-wrapper ml-0 md:ml-64 mt-16 min-h-screen bg-slate-50 dark:bg-slate-900 transition-all duration-300">
+        <div class="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="px-4 sm:px-0">
                 <!-- Header -->
                 <div class="mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800">Kumpulkan Tugas</h2>
-                    <p class="text-gray-600">Upload tugas dalam bentuk PDF, foto, atau link</p>
+                    <h2 class="text-2xl font-heading font-bold text-slate-900 dark:text-slate-100">Kumpulkan Tugas</h2>
+                    <p class="text-slate-600 dark:text-slate-400 font-body">Upload tugas dalam bentuk PDF, foto, atau link
+                    </p>
                 </div>
 
                 <!-- Success/Error Message -->
                 @if (session('success'))
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-6">
+                    <div
+                        class="bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-300 px-4 py-3 rounded-lg mb-6 transition-colors duration-300">
                         {{ session('success') }}
                     </div>
                 @endif
 
                 @if (session('error'))
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6">
+                    <div
+                        class="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg mb-6 transition-colors duration-300">
                         {{ session('error') }}
                     </div>
                 @endif
 
                 <!-- Form -->
-                <div class="bg-white rounded-lg shadow p-6">
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6 transition-colors duration-300">
                     <form action="{{ route('submissions.store') }}" method="POST" enctype="multipart/form-data"
                         id="submissionForm">
                         @csrf
@@ -148,8 +153,10 @@
                 </div>
 
                 <!-- My Submissions -->
-                <div class="bg-white rounded-lg shadow p-6 mt-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Tugas yang Sudah Dikumpulkan</h3>
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6 mt-6 transition-colors duration-300">
+                    <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Tugas yang Sudah Dikumpulkan
+                    </h3>
                     @if ($user->submissions->count() > 0)
                         <div class="space-y-3">
                             @foreach ($user->submissions as $submission)
@@ -174,7 +181,7 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-gray-600 text-center py-4">Belum ada tugas yang dikumpulkan</p>
+                        <p class="text-slate-600 dark:text-slate-400 text-center py-4">Belum ada tugas yang dikumpulkan</p>
                     @endif
                 </div>
             </div>

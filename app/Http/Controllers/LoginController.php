@@ -29,6 +29,14 @@ class LoginController extends Controller
 
         // Coba untuk login
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            // Check if user is active
+            if (Auth::user()->status === 'nonaktif') {
+                Auth::logout();
+                throw ValidationException::withMessages([
+                    'email' => __('Akun Anda telah dinonaktifkan. Silakan hubungi administrator.'),
+                ]);
+            }
+
             $request->session()->regenerate();
 
             return redirect()->intended('dashboard');

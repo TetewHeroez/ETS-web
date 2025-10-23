@@ -8,6 +8,7 @@ use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScoreController;
+use App\Http\Controllers\KpiController;
 
 // Halaman utama redirect ke login jika belum login, atau ke dashboard jika sudah login
 Route::get('/', function () {
@@ -37,6 +38,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/assignments/{assignment}/edit', [AssignmentController::class, 'edit'])->name('assignments.edit');
         Route::put('/assignments/{assignment}', [AssignmentController::class, 'update'])->name('assignments.update');
         Route::delete('/assignments/{assignment}', [AssignmentController::class, 'destroy'])->name('assignments.destroy');
+        // User management (admin)
+        Route::get('/users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+        Route::post('/users/import', [\App\Http\Controllers\UserController::class, 'import'])->name('users.import');
+        
+        // User CRUD operations (superadmin only)
+        Route::get('/users/create', [\App\Http\Controllers\UserController::class, 'create'])->name('users.create');
+        Route::post('/users', [\App\Http\Controllers\UserController::class, 'store'])->name('users.store');
+        Route::get('/users/{user}/edit', [\App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [\App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+        Route::patch('/users/{user}/toggle-status', [\App\Http\Controllers\UserController::class, 'toggleStatus'])->name('users.toggleStatus');
     });
     
     // Routes untuk submissions (member bisa submit)
@@ -56,6 +68,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    
+    // Routes untuk KPI (hanya admin dan superadmin)
+    Route::middleware('role:admin,superadmin')->group(function () {
+        Route::get('/kpi', [KpiController::class, 'index'])->name('kpi.index');
+    });
     
     // Routes untuk scoring/penilaian (admin dan superadmin)
     Route::middleware('role:admin,superadmin')->group(function () {

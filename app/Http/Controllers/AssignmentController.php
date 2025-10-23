@@ -10,9 +10,19 @@ class AssignmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $assignments = Assignment::orderBy('created_at', 'desc')->get();
+        // Get sorting parameters
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
+        
+        // Validate sort column to prevent SQL injection
+        $allowedSorts = ['title', 'deadline', 'weight', 'is_active', 'created_at'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'created_at';
+        }
+        
+        $assignments = Assignment::orderBy($sortBy, $sortOrder)->get();
         return view('assignments.index', compact('assignments'));
     }
 
