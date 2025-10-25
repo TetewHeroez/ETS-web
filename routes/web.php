@@ -13,6 +13,10 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\AttendanceScheduleController;
 use App\Http\Controllers\GdkController;
 
+Route::get('/up', function () {
+    return response('OK', 200);
+});
+
 // Halaman utama redirect ke login jika belum login, atau ke dashboard jika sudah login
 Route::get('/', function () {
     if (Auth::check()) {

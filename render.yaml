@@ -1,23 +1,61 @@
+# render.yaml
 services:
-  # Ini adalah service untuk aplikasi web Laravel Anda
+  # Layanan untuk Aplikasi Laravel (sekarang pakai Docker)
   - type: web
-    name: my-laravel-app # <-- Ganti ini dengan nama aplikasi Anda
-    runtime: php # <-- Ini adalah "sihir"-nya. Ini memaksa Render pakai PHP
-    plan: free # <-- Menentukan free tier
-    buildCommand: composer install --no-dev --no-interaction --optimize-autoloader
-    startCommand: php artisan migrate --force && vendor/bin/heroku-php-apache2 public/
-    healthCheckPath: / # Render akan mengecek path ini untuk tahu apakah aplikasi Anda 'hidup'
+    name: nama-aplikasi-anda # Ganti dengan nama aplikasi Anda
+    env: docker # <-- INI KUNCI UTAMANYA!
+    plan: free # atau 'starter'
+
+    # Beri tahu Render di mana menemukan Dockerfile Anda
+    dockerfilePath: ./Dockerfile
+
+    # Kita tidak perlu 'buildCommand' atau 'startCommand' lagi
+    # Karena semua itu sudah ada di dalam 'Dockerfile'
+
+    healthCheckPath: /up # Pastikan Anda punya route '/up'
+
     envVars:
-      # Variabel non-rahasia bisa ditaruh di sini
-      - key: APP_ENV
-        value: production
-      - key: APP_DEBUG
-        value: false
-      - key: LOG_CHANNEL
-        value: stderr
-      - key: SESSION_DRIVER
-        value: database
-      - key: CACHE_DRIVER
-        value: database
-      # Kita akan tambahkan variabel rahasia (DB, Cloudinary, APP_KEY)
-      # lewat Dashboard Render agar aman
+      - key: APP_URL
+        value: https://nama-aplikasi-anda.onrender.com
+      - key: APP_KEY
+        generateValue: true # Render akan generate ini saat build pertama
+      - key: DATABASE_URL
+        fromDatabase:
+          name: db-laravel # Sesuaikan dengan nama service database
+          property: connectionString
+      # Penting: Beri tahu Nginx di dalam container untuk jalan di mode prod
+      - key: NGINX_ERROR_LOG_LEVEL
+        value: error
+      - key: NGINX_CLIENT_MAX_BODY_SIZE
+        value: 10m # Atur batas upload file jika perlu
+
+  # Layanan untuk Database (Tidak berubah)
+  - type: psql # atau 'mysql'
+    name: db-laravel
+    plan: free
+
+# render.yaml
+services:
+  - type: web
+    name: nama-aplikasi-anda
+    # ... (semua konfigurasi dari Langkah 2) ...
+    
+  - type: psql
+    name: db-laravel
+    # ... (konfigurasi database) ...
+
+  # JOB: Jalankan migrasi SETELAH deploy berhasil
+  - type: job
+    name: migrator
+    plan: free
+    # Gunakan image yang SAMA persis dengan web service Anda
+    image:
+      fromService:
+        type: web
+        name: nama-aplikasi-anda # Pastikan nama ini sama
+    # Perintah yang ingin dijalankan
+    startCommand: php artisan migrate --force
+    # Kapan harus dijalankan?
+    triggers:
+      - type: successful_deploy # Hanya jalan jika deploy web service berhasil
+        service: nama-aplikasi-anda # Service yang ditonton
