@@ -1,0 +1,23 @@
+services:
+  # Ini adalah service untuk aplikasi web Laravel Anda
+  - type: web
+    name: my-laravel-app # <-- Ganti ini dengan nama aplikasi Anda
+    runtime: php # <-- Ini adalah "sihir"-nya. Ini memaksa Render pakai PHP
+    plan: free # <-- Menentukan free tier
+    buildCommand: composer install --no-dev --no-interaction --optimize-autoloader
+    startCommand: php artisan migrate --force && vendor/bin/heroku-php-apache2 public/
+    healthCheckPath: / # Render akan mengecek path ini untuk tahu apakah aplikasi Anda 'hidup'
+    envVars:
+      # Variabel non-rahasia bisa ditaruh di sini
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_DRIVER
+        value: database
+      # Kita akan tambahkan variabel rahasia (DB, Cloudinary, APP_KEY)
+      # lewat Dashboard Render agar aman
