@@ -71,7 +71,7 @@
 
         <a href="{{ route('submissions.table') }}"
             class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('submissions.table') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
-            title="Progress Member">
+            title="Progress PPH">
             <div
                 class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             </div>
@@ -94,7 +94,7 @@
 
             <a href="{{ route('users.index') }}"
                 class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('users.*') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
-                title="Kelola Member">
+                title="Kelola PPH">
                 <div
                     class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 </div>
@@ -105,7 +105,7 @@
 
             <a href="{{ route('kpi.index') }}"
                 class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('kpi.*') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
-                title="KPI & Performance Indicator">
+                title="KPI & PA">
                 <div
                     class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 </div>
@@ -113,16 +113,29 @@
                     class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform sidebar-icon"></i>
                 <span class="font-medium sidebar-text relative z-10 ml-3">KPI & PI</span>
             </a>
+        @endif
 
+        @if (in_array(Auth::user()->jabatan, ['Koor SC', 'Koor IC', 'SC']))
             <a href="{{ route('contracts.index') }}"
                 class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('contracts.*') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
                 title="Kelola Kontrak">
                 <div
                     class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 </div>
-                <i data-feather="file-text"
+                <i data-feather="edit-3"
                     class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform sidebar-icon"></i>
-                <span class="font-medium sidebar-text relative z-10 ml-3">Kelola Kontrak</span>
+                <span class="font-medium sidebar-text relative z-10 ml-3">Kontrak</span>
+            </a>
+
+            <a href="{{ route('gdk.index') }}"
+                class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('gdk.*') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
+                title="GDK">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                </div>
+                <i data-feather="layers"
+                    class="w-5 h-5 flex-shrink-0 relative z-10 group-hover:scale-110 transition-transform sidebar-icon"></i>
+                <span class="font-medium sidebar-text relative z-10 ml-3">GDK</span>
             </a>
         @endif
 
@@ -144,9 +157,9 @@
     <div class="p-4 border-t border-white border-opacity-20 space-y-2">
         <!-- Profil (All users) -->
         <a href="{{ route('profile.show') }}"
-            class="flex items-center justify-center space-x-2 px-4 py-3 rounded-lg transition {{ request()->routeIs('profile.*') ? 'bg-white bg-opacity-20' : 'hover:bg-white hover:bg-opacity-10' }}"
+            class="flex items-center justify-center space-x-2 px-4 py-3 rounded-lg transition {{ request()->routeIs('profile.*') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
             title="Profil Saya">
-            <i data-feather="user-check" class="w-5 h-5 flex-shrink-0"></i>
+            <i data-feather="user-check" class="w-5 h-5 flex-shrink-0 from-cyan-400/20 to-blue-400/20"></i>
             <span class="font-medium sidebar-text">Profil</span>
         </a>
 

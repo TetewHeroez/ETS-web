@@ -50,15 +50,30 @@ class SubmissionController extends Controller
             // Upload file ke Cloudinary
             $file = $request->file('file');
             
-            // Upload dengan folder dan public_id custom
-            $uploadedFile = Cloudinary::upload($file->getRealPath(), [
-                'folder' => 'ets-submissions',
-                'public_id' => 'submission_' . auth()->id() . '_' . time(),
-                'resource_type' => 'auto' // auto detect: image/pdf/raw
-            ]);
-            
-            // Simpan secure URL dari Cloudinary
-            $content = $uploadedFile->getSecurePath();
+            try {
+                // Upload dengan folder dan public_id custom
+                $uploadedFile = Cloudinary::uploadApi()->upload($file->getRealPath(), [
+                    'folder' => 'myhimatika/submissions',
+                    'public_id' => 'submission_' . auth()->id() . '_' . time(),
+                    'resource_type' => 'auto' // auto detect: image/pdf/raw
+                ]);
+                
+                // Extract secure URL dari response
+                $securePath = null;
+                if (is_array($uploadedFile)) {
+                    $securePath = $uploadedFile['secure_url'] ?? $uploadedFile['url'] ?? null;
+                } elseif (is_object($uploadedFile)) {
+                    $securePath = $uploadedFile->secure_url ?? $uploadedFile->url ?? null;
+                }
+
+                if (!$securePath) {
+                    throw new \Exception('Failed to get file URL from Cloudinary');
+                }
+
+                $content = $securePath;
+            } catch (\Exception $e) {
+                return back()->with('error', 'Gagal upload file ke Cloudinary: ' . $e->getMessage());
+            }
         }
 
         Submission::create([

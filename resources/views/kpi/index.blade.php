@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'KPI & Performance Indicator - MyPH')
+@section('title', 'KPI & Performance Indicator - MyHIMATIKA')
 
 @section('content')
     <!-- Navbar Top -->
@@ -278,20 +278,25 @@
                                             <i data-feather="{{ request('direction') === 'asc' ? 'chevron-up' : 'chevron-down' }}"
                                                 class="w-4 h-4 ml-1"></i>
                                         @else
-                                            <i data-feather="chevrons-up-down" class="w-4 h-4 ml-1 text-slate-400 dark:text-slate-500"></i>
+                                            <i data-feather="chevrons-up-down"
+                                                class="w-4 h-4 ml-1 text-slate-400 dark:text-slate-500"></i>
                                         @endif
                                     </a>
                                 </th>
-                                <th class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                                     Kehadiran
                                 </th>
-                                <th class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                                     Tugas
                                 </th>
-                                <th class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                                     Rata-rata Nilai
                                 </th>
-                                <th class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => 'total_pi', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}"
                                         class="flex items-center justify-center hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300">
                                         Total PI
@@ -299,11 +304,13 @@
                                             <i data-feather="{{ request('direction') === 'asc' ? 'chevron-up' : 'chevron-down' }}"
                                                 class="w-4 h-4 ml-1"></i>
                                         @else
-                                            <i data-feather="chevrons-up-down" class="w-4 h-4 ml-1 text-slate-400 dark:text-slate-500"></i>
+                                            <i data-feather="chevrons-up-down"
+                                                class="w-4 h-4 ml-1 text-slate-400 dark:text-slate-500"></i>
                                         @endif
                                     </a>
                                 </th>
-                                <th class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                                     Kategori
                                 </th>
                             </tr>
@@ -315,10 +322,12 @@
                                         {{ $members->firstItem() + $index }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900 dark:text-slate-100">{{ $member->name }}</div>
+                                        <div class="text-sm font-medium text-gray-900 dark:text-slate-100">
+                                            {{ $member->name }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900 dark:text-slate-100 font-mono">{{ $member->nrp ?? '-' }}</div>
+                                        <div class="text-sm text-gray-900 dark:text-slate-100 font-mono">
+                                            {{ $member->nrp ?? '-' }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span
@@ -358,7 +367,8 @@
                                                 Lulus
                                             </span>
                                         @else
-                                            <span class="px-3 py-1 text-xs font-bold rounded-full bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300">
+                                            <span
+                                                class="px-3 py-1 text-xs font-bold rounded-full bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300">
                                                 Perlu Aksel
                                             </span>
                                         @endif
@@ -367,7 +377,8 @@
                             @empty
                                 <tr>
                                     <td colspan="9" class="px-6 py-8 text-center text-gray-500 dark:text-slate-400">
-                                        <i data-feather="inbox" class="w-12 h-12 mx-auto mb-2 text-gray-400 dark:text-slate-500"></i>
+                                        <i data-feather="inbox"
+                                            class="w-12 h-12 mx-auto mb-2 text-gray-400 dark:text-slate-500"></i>
                                         <p class="text-sm">Tidak ada data PPH ditemukan</p>
                                     </td>
                                 </tr>

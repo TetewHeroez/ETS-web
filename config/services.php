@@ -13,6 +13,9 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+    'curl' => [
+    'verify' => env('CURL_CA_BUNDLE', true),
+    ],
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
@@ -34,5 +37,4 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
 ];

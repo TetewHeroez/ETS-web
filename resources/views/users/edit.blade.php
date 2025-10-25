@@ -139,22 +139,29 @@
                                     <i data-feather="briefcase" class="w-4 h-4 inline mr-1"></i>
                                     Jabatan <span class="text-red-500">*</span>
                                 </label>
-                                <select name="jabatan" id="jabatan" required
+                                <select name="jabatan" id="jabatan" required onchange="togglePJNumber()"
                                     class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 transition-colors @error('jabatan') border-red-500 @enderror">
                                     <option value="">Pilih Jabatan</option>
                                     <option value="PPH" data-role="member"
                                         {{ old('jabatan', $user->jabatan) === 'PPH' ? 'selected' : '' }}>PPH</option>
+                                    <option value="PJ" data-role="member"
+                                        {{ old('jabatan', $user->jabatan) === 'PJ' ? 'selected' : '' }}>PJ</option>
                                     <option value="SC" data-role="admin"
                                         {{ old('jabatan', $user->jabatan) === 'SC' ? 'selected' : '' }}>SC</option>
                                     <option value="IC" data-role="admin"
                                         {{ old('jabatan', $user->jabatan) === 'IC' ? 'selected' : '' }}>IC</option>
                                     <option value="OC" data-role="admin"
                                         {{ old('jabatan', $user->jabatan) === 'OC' ? 'selected' : '' }}>OC</option>
+                                    <option value="SRD" data-role="admin"
+                                        {{ old('jabatan', $user->jabatan) === 'SRD' ? 'selected' : '' }}>SRD</option>
                                     <option value="Koor SC" data-role="superadmin"
                                         {{ old('jabatan', $user->jabatan) === 'Koor SC' ? 'selected' : '' }}>Koor SC
                                     </option>
                                     <option value="Koor IC" data-role="superadmin"
                                         {{ old('jabatan', $user->jabatan) === 'Koor IC' ? 'selected' : '' }}>Koor IC
+                                    </option>
+                                    <option value="Koor OC" data-role="superadmin"
+                                        {{ old('jabatan', $user->jabatan) === 'Koor OC' ? 'selected' : '' }}>Koor OC
                                     </option>
                                 </select>
                                 @error('jabatan')
@@ -180,6 +187,25 @@
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                                 <p class="mt-1 text-xs text-gray-500">Wajib diisi untuk role member</p>
+                            </div>
+
+                            <!-- Nomor PJ (conditional for PJ jabatan) -->
+                            <div id="pj-number-field"
+                                style="display: {{ old('jabatan', $user->jabatan) === 'PJ' ? 'block' : 'none' }};">
+                                <label for="pj_number"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <i data-feather="hash" class="w-4 h-4 inline mr-1"></i>
+                                    Nomor PJ <span class="text-red-500">*</span>
+                                </label>
+                                <input type="number" name="pj_number" id="pj_number"
+                                    value="{{ old('pj_number', $user->pj_number) }}" min="0"
+                                    class="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 transition-colors @error('pj_number') border-red-500 @enderror"
+                                    placeholder="Masukkan nomor PJ (contoh: 0, 1, 2, ...)">
+                                @error('pj_number')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                                <p class="mt-1 text-xs text-gray-500">Nomor untuk label PJ (PJ-0, PJ-1, PJ-2, dst). Bisa
+                                    ada beberapa orang dengan nomor yang sama.</p>
                             </div>
                         </div>
 
@@ -360,10 +386,27 @@
             }
         }
 
+        // Toggle PJ number field based on jabatan selection
+        function togglePJNumber() {
+            const jabatanSelect = document.getElementById('jabatan');
+            const pjNumberField = document.getElementById('pj-number-field');
+            const pjNumberInput = document.getElementById('pj_number');
+
+            if (jabatanSelect.value === 'PJ') {
+                pjNumberField.style.display = 'block';
+                pjNumberInput.setAttribute('required', 'required');
+            } else {
+                pjNumberField.style.display = 'none';
+                pjNumberInput.removeAttribute('required');
+                pjNumberInput.value = '';
+            }
+        }
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             toggleJabatanOptions();
             toggleKelompokField();
+            togglePJNumber();
         });
     </script>
 @endsection

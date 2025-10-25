@@ -11,6 +11,7 @@ use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\KpiController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\AttendanceScheduleController;
+use App\Http\Controllers\GdkController;
 
 // Halaman utama redirect ke login jika belum login, atau ke dashboard jika sudah login
 Route::get('/', function () {
@@ -83,8 +84,32 @@ Route::middleware('auth')->group(function () {
     
     // Routes untuk Contract Management (admin dan superadmin)
     Route::middleware('role:admin,superadmin')->group(function () {
-        Route::resource('contracts', ContractController::class)->except(['show']);
-        Route::post('/contracts/{contract}/toggle-active', [ContractController::class, 'toggleActive'])->name('contracts.toggleActive');
+        Route::resource('contracts', ContractController::class)->only(['index', 'edit', 'update']);
+    });
+    
+    // Routes untuk GDK (Garis-Garis Besar Kegiatan) - Access control handled in controller
+    Route::middleware('auth')->group(function () {
+        Route::get('/gdk', [GdkController::class, 'index'])->name('gdk.index');
+        
+        // Nilai routes
+        Route::post('/gdk/nilai', [GdkController::class, 'storeNilai'])->name('gdk.nilai.store');
+        Route::put('/gdk/nilai/{nilai}', [GdkController::class, 'updateNilai'])->name('gdk.nilai.update');
+        Route::delete('/gdk/nilai/{nilai}', [GdkController::class, 'destroyNilai'])->name('gdk.nilai.destroy');
+        
+        // Materi routes
+        Route::post('/gdk/materi', [GdkController::class, 'storeMateri'])->name('gdk.materi.store');
+        Route::put('/gdk/materi/{materi}', [GdkController::class, 'updateMateri'])->name('gdk.materi.update');
+        Route::delete('/gdk/materi/{materi}', [GdkController::class, 'destroyMateri'])->name('gdk.materi.destroy');
+        
+        // Metode routes
+        Route::post('/gdk/metode', [GdkController::class, 'storeMetode'])->name('gdk.metode.store');
+        Route::put('/gdk/metode/{metode}', [GdkController::class, 'updateMetode'])->name('gdk.metode.update');
+        Route::delete('/gdk/metode/{metode}', [GdkController::class, 'destroyMetode'])->name('gdk.metode.destroy');
+        
+        // Flowchart routes
+        Route::post('/gdk/flowchart', [GdkController::class, 'storeFlowchart'])->name('gdk.flowchart.store');
+        Route::put('/gdk/flowchart/{flowchart}', [GdkController::class, 'updateFlowchart'])->name('gdk.flowchart.update');
+        Route::delete('/gdk/flowchart/{flowchart}', [GdkController::class, 'destroyFlowchart'])->name('gdk.flowchart.destroy');
     });
     
     // Routes untuk scoring/penilaian (admin dan superadmin)

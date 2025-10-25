@@ -58,17 +58,15 @@ class UserController extends Controller
     }
 
     /**
-     * Import users from Excel file
+     * Import users from Excel file (SuperAdmin only)
      */
     public function import(Request $request)
     {
         $currentUser = auth()->user();
         
-        // Only users with specific jabatan can import: Koor SC, Koor IC, SC
-        $allowedJabatan = ['Koor SC', 'Koor IC', 'SC'];
-        
-        if (!in_array($currentUser->jabatan, $allowedJabatan)) {
-            return redirect()->back()->with('error', 'Hanya Koor SC, Koor IC, dan SC yang dapat melakukan import data!');
+        // Only superadmin can import
+        if (!$currentUser->isSuperadmin()) {
+            return redirect()->back()->with('error', 'Hanya SuperAdmin yang dapat melakukan import data!');
         }
 
         $request->validate([
@@ -85,11 +83,15 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new user (superadmin only)
+     * Show the form for creating a new user
+     * SuperAdmin: Can create any role
+     * Admin: Can only create member
      */
     public function create()
     {
-        if (!auth()->user()->isSuperadmin()) {
+        $currentUser = auth()->user();
+        
+        if (!$currentUser->isAdmin() && !$currentUser->isSuperadmin()) {
             abort(403, 'Unauthorized');
         }
 
@@ -97,12 +99,21 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created user (superadmin only)
+     * Store a newly created user
+     * SuperAdmin: Can create any role
+     * Admin: Can only create member
      */
     public function store(Request $request)
     {
-        if (!auth()->user()->isSuperadmin()) {
+        $currentUser = auth()->user();
+        
+        if (!$currentUser->isAdmin() && !$currentUser->isSuperadmin()) {
             abort(403, 'Unauthorized');
+        }
+
+        // Admin can only create member
+        if ($currentUser->isAdmin() && $request->role !== 'member') {
+            return redirect()->back()->with('error', 'Admin hanya dapat membuat user dengan role Member!');
         }
 
         $validated = $request->validate([
@@ -110,7 +121,8 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'nrp' => 'nullable|string|max:20|unique:users',
             'role' => 'required|in:member,admin,superadmin',
-            'jabatan' => 'required|in:PPH,SC,IC,OC,Koor SC,Koor IC',
+            'jabatan' => 'required|in:PPH,PJ,SC,IC,OC,SRD,Koor SC,Koor IC,Koor OC',
+            'pj_number' => 'required_if:jabatan,PJ|nullable|integer|min:0',
             'kelompok' => 'required_if:role,member|nullable|string|max:50',
             'password' => 'required|string|min:8',
             'hobi' => 'nullable|string',
@@ -127,103 +139,74 @@ class UserController extends Controller
 
         $validated['password'] = bcrypt($validated['password']);
 
+        // Set pj_number to null if jabatan is not PJ
+        if ($validated['jabatan'] !== 'PJ') {
+            $validated['pj_number'] = null;
+        }
+
         User::create($validated);
 
         return redirect()->route('users.index')->with('success', 'User berhasil dibuat!');
     }
 
     /**
-     * Show the form for editing user with role-based permissions
+     * Show the form for editing user (SuperAdmin only)
      */
     public function edit(User $user)
     {
         $currentUser = auth()->user();
         
-        // Superadmin can edit anyone
-        if ($currentUser->isSuperadmin()) {
-            return view('users.edit', compact('user'));
+        // Only superadmin can edit users
+        if (!$currentUser->isSuperadmin()) {
+            abort(403, 'Unauthorized - Hanya SuperAdmin yang dapat mengedit user');
         }
         
-        // Admin can only edit members
-        if ($currentUser->isAdmin() && $user->role === 'member') {
-            return view('users.edit', compact('user'));
-        }
-        
-        // Otherwise, unauthorized
-        abort(403, 'Unauthorized');
+        return view('users.edit', compact('user'));
     }
 
     /**
-     * Update user with role-based permissions
+     * Update user (SuperAdmin only)
      */
     public function update(Request $request, User $user)
     {
         $currentUser = auth()->user();
         
-        // Superadmin can update anyone
-        if ($currentUser->isSuperadmin()) {
-            // Allow all role changes for superadmin
-        }
-        // Admin can only update members
-        elseif ($currentUser->isAdmin() && $user->role === 'member') {
-            // Admin cannot change roles - restrict role field
-        }
-        // Otherwise, unauthorized
-        else {
-            abort(403, 'Unauthorized');
+        // Only superadmin can update users
+        if (!$currentUser->isSuperadmin()) {
+            abort(403, 'Unauthorized - Hanya SuperAdmin yang dapat mengedit user');
         }
 
-        // Different validation rules based on user role
-        if ($currentUser->isSuperadmin()) {
-            // Superadmin can change everything including role
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-                'nrp' => 'nullable|string|max:20|unique:users,nrp,' . $user->id,
-                'role' => 'required|in:member,admin,superadmin',
-                'jabatan' => 'required|in:PPH,SC,IC,OC,Koor SC,Koor IC',
-                'kelompok' => 'required_if:role,member|nullable|string|max:50',
-                'password' => 'nullable|string|min:8',
-                'hobi' => 'nullable|string',
-                'tempat_lahir' => 'nullable|string|max:255',
-                'tanggal_lahir' => 'nullable|date',
-                'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
-                'alamat_asal' => 'nullable|string',
-                'alamat_surabaya' => 'nullable|string',
-                'nama_ortu' => 'nullable|string|max:255',
-                'alamat_ortu' => 'nullable|string',
-                'no_hp_ortu' => 'nullable|string|max:20',
-                'no_hp' => 'nullable|string|max:20',
-            ]);
-        } else {
-            // Admin can only edit member data, not role
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-                'nrp' => 'nullable|string|max:20|unique:users,nrp,' . $user->id,
-                'jabatan' => 'required|in:PPH,SC,IC,OC,Koor SC,Koor IC',
-                'kelompok' => 'required|nullable|string|max:50', // Required for members
-                'password' => 'nullable|string|min:8',
-                'hobi' => 'nullable|string',
-                'tempat_lahir' => 'nullable|string|max:255',
-                'tanggal_lahir' => 'nullable|date',
-                'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
-                'alamat_asal' => 'nullable|string',
-                'alamat_surabaya' => 'nullable|string',
-                'nama_ortu' => 'nullable|string|max:255',
-                'alamat_ortu' => 'nullable|string',
-                'no_hp_ortu' => 'nullable|string|max:20',
-                'no_hp' => 'nullable|string|max:20',
-            ]);
-            
-            // Force role to remain 'member' for admin edits
-            $validated['role'] = 'member';
-        }
+        // Superadmin can change everything including role
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'nrp' => 'nullable|string|max:20|unique:users,nrp,' . $user->id,
+            'role' => 'required|in:member,admin,superadmin',
+            'jabatan' => 'required|in:PPH,PJ,SC,IC,OC,SRD,Koor SC,Koor IC,Koor OC',
+            'pj_number' => 'required_if:jabatan,PJ|nullable|integer|min:0',
+            'kelompok' => 'required_if:role,member|nullable|string|max:50',
+            'password' => 'nullable|string|min:8',
+            'hobi' => 'nullable|string',
+            'tempat_lahir' => 'nullable|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
+            'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
+            'alamat_asal' => 'nullable|string',
+            'alamat_surabaya' => 'nullable|string',
+            'nama_ortu' => 'nullable|string|max:255',
+            'alamat_ortu' => 'nullable|string',
+            'no_hp_ortu' => 'nullable|string|max:20',
+            'no_hp' => 'nullable|string|max:20',
+        ]);
 
         if (!empty($validated['password'])) {
             $validated['password'] = bcrypt($validated['password']);
         } else {
             unset($validated['password']);
+        }
+
+        // Set pj_number to null if jabatan is not PJ
+        if ($validated['jabatan'] !== 'PJ') {
+            $validated['pj_number'] = null;
         }
 
         $user->update($validated);
@@ -238,22 +221,14 @@ class UserController extends Controller
     {
         $currentUser = auth()->user();
         
-        // Superadmin can delete anyone except themselves
-        if ($currentUser->isSuperadmin()) {
-            // Prevent deleting self
-            if ($user->id === $currentUser->id) {
-                return redirect()->back()->with('error', 'Tidak bisa menghapus akun sendiri!');
-            }
+        // Only superadmin can delete users
+        if (!$currentUser->isSuperadmin()) {
+            abort(403, 'Unauthorized - Hanya SuperAdmin yang dapat menghapus user');
         }
-        // Admin can only delete members
-        elseif ($currentUser->isAdmin()) {
-            if ($user->role !== 'member') {
-                abort(403, 'Admin hanya dapat menghapus member!');
-            }
-        }
-        // Members cannot delete anyone
-        else {
-            abort(403, 'Unauthorized');
+        
+        // Prevent deleting self
+        if ($user->id === $currentUser->id) {
+            return redirect()->back()->with('error', 'Tidak bisa menghapus akun sendiri!');
         }
 
         $user->delete();
@@ -262,28 +237,20 @@ class UserController extends Controller
     }
 
     /**
-     * Toggle user status (aktif/nonaktif) with role-based permissions
+     * Toggle user status (aktif/nonaktif) - superadmin only
      */
     public function toggleStatus(User $user)
     {
         $currentUser = auth()->user();
         
-        // Superadmin can toggle anyone's status except themselves
-        if ($currentUser->isSuperadmin()) {
-            // Prevent toggling self
-            if ($user->id === $currentUser->id) {
-                return redirect()->back()->with('error', 'Tidak bisa menonaktifkan akun sendiri!');
-            }
+        // Only superadmin can toggle user status
+        if (!$currentUser->isSuperadmin()) {
+            abort(403, 'Unauthorized - Hanya SuperAdmin yang dapat mengubah status user');
         }
-        // Admin can only toggle members' status
-        elseif ($currentUser->isAdmin()) {
-            if ($user->role !== 'member') {
-                abort(403, 'Admin hanya dapat menonaktifkan member!');
-            }
-        }
-        // Members cannot toggle anyone's status
-        else {
-            abort(403, 'Unauthorized');
+        
+        // Prevent toggling self
+        if ($user->id === $currentUser->id) {
+            return redirect()->back()->with('error', 'Tidak bisa menonaktifkan akun sendiri!');
         }
 
         // Toggle status

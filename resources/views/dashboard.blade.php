@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard - MyPH')
+@section('title', 'Dashboard - MyHIMATIKA')
 
 @section('content')
     <!-- Navbar Top -->
@@ -9,73 +9,76 @@
     <!-- Sidebar -->
     @include('components.sidebar')
 
-    <!-- Kontrak Dialog (Centered Modal) -->
-    @php
-        $activeContract = \App\Models\Contract::getActive();
-    @endphp
+    <!-- Kontrak Dialog (Centered Modal) - Only for Members -->
+    @if (Auth::user()->isMember())
+        @php
+            $activeContract = \App\Models\Contract::getActive();
+        @endphp
 
-    @if ($activeContract)
-        <div id="contract-dialog"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
-            <div
-                class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden transform scale-95 transition-transform duration-300">
-                <!-- Header -->
+        @if ($activeContract)
+            <div id="contract-dialog"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
                 <div
-                    class="bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500 dark:from-blue-800 dark:to-cyan-700 px-8 py-6">
-                    <h2 class="text-2xl font-bold text-white text-center">{{ $activeContract->title }}</h2>
-                </div>
+                    class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden transform scale-95 transition-transform duration-300">
+                    <!-- Header -->
+                    <div
+                        class="bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500 dark:from-blue-800 dark:to-cyan-700 px-8 py-6">
+                        <h2 class="text-2xl font-bold text-white text-center">{{ $activeContract->title }}</h2>
+                    </div>
 
-                <!-- Content -->
-                <div class="p-8 overflow-y-auto max-h-[calc(90vh-200px)] custom-scrollbar">
-                    <div class="space-y-6">
-                        @if ($activeContract->description)
-                            <div class="bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-600 p-4 rounded-r-lg mb-4">
-                                <p class="text-sm text-blue-900 dark:text-blue-200 font-semibold">
-                                    {{ $activeContract->description }}
+                    <!-- Content -->
+                    <div class="p-8 overflow-y-auto max-h-[calc(90vh-200px)] custom-scrollbar">
+                        <div class="space-y-6">
+                            @if ($activeContract->description)
+                                <div class="bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-600 p-4 rounded-r-lg mb-4">
+                                    <p class="text-sm text-blue-900 dark:text-blue-200 font-semibold">
+                                        {{ $activeContract->description }}
+                                    </p>
+                                </div>
+                            @endif
+
+                            <ol class="space-y-4 text-slate-700 dark:text-slate-300">
+                                @foreach ($activeContract->rules as $index => $rule)
+                                    <li class="flex items-start">
+                                        <span
+                                            class="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-blue-600 to-cyan-500 text-white rounded-full flex items-center justify-center font-bold text-sm mr-3">{{ $index + 1 }}</span>
+                                        <p class="py-1"><strong
+                                                class="text-slate-900 dark:text-slate-100">{{ $rule }}</strong></p>
+                                    </li>
+                                @endforeach
+                            </ol>
+
+                            <div
+                                class="mt-8 p-6 bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 rounded-xl border border-cyan-200 dark:border-cyan-700">
+                                <p class="text-center text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
+                                    Dengan menekan tombol <strong class="text-blue-700 dark:text-blue-400">"Saya
+                                        Setuju"</strong>,
+                                    Anda menyatakan telah membaca, memahami, dan menyetujui seluruh ketentuan kontrak di
+                                    atas.
                                 </p>
                             </div>
-                        @endif
-
-                        <ol class="space-y-4 text-slate-700 dark:text-slate-300">
-                            @foreach ($activeContract->rules as $index => $rule)
-                                <li class="flex items-start">
-                                    <span
-                                        class="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-blue-600 to-cyan-500 text-white rounded-full flex items-center justify-center font-bold text-sm mr-3">{{ $index + 1 }}</span>
-                                    <p class="pt-1"><strong
-                                            class="text-slate-900 dark:text-slate-100">{{ $rule }}</strong></p>
-                                </li>
-                            @endforeach
-                        </ol>
-
-                        <div
-                            class="mt-8 p-6 bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 rounded-xl border border-cyan-200 dark:border-cyan-700">
-                            <p class="text-center text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
-                                Dengan menekan tombol <strong class="text-blue-700 dark:text-blue-400">"Saya
-                                    Setuju"</strong>,
-                                Anda menyatakan telah membaca, memahami, dan menyetujui seluruh ketentuan kontrak di atas.
-                            </p>
                         </div>
                     </div>
-                </div>
 
-                <!-- Footer Buttons -->
-                <div
-                    class="px-8 py-6 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 flex justify-end gap-4">
-                    <button onclick="closeContract()" id="agreeButton"
-                        class="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-700 dark:to-cyan-600 text-white font-bold rounded-lg hover:from-blue-700 hover:to-cyan-600 dark:hover:from-blue-800 dark:hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
-                        <i data-feather="check-circle" class="w-5 h-5 inline mr-2"></i>
-                        Saya Setuju
-                    </button>
+                    <!-- Footer Buttons -->
+                    <div
+                        class="px-8 py-6 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 flex justify-end gap-4">
+                        <button onclick="closeContract()" id="agreeButton"
+                            class="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-700 dark:to-cyan-600 text-white font-bold rounded-lg hover:from-blue-700 hover:to-cyan-600 dark:hover:from-blue-800 dark:hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                            <i data-feather="check-circle" class="w-5 h-5 inline mr-2"></i>
+                            Saya Setuju
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
     @endif
 
     <!-- Main Content -->
     <div
         class="main-content-wrapper ml-0 md:ml-64 mt-16 min-h-screen bg-slate-50 dark:bg-slate-900 transition-all duration-300">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-
+            <x-cloudinary::widget>Upload Files</x-cloudinary::widget>
             <!-- Announcement Section (Paling Atas) -->
             <div class="px-4 sm:px-0 mb-6">
                 <div
@@ -85,13 +88,13 @@
                             <div class="flex-shrink-0">
                                 <div
                                     class="h-12 w-12 bg-cyan-400 bg-opacity-30 rounded-full flex items-center justify-center">
-                                    <i data-feather="volume-2" class="h-7 w-7 text-cyan-200"></i>
+                                    <i data-feather="volume-2" class="h-7 w-7 text-cyan-100"></i>
                                 </div>
                             </div>
                             <div class="ml-4 flex-1">
-                                <h2 class="text-xl font-bold text-white mb-2">Pengumuman Penting</h2>
-                                <p class="text-white text-opacity-95 leading-relaxed">
-                                    Selamat datang di sistem MyPH! Pastikan untuk selalu mengumpulkan tugas sebelum
+                                <h2 class="text-xl font-bold dark:text-white mb-2 text-slate-900">Pengumuman Penting</h2>
+                                <p class="dark:text-white text-opacity-95 leading-relaxed text-slate-900">
+                                    Selamat datang di sistem MyHIMATIKA! Pastikan untuk selalu mengumpulkan tugas sebelum
                                     deadline.
                                     Periksa reminder di bawah untuk melihat panggilan yang akan datang.
                                 </p>
@@ -362,7 +365,7 @@
             <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 mt-8">
                 <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                     <p class="text-center text-sm text-slate-500 dark:text-slate-400">
-                        © {{ date('Y') }} MyPH. Powered by Laravel & Tailwind CSS.
+                        © {{ date('Y') }} MyHIMATIKA. Powered by Laravel & Tailwind CSS.
                     </p>
                 </div>
             </footer>

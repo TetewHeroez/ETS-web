@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kehadiran Saya - MyPH')
+@section('title', 'Kehadiran Saya - MyHIMATIKA')
 
 @section('content')
     <!-- Navbar Top -->

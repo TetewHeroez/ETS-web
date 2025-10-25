@@ -22,8 +22,10 @@ class User extends Authenticatable
         'nrp',
         'email',
         'password',
+        'profile_photo',
         'role',
         'jabatan',
+        'pj_number',
         'status',
         'kelompok',
         'hobi',
@@ -112,5 +114,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get full jabatan label with PJ number if applicable
+     */
+    public function getJabatanLabelAttribute()
+    {
+        if ($this->jabatan === 'PJ' && $this->pj_number !== null) {
+            return 'PJ-' . $this->pj_number;
+        }
+        return $this->jabatan;
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login - MyPH')
+@section('title', 'Login - MyHIMATIKA')
 
 @section('body-class',
     'min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center transition-colors
@@ -29,7 +29,7 @@
                 </div>
                 <h1
                     class="text-5xl font-heading font-bold mb-4 bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
-                    MyPH</h1>
+                    MyHIMATIKA</h1>
                 <p class="text-xl text-white/90 mb-6 font-medium">Sistem Manajemen Organisasi</p>
                 <p class="text-white/80 text-lg leading-relaxed max-w-md font-body">
                     Platform digital untuk mengelola data anggota, kehadiran, tugas, dan penilaian organisasi HIMATIKA.
@@ -67,7 +67,7 @@
                             <h2 class="text-3xl font-heading font-bold text-slate-800 dark:text-slate-100 mb-2">Halo Peserta
                                 PH!
                             </h2>
-                            <p class="text-slate-600 dark:text-slate-400">Masuk ke sistem MyPH</p>
+                            <p class="text-slate-600 dark:text-slate-400">Masuk ke sistem MyHIMATIKA</p>
                         </div>
 
                         <div class="xl:hidden">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Progress Member - MyPH')
+@section('title', 'Progress Member - MyHIMATIKA')
 
 @push('styles')
     <style>
@@ -59,7 +59,8 @@
         .dark .sticky-table td.sticky-col-1,
         .dark .sticky-table td.sticky-col-2,
         .dark .sticky-table td.sticky-col-3 {
-            background-color: rgb(30 41 59); /* slate-800 */
+            background-color: rgb(30 41 59);
+            /* slate-800 */
         }
 
         /* Beautiful Hover Effects */
@@ -74,7 +75,8 @@
         .dark .sticky-table tr:hover td.sticky-col-1,
         .dark .sticky-table tr:hover td.sticky-col-2,
         .dark .sticky-table tr:hover td.sticky-col-3 {
-            background-color: rgb(51 65 85); /* slate-600 */
+            background-color: rgb(51 65 85);
+            /* slate-600 */
         }
 
         /* Table Structure */
@@ -142,7 +144,8 @@
         }
 
         .dark .table-row {
-            border-bottom: 1px solid rgb(51 65 85); /* slate-600 */
+            border-bottom: 1px solid rgb(51 65 85);
+            /* slate-600 */
         }
 
         .table-row:hover {
@@ -194,7 +197,8 @@
                             class="text-3xl font-bold bg-gradient-to-r from-blue-700 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
                             Progress Pengumpulan Tugas
                         </h2>
-                        <p class="text-gray-600 dark:text-slate-400 font-medium">Lihat status pengumpulan tugas semua member dengan tampilan yang
+                        <p class="text-gray-600 dark:text-slate-400 font-medium">Lihat status pengumpulan tugas semua member
+                            dengan tampilan yang
                             lebih modern</p>
                     </div>
                 </div>
@@ -285,7 +289,8 @@
                     </th>
                 @endforeach
                 </tr>
-                </thead>                        <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-50 dark:divide-slate-700">
+                </thead>
+                <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-50 dark:divide-slate-700">
                     @foreach ($members as $index => $member)
                         <tr class="table-row">
                             <!-- Enhanced Sticky Columns -->
@@ -302,7 +307,8 @@
                                         {{ strtoupper(substr($member->name, 0, 1)) }}
                                     </div>
                                     <div>
-                                        <div class="text-sm font-bold text-gray-900 dark:text-slate-100">{{ $member->name }}</div>
+                                        <div class="text-sm font-bold text-gray-900 dark:text-slate-100">
+                                            {{ $member->name }}</div>
                                         <div class="text-xs text-gray-500 dark:text-slate-400">Member</div>
                                     </div>
                                 </div>

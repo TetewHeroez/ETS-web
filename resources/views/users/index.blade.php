@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kelola Member - MyPH')
+@section('title', 'Kelola Member - MyHIMATIKA')
 
 @section('content')
     @include('components.navbar')
@@ -13,10 +13,11 @@
             <div class="mb-4 md:mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                 <div>
                     <h2 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-slate-100">Kelola Member</h2>
-                    <p class="text-sm md:text-base text-gray-600 dark:text-slate-400">Manajemen user dan member sistem MyPH
+                    <p class="text-sm md:text-base text-gray-600 dark:text-slate-400">Manajemen user dan member sistem
+                        MyHIMATIKA
                     </p>
                 </div>
-                @if (auth()->user()->isSuperadmin())
+                @if (auth()->user()->isAdmin() || auth()->user()->isSuperadmin())
                     <a href="{{ route('users.create') }}"
                         class="px-4 py-2 md:px-6 md:py-3 bg-blue-700 dark:bg-blue-600 text-white text-sm md:text-base font-semibold rounded-lg hover:bg-blue-800 dark:hover:bg-blue-700 transition flex items-center justify-center shadow-md">
                         <i data-feather="plus" class="w-4 h-4 md:w-5 md:h-5 mr-2"></i>
@@ -45,8 +46,8 @@
                 </div>
             @endif
 
-            <!-- Import Excel Section (Only for Koor SC, Koor IC, and SC) -->
-            @if (in_array(auth()->user()->jabatan, ['Koor SC', 'Koor IC', 'SC']))
+            <!-- Import Excel Section (Only for SuperAdmin) -->
+            @if (auth()->user()->isSuperadmin())
                 <div class="bg-white dark:bg-slate-800 rounded-lg shadow mb-4 md:mb-6 p-4 md:p-6">
                     <h3
                         class="text-base md:text-lg font-semibold text-gray-800 dark:text-slate-100 mb-3 md:mb-4 flex items-center">
@@ -254,13 +255,16 @@
                                     <td class="px-3 py-3 md:px-6 md:py-4 whitespace-nowrap">
                                         @if ($user->jabatan)
                                             @php
-                                                $jabatan = $user->jabatan;
+                                                $jabatan = $user->jabatan_label; // Use accessor to get formatted label (PJ-0, PJ-1, etc)
                                                 $warna = match (true) {
-                                                    in_array($jabatan, ['Koor SC', 'Koor IC'])
-                                                        => 'bg-purple-100 text-purple-800',
-                                                    in_array($jabatan, ['SC', 'IC', 'OC'])
-                                                        => 'bg-blue-100 text-blue-800',
-                                                    default => 'bg-cyan-100 text-cyan-800',
+                                                    in_array($user->jabatan, ['Koor SC', 'Koor IC', 'Koor OC'])
+                                                        => 'bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300',
+                                                    in_array($user->jabatan, ['SC', 'IC', 'OC', 'SRD'])
+                                                        => 'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300',
+                                                    $user->jabatan === 'PJ'
+                                                        => 'bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-300',
+                                                    default
+                                                        => 'bg-cyan-100 dark:bg-cyan-900/50 text-cyan-800 dark:text-cyan-300',
                                                 };
                                             @endphp
 
@@ -330,34 +334,12 @@
                                                     </span>
                                                 @endif
                                             @elseif (auth()->user()->role === 'admin')
-                                                @if ($user->role === 'member')
-                                                    <!-- Admin dapat edit, toggle status dan delete member -->
-                                                    <a href="{{ route('users.edit', $user) }}"
-                                                        class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 bg-blue-600 dark:bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-700 transition-colors duration-200"
-                                                        title="Edit Member">
-                                                        <i data-feather="edit-2" class="w-3 h-3 md:w-4 md:h-4"></i>
-                                                    </a>
-                                                    <button type="button"
-                                                        onclick="confirmToggleStatus({{ $user->id }}, '{{ $user->name }}', '{{ $user->status }}')"
-                                                        class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 {{ $user->status === 'aktif' ? 'bg-orange-600 hover:bg-orange-700 dark:bg-orange-600 dark:hover:bg-orange-700' : 'bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700' }} text-white rounded-lg transition-colors duration-200"
-                                                        title="{{ $user->status === 'aktif' ? 'Nonaktifkan Member' : 'Aktifkan Member' }}">
-                                                        <i data-feather="{{ $user->status === 'aktif' ? 'user-x' : 'user-check' }}"
-                                                            class="w-3 h-3 md:w-4 md:h-4"></i>
-                                                    </button>
-                                                    <button type="button"
-                                                        onclick="confirmDelete({{ $user->id }}, '{{ $user->name }}')"
-                                                        class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 bg-red-600 dark:bg-red-600 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-700 transition-colors duration-200"
-                                                        title="Hapus Member">
-                                                        <i data-feather="trash-2" class="w-3 h-3 md:w-4 md:h-4"></i>
-                                                    </button>
-                                                @else
-                                                    <!-- Admin tidak dapat mengelola admin/superadmin lain -->
-                                                    <span
-                                                        class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 bg-gray-200 dark:bg-slate-600 text-gray-500 dark:text-slate-400 rounded-lg cursor-not-allowed"
-                                                        title="Tidak memiliki akses untuk mengelola {{ $user->role }}">
-                                                        <i data-feather="lock" class="w-3 h-3 md:w-4 md:h-4"></i>
-                                                    </span>
-                                                @endif
+                                                <!-- Admin tidak dapat mengelola user (hanya dapat menambah member baru) -->
+                                                <span
+                                                    class="inline-flex items-center justify-center w-7 h-7 md:w-8 md:h-8 bg-gray-200 dark:bg-slate-600 text-gray-500 dark:text-slate-400 rounded-lg cursor-not-allowed"
+                                                    title="Admin hanya dapat menambahkan member baru">
+                                                    <i data-feather="lock" class="w-3 h-3 md:w-4 md:h-4"></i>
+                                                </span>
                                             @else
                                                 <!-- Member tidak memiliki akses untuk mengelola user lain -->
                                                 <span
@@ -726,8 +708,8 @@
 
         <style>
             /* ================================
-                                               Elegant Pagination Styling with Dark Mode
-                                               ================================ */
+                                                           Elegant Pagination Styling with Dark Mode
+                                                           ================================ */
             .pagination-wrapper nav {
                 background: transparent !important;
                 display: flex;

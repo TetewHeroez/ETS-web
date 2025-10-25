@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Kontrak - MyPH')
+@section('title', 'Edit Kontrak - MyHIMATIKA')
 
 @section('content')
     @include('components.navbar')
@@ -88,18 +88,6 @@
                         @error('rules')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
-                    </div>
-
-                    <!-- Is Active -->
-                    <div class="mb-6">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" name="is_active" value="1"
-                                {{ old('is_active', $contract->is_active) ? 'checked' : '' }}
-                                class="w-5 h-5 text-blue-600 bg-gray-100 dark:bg-slate-700 border-gray-300 dark:border-slate-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400">
-                            <span class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Aktifkan kontrak ini (akan menonaktifkan kontrak lain)
-                            </span>
-                        </label>
                     </div>
 
                     <!-- Submit Buttons -->

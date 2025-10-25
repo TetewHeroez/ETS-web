@@ -31,19 +31,11 @@
                 class="relative h-10 w-10 object-contain">
         </div>
         <span
-            class="text-xl font-heading font-bold bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">MyPH</span>
+            class="text-xl font-heading font-bold bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">MyHIMATIKA</span>
     </a>
 
     <!-- Actions & User Profile -->
     <div class="flex items-center space-x-3 relative z-10">
-        <!-- Dark Mode Toggle -->
-        <button onclick="toggleTheme()"
-            class="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200 group"
-            title="Toggle Dark Mode">
-            <i data-feather="sun" class="w-5 h-5 dark:hidden group-hover:rotate-12 transition-transform"></i>
-            <i data-feather="moon" class="w-5 h-5 hidden dark:block group-hover:-rotate-12 transition-transform"></i>
-        </button>
-
         <!-- Mobile menu toggle -->
         <button id="mobileSidebarToggle"
             class="md:hidden p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200">
@@ -51,26 +43,52 @@
         </button>
 
         <!-- User Profile -->
-        <div class="flex items-center space-x-3">
+        <a href="{{ route('profile.show') }}" class="flex items-center space-x-3 hover:opacity-90 transition-opacity">
             <div class="relative group">
                 <div
                     class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full blur-sm opacity-50 group-hover:opacity-70 transition-opacity">
                 </div>
-                <div
-                    class="relative w-10 h-10 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full flex items-center justify-center">
-                    <i data-feather="user" class="w-5 h-5 text-white"></i>
-                </div>
-            </div>
-            <div class="hidden sm:block">
-                <p class="text-sm font-heading font-semibold">{{ Auth::user()->name }}</p>
-                @if (Auth::user()->nrp)
-                    <p class="text-xs text-cyan-200 font-mono">{{ Auth::user()->nrp }}</p>
+                @if (Auth::user()->profile_photo &&
+                        (str_starts_with(Auth::user()->profile_photo, 'http://') ||
+                            str_starts_with(Auth::user()->profile_photo, 'https://')))
+                    {{-- Cloudinary URL --}}
+                    <img src="{{ Auth::user()->profile_photo }}" alt="{{ Auth::user()->name }}"
+                        class="relative w-10 h-10 rounded-full object-cover border-2 border-white/50"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div
+                        class="relative w-10 h-10 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full hidden items-center justify-center text-white font-bold text-sm">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                    </div>
+                @else
+                    {{-- Fallback avatar --}}
+                    <div
+                        class="relative w-10 h-10 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                    </div>
                 @endif
             </div>
-            <span
-                class="px-3 py-1 text-xs font-medium bg-gradient-to-r from-cyan-400/30 to-blue-400/30 rounded-full text-cyan-100 border border-cyan-400/20 backdrop-blur-sm">
-                {{ ucfirst(Auth::user()->role) }}
-            </span>
-        </div>
+            <div class="hidden sm:block">
+                <!-- Baris 1: Nama -->
+                <p class="text-sm font-heading font-semibold leading-tight">{{ Auth::user()->name }}</p>
+                <!-- Baris 2: NRP | Jabatan -->
+                <div class="flex items-center gap-2 mt-0.5">
+                    @if (Auth::user()->nrp)
+                        <p class="text-xs text-cyan-200 font-mono">{{ Auth::user()->nrp }}</p>
+                    @endif
+                    <span
+                        class="text-xs font-medium bg-gradient-to-r from-cyan-400/30 to-blue-400/30 px-2 py-0.5 rounded text-cyan-100 border border-cyan-400/20 backdrop-blur-sm">
+                        {{ Auth::user()->jabatan_label }}
+                    </span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Dark Mode Toggle -->
+        <button onclick="toggleTheme()"
+            class="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200 group"
+            title="Toggle Dark Mode">
+            <i data-feather="sun" class="w-5 h-5 dark:hidden group-hover:rotate-12 transition-transform"></i>
+            <i data-feather="moon" class="w-5 h-5 hidden dark:block group-hover:-rotate-12 transition-transform"></i>
+        </button>
     </div>
 </nav>
