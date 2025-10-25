@@ -12,7 +12,7 @@
     <!-- Kontrak Dialog (Centered Modal) - Only for Members -->
     @if (Auth::user()->isMember())
         @php
-            $activeContract = \App\Models\Contract::getActive();
+            $activeContract = \App\Models\Contract::latest()->first();
         @endphp
 
         @if ($activeContract)
@@ -51,10 +51,8 @@
                             <div
                                 class="mt-8 p-6 bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 rounded-xl border border-cyan-200 dark:border-cyan-700">
                                 <p class="text-center text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
-                                    Dengan menekan tombol <strong class="text-blue-700 dark:text-blue-400">"Saya
-                                        Setuju"</strong>,
-                                    Anda menyatakan telah membaca, memahami, dan menyetujui seluruh ketentuan kontrak di
-                                    atas.
+                                    Dimohon untuk <strong class="text-blue-700 dark:text-blue-400">Mengingat</strong>,
+                                    seluruh poin-poin kontrak yang telah disepakati.
                                 </p>
                             </div>
                         </div>
@@ -66,7 +64,7 @@
                         <button onclick="closeContract()" id="agreeButton"
                             class="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-700 dark:to-cyan-600 text-white font-bold rounded-lg hover:from-blue-700 hover:to-cyan-600 dark:hover:from-blue-800 dark:hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
                             <i data-feather="check-circle" class="w-5 h-5 inline mr-2"></i>
-                            Saya Setuju
+                            Ya Paham
                         </button>
                     </div>
                 </div>
@@ -269,7 +267,7 @@
                                                         </span>
                                                     </div>
                                                     @if (Auth::user()->isMember())
-                                                        <a href="{{ route('submissions.create') }}"
+                                                        <a href="{{ route('submissions.index') }}"
                                                             class="px-3 py-1 bg-blue-700 text-white rounded hover:bg-blue-800 transition text-xs font-semibold">
                                                             Kumpulkan
                                                         </a>

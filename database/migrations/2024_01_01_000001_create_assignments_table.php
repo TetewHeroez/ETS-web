@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title'); // Nama tugas (Tugas 1, Tugas 2, dst)
             $table->text('description')->nullable();
             $table->date('deadline')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_open')->default(true);
             $table->timestamps();
         });
     }

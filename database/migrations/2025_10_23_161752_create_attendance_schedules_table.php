@@ -18,7 +18,6 @@ return new class extends Migration
             $table->date('date'); // Tanggal kehadiran
             $table->time('start_time')->nullable(); // Jam mulai
             $table->time('end_time')->nullable(); // Jam selesai
-            $table->boolean('is_active')->default(true); // Apakah jadwal masih aktif
             $table->boolean('is_open')->default(false); // Apakah absensi dibuka
             $table->timestamps();
         });

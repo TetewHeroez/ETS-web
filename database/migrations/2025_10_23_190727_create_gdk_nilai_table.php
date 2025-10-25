@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('nama_nilai'); // Nama nilai (Solidaritas, Wawasan, Adaptif)
             $table->text('deskripsi')->nullable();
             $table->decimal('multiplier', 5, 2)->default(1.00); // Multiplier untuk nilai
-            $table->integer('urutan')->default(0); // Urutan tampilan
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

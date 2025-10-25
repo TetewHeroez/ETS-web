@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Buat Tugas Baru - MyHIMATIKA')
+@section('title', 'Edit Tugas - MyHIMATIKA')
 
 @section('content')
     @include('components.navbar')
@@ -12,23 +12,25 @@
             <div class="px-4 sm:px-0">
                 <!-- Header -->
                 <div class="mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Buat Tugas Baru</h2>
-                    <p class="text-gray-600 dark:text-gray-400">Isi form di bawah untuk membuat tugas baru</p>
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Edit Tugas</h2>
+                    <p class="text-gray-600 dark:text-gray-400">Ubah detail tugas</p>
                 </div>
 
                 <!-- Form -->
                 <div class="bg-white dark:bg-slate-800 rounded-lg shadow-lg dark:shadow-slate-900/50 p-6">
-                    <form action="{{ route('assignments.store') }}" method="POST">
+                    <form action="{{ route('assignments.update', $assignment) }}" method="POST">
                         @csrf
+                        @method('PUT')
 
                         <!-- Title -->
                         <div class="mb-4">
                             <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Judul Tugas <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" name="title" id="title" required value="{{ old('title') }}"
+                            <input type="text" name="title" id="title" required
+                                value="{{ old('title', $assignment->title) }}"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
-                                placeholder="Contoh: Resume Forum Komunal">
+                                placeholder="Contoh: Tugas 1 - Pengenalan Laravel">
                             @error('title')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
@@ -42,7 +44,7 @@
                             </label>
                             <textarea name="description" id="description" rows="4"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
-                                placeholder="Jelaskan detail tugas...">{{ old('description') }}</textarea>
+                                placeholder="Jelaskan detail tugas...">{{ old('description', $assignment->description) }}</textarea>
                             @error('description')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
@@ -53,7 +55,8 @@
                             <label for="deadline" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Deadline
                             </label>
-                            <input type="date" name="deadline" id="deadline" value="{{ old('deadline') }}"
+                            <input type="date" name="deadline" id="deadline"
+                                value="{{ old('deadline', $assignment->deadline?->format('Y-m-d')) }}"
                                 class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
                             @error('deadline')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -78,7 +81,7 @@
                                             $totalMultiplier = $flowchart->total_multiplier;
                                         @endphp
                                         <option value="{{ $flowchart->id }}"
-                                            {{ old('gdk_flowchart_id') == $flowchart->id ? 'selected' : '' }}
+                                            {{ old('gdk_flowchart_id', $assignment->gdk_flowchart_id) == $flowchart->id ? 'selected' : '' }}
                                             data-multiplier="{{ $totalMultiplier }}">
                                             {{ $nilai->nama_nilai }} → {{ $materi->nama_materi }} →
                                             {{ $metode->nama_metode }}
@@ -105,8 +108,8 @@
                             <div class="grid grid-cols-3 gap-3">
                                 <label class="cursor-pointer">
                                     <input type="radio" name="submission_type" value="pdf"
-                                        {{ old('submission_type') == 'pdf' ? 'checked' : '' }} class="peer hidden"
-                                        required>
+                                        {{ old('submission_type', $assignment->submission_type) == 'pdf' ? 'checked' : '' }}
+                                        class="peer hidden" required>
                                     <div
                                         class="border-2 border-gray-300 dark:border-slate-600 rounded-lg p-3 text-center peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/30 hover:border-blue-300 dark:hover:border-blue-600 transition">
                                         <i data-feather="file-text"
@@ -116,8 +119,8 @@
                                 </label>
                                 <label class="cursor-pointer">
                                     <input type="radio" name="submission_type" value="image"
-                                        {{ old('submission_type') == 'image' ? 'checked' : '' }} class="peer hidden"
-                                        required>
+                                        {{ old('submission_type', $assignment->submission_type) == 'image' ? 'checked' : '' }}
+                                        class="peer hidden" required>
                                     <div
                                         class="border-2 border-gray-300 dark:border-slate-600 rounded-lg p-3 text-center peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/30 hover:border-blue-300 dark:hover:border-blue-600 transition">
                                         <i data-feather="image"
@@ -127,8 +130,8 @@
                                 </label>
                                 <label class="cursor-pointer">
                                     <input type="radio" name="submission_type" value="link"
-                                        {{ old('submission_type', 'link') == 'link' ? 'checked' : '' }} class="peer hidden"
-                                        required>
+                                        {{ old('submission_type', $assignment->submission_type) == 'link' ? 'checked' : '' }}
+                                        class="peer hidden" required>
                                     <div
                                         class="border-2 border-gray-300 dark:border-slate-600 rounded-lg p-3 text-center peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/30 hover:border-blue-300 dark:hover:border-blue-600 transition">
                                         <i data-feather="link"
@@ -146,7 +149,7 @@
                         <div class="flex flex-col sm:flex-row gap-3">
                             <button type="submit"
                                 class="w-full sm:flex-1 bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 text-white py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 dark:hover:from-blue-700 dark:hover:to-blue-800 transition shadow-md hover:shadow-lg">
-                                Buat Tugas
+                                Simpan Perubahan
                             </button>
                             <a href="{{ route('assignments.index') }}"
                                 class="w-full sm:flex-1 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-slate-600 transition text-center shadow-md">

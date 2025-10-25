@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('judul'); // Judul flowchart/agenda
             $table->text('deskripsi')->nullable();
             $table->string('image_path')->nullable(); // Path ke gambar flowchart
-            $table->integer('urutan')->default(0); // Urutan tampilan
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

@@ -13,13 +13,12 @@ class Assignment extends Model
         'title',
         'description',
         'deadline',
-        'is_active',
-        'weight', // Bobot tugas untuk perhitungan PI
+        'submission_type', // 'pdf', 'image', or 'link'
+        'gdk_flowchart_id', // Link ke metode GDK untuk perhitungan PI
     ];
 
     protected $casts = [
         'deadline' => 'date',
-        'is_active' => 'boolean',
     ];
 
     /**
@@ -28,6 +27,14 @@ class Assignment extends Model
     public function submissions()
     {
         return $this->hasMany(Submission::class);
+    }
+    
+    /**
+     * GDK Flowchart (Metode) relationship
+     */
+    public function gdkFlowchart()
+    {
+        return $this->belongsTo(GdkFlowchart::class);
     }
     
     /**

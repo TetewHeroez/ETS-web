@@ -8,6 +8,19 @@ use Illuminate\Http\Request;
 class AssignmentController extends Controller
 {
     /**
+     * Check if user has access (Koor IC, Koor SC, SC only)
+     */
+    private function checkAccess()
+    {
+        $user = auth()->user();
+        $allowedJabatan = ['Koor IC', 'Koor SC', 'SC'];
+        
+        if (!in_array($user->jabatan, $allowedJabatan)) {
+            abort(403, 'Unauthorized - Hanya Koor IC, Koor SC, dan SC yang dapat membuat/edit tugas.');
+        }
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
@@ -17,7 +30,7 @@ class AssignmentController extends Controller
         $sortOrder = $request->input('sort_order', 'desc');
         
         // Validate sort column to prevent SQL injection
-        $allowedSorts = ['title', 'deadline', 'weight', 'is_active', 'created_at'];
+        $allowedSorts = ['title', 'deadline', 'created_at'];
         if (!in_array($sortBy, $allowedSorts)) {
             $sortBy = 'created_at';
         }
@@ -31,7 +44,10 @@ class AssignmentController extends Controller
      */
     public function create()
     {
-        return view('assignments.create');
+        $this->checkAccess();
+        // Get all GDK Flowcharts with full relationship chain
+        $flowcharts = \App\Models\GdkFlowchart::with('metode.materi.nilai')->get();
+        return view('assignments.create', compact('flowcharts'));
     }
 
     /**
@@ -39,15 +55,15 @@ class AssignmentController extends Controller
      */
     public function store(Request $request)
     {
+        $this->checkAccess();
+        
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'deadline' => 'nullable|date',
-            'weight' => 'required|integer|min:1',
-            'is_active' => 'boolean',
+            'submission_type' => 'required|in:pdf,image,link',
+            'gdk_flowchart_id' => 'required|exists:gdk_flowchart,id', // Now required!
         ]);
-
-        $validated['is_active'] = $request->has('is_active');
 
         Assignment::create($validated);
 
@@ -59,7 +75,10 @@ class AssignmentController extends Controller
      */
     public function edit(Assignment $assignment)
     {
-        return view('assignments.edit', compact('assignment'));
+        $this->checkAccess();
+        // Get all GDK Flowcharts with full relationship chain
+        $flowcharts = \App\Models\GdkFlowchart::with('metode.materi.nilai')->get();
+        return view('assignments.edit', compact('assignment', 'flowcharts'));
     }
 
     /**
@@ -67,15 +86,15 @@ class AssignmentController extends Controller
      */
     public function update(Request $request, Assignment $assignment)
     {
+        $this->checkAccess();
+        
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'deadline' => 'nullable|date',
-            'weight' => 'required|integer|min:1',
-            'is_active' => 'boolean',
+            'submission_type' => 'required|in:pdf,image,link',
+            'gdk_flowchart_id' => 'required|exists:gdk_flowchart,id', // Now required!
         ]);
-
-        $validated['is_active'] = $request->has('is_active');
 
         $assignment->update($validated);
 

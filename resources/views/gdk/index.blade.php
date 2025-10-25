@@ -212,79 +212,80 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    @endforeach
                                                 </div>
-                                            @endforeach
+                                            @else
+                                                <p class="text-sm text-slate-500 dark:text-slate-400 italic mt-3">Belum ada
+                                                    metode</p>
+                                            @endif
                                         </div>
-                                    @else
-                                        <p class="text-sm text-slate-500 dark:text-slate-400 italic mt-3">Belum ada
-                                            metode</p>
-                                    @endif
+                                    @endforeach
                                 </div>
-                            @endforeach
+                            @else
+                                <p class="text-sm text-slate-500 dark:text-slate-400 italic">Belum ada materi</p>
+                            @endif
                         </div>
-                    @else
-                        <p class="text-sm text-slate-500 dark:text-slate-400 italic">Belum ada materi</p>
+                    @empty
+                        <div class="text-center py-12">
+                            <i data-feather="database"
+                                class="w-16 h-16 mx-auto text-slate-400 dark:text-slate-600 mb-4"></i>
+                            <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-2">Belum Ada Nilai</h3>
+                            <p class="text-slate-600 dark:text-slate-400 mb-4">Buat nilai pertama untuk memulai</p>
+                            <button onclick="openModalNilai()"
+                                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-cyan-600 transition">
+                                <i data-feather="plus" class="w-4 h-4 mr-2"></i>
+                                Tambah Nilai
+                            </button>
+                        </div>
+                    @endforelse
+                </div>
+                <!-- Flowchart Section -->
+                <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700">
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">Flowchart Agenda Kegiatan
+                        </h3>
+
+                        @if ($flowcharts->isNotEmpty())
+                            @php $flowchart = $flowcharts->first(); @endphp
+                            <div class="mb-6">
+                                <img src="{{ $flowchart->image_path }}" alt="Flowchart"
+                                    class="w-full rounded-lg border border-slate-200 dark:border-slate-600 mb-4">
+
+                                <div class="flex gap-3">
+                                    <label for="flowchartFileInput"
+                                        class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition cursor-pointer">
+                                        <i data-feather="edit-2" class="w-4 h-4 mr-2"></i>
+                                        Edit
+                                    </label>
+                                    <button type="button" onclick="openFlowchartDeleteModal()"
+                                        class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-red-600 dark:bg-red-700 text-white font-medium rounded-lg hover:bg-red-700 dark:hover:bg-red-800 transition">
+                                        <i data-feather="trash-2" class="w-4 h-4 mr-2"></i>
+                                        Hapus
+                                    </button>
+                                </div>
+
+                                <!-- Hidden file input for update -->
+                                <input type="file" id="flowchartFileInput" accept="image/*" style="display: none;">
+                            </div>
+                    </div>
+                @else
+                    <div class="text-center py-12">
+                        <i data-feather="image" class="w-16 h-16 mx-auto text-slate-400 dark:text-slate-600 mb-4"></i>
+                        <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-2">Belum Ada Flowchart
+                        </h3>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4">Tambahkan flowchart untuk menampilkan agenda
+                            kegiatan</p>
+                        <label for="flowchartFileInputNew"
+                            class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-500 text-white font-semibold rounded-lg hover:from-green-700 hover:to-emerald-600 transition cursor-pointer">
+                            <i data-feather="plus" class="w-4 h-4 mr-2"></i>
+                            Tambah Flowchart
+                        </label>
+                        <!-- Hidden file input for create -->
+                        <input type="file" id="flowchartFileInputNew" accept="image/*" style="display: none;">
+                    </div>
                     @endif
                 </div>
-            @empty
-                <div class="text-center py-12">
-                    <i data-feather="database" class="w-16 h-16 mx-auto text-slate-400 dark:text-slate-600 mb-4"></i>
-                    <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-2">Belum Ada Nilai</h3>
-                    <p class="text-slate-600 dark:text-slate-400 mb-4">Buat nilai pertama untuk memulai</p>
-                    <button onclick="openModalNilai()"
-                        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-cyan-600 transition">
-                        <i data-feather="plus" class="w-4 h-4 mr-2"></i>
-                        Tambah Nilai
-                    </button>
-                </div>
-                @endforelse
             </div>
-            <!-- Flowchart Section -->
-            <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700">
-                <div class="p-6">
-                    <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">Flowchart Agenda Kegiatan</h3>
-
-                    @if ($flowcharts->isNotEmpty())
-                        @php $flowchart = $flowcharts->first(); @endphp
-                        <div class="mb-6">
-                            <img src="{{ $flowchart->image_path }}" alt="Flowchart"
-                                class="w-full rounded-lg border border-slate-200 dark:border-slate-600 mb-4">
-
-                            <div class="flex gap-3">
-                                <label for="flowchartFileInput"
-                                    class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition cursor-pointer">
-                                    <i data-feather="edit-2" class="w-4 h-4 mr-2"></i>
-                                    Edit
-                                </label>
-                                <button type="button" onclick="openFlowchartDeleteModal()"
-                                    class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-red-600 dark:bg-red-700 text-white font-medium rounded-lg hover:bg-red-700 dark:hover:bg-red-800 transition">
-                                    <i data-feather="trash-2" class="w-4 h-4 mr-2"></i>
-                                    Hapus
-                                </button>
-                            </div>
-
-                            <!-- Hidden file input for update -->
-                            <input type="file" id="flowchartFileInput" accept="image/*" style="display: none;">
-                        </div>
-                </div>
-            @else
-                <div class="text-center py-12">
-                    <i data-feather="image" class="w-16 h-16 mx-auto text-slate-400 dark:text-slate-600 mb-4"></i>
-                    <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-2">Belum Ada Flowchart
-                    </h3>
-                    <p class="text-slate-600 dark:text-slate-400 mb-4">Tambahkan flowchart untuk menampilkan agenda
-                        kegiatan</p>
-                    <label for="flowchartFileInputNew"
-                        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-500 text-white font-semibold rounded-lg hover:from-green-700 hover:to-emerald-600 transition cursor-pointer">
-                        <i data-feather="plus" class="w-4 h-4 mr-2"></i>
-                        Tambah Flowchart
-                    </label>
-                    <!-- Hidden file input for create -->
-                    <input type="file" id="flowchartFileInputNew" accept="image/*" style="display: none;">
-                </div>
-                @endif
-            </div>
-        </div>
         </div>
     </main>
 
@@ -375,7 +376,7 @@
                         return response.json().then(data => {
                             console.error('Error response:', data);
                             throw new Error(data.message ||
-                            `HTTP ${response.status}: Error deleting flowchart`);
+                                `HTTP ${response.status}: Error deleting flowchart`);
                         }).catch(e => {
                             throw new Error(`HTTP ${response.status}: ${e.message}`);
                         });

@@ -44,10 +44,9 @@ class GdkController extends Controller
         $this->checkAccess();
 
         $nilais = GdkNilai::with(['materis.metodes'])
-            ->orderBy('urutan')
             ->get();
 
-        $flowcharts = GdkFlowchart::orderBy('urutan')->get();
+        $flowcharts = GdkFlowchart::get();
 
         return view('gdk.index', compact('nilais', 'flowcharts'));
     }
@@ -63,11 +62,7 @@ class GdkController extends Controller
             'nama_nilai' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'multiplier' => 'required|numeric|min:0',
-            'urutan' => 'required|integer|min:0',
         ]);
-
-        // Set is_active to true by default
-        $validated['is_active'] = true;
 
         GdkNilai::create($validated);
 
@@ -85,7 +80,6 @@ class GdkController extends Controller
             'nama_nilai' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'multiplier' => 'required|numeric|min:0',
-            'urutan' => 'required|integer|min:0',
         ]);
 
         $nilai->update($validated);
@@ -117,11 +111,7 @@ class GdkController extends Controller
             'nama_materi' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'multiplier' => 'required|numeric|min:0',
-            'urutan' => 'required|integer|min:0',
         ]);
-
-        // Set is_active to true by default
-        $validated['is_active'] = true;
 
         GdkMateri::create($validated);
 
@@ -140,7 +130,6 @@ class GdkController extends Controller
             'nama_materi' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'multiplier' => 'required|numeric|min:0',
-            'urutan' => 'required|integer|min:0',
         ]);
 
         $materi->update($validated);
@@ -174,11 +163,7 @@ class GdkController extends Controller
             'multiplier' => 'required|numeric|min:0',
             'pa' => 'nullable|string',
             'pi' => 'nullable|string',
-            'urutan' => 'required|integer|min:0',
         ]);
-
-        // Set is_active to true by default
-        $validated['is_active'] = true;
 
         GdkMetode::create($validated);
 
@@ -199,7 +184,6 @@ class GdkController extends Controller
             'multiplier' => 'required|numeric|min:0',
             'pa' => 'nullable|string',
             'pi' => 'nullable|string',
-            'urutan' => 'required|integer|min:0',
         ]);
 
         $metode->update($validated);
@@ -253,7 +237,6 @@ class GdkController extends Controller
                 'judul' => 'required|string|max:255',
                 'deskripsi' => 'nullable|string',
                 'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:5120',
-                'urutan' => 'required|integer|min:0',
             ]);
 
             \Log::info('Flowchart upload validation passed', ['judul' => $validated['judul']]);
@@ -380,7 +363,6 @@ class GdkController extends Controller
             $validated = $request->validate([
                 'judul' => 'nullable|string|max:255',
                 'deskripsi' => 'nullable|string',
-                'urutan' => 'nullable|integer|min:0',
             ]);
 
             // Validate image separately if provided

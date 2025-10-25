@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('assignments', function (Blueprint $table) {
-            // Note: weight column was removed and will use multiplier from GDK instead
-            // This migration is now a no-op to maintain migration history
+            // Add submission_type column: 'pdf', 'image', or 'link'
+            // Note: position without 'after' to avoid referencing non-existent weight column
+            $table->enum('submission_type', ['pdf', 'image', 'link'])->default('link');
         });
     }
 
@@ -22,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // No-op: weight was removed in a later migration
+        Schema::table('assignments', function (Blueprint $table) {
+            $table->dropColumn('submission_type');
+        });
     }
 };

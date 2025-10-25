@@ -44,8 +44,8 @@
         </a>
 
         @if (Auth::user()->isMember())
-            <a href="{{ route('submissions.create') }}"
-                class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('submissions.create') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
+            <a href="{{ route('submissions.index') }}"
+                class="group flex items-center justify-center px-4 py-3 rounded-xl transition-all duration-200 relative overflow-hidden {{ request()->routeIs('submissions.index') ? 'bg-white/20 shadow-lg' : 'hover:bg-white/10' }}"
                 title="Kumpulkan Tugas">
                 <div
                     class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200">

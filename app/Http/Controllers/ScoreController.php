@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 class ScoreController extends Controller
 {
     /**
-     * Display scoring page for specific assignment
+     * Display scoring page for specific assignment (READ-ONLY)
+     * Scores are calculated automatically from submissions
      */
     public function index(Assignment $assignment, Request $request)
     {
@@ -24,44 +25,31 @@ class ScoreController extends Controller
             $sortBy = 'name';
         }
         
+        // Load assignment with GDK data
+        $assignment->load('gdkFlowchart.metode.materi.nilai');
+        
         $members = User::where('role', 'member')
+            ->with(['submissions' => function($query) use ($assignment) {
+                $query->where('assignment_id', $assignment->id);
+            }])
             ->orderBy($sortBy, $sortOrder)
             ->get();
-        $scores = Score::where('assignment_id', $assignment->id)
-            ->pluck('score', 'user_id');
+        
+        // Calculate scores for each member
+        $scores = $members->map(function($member) use ($assignment) {
+            $hasSubmission = $member->submissions->isNotEmpty();
+            $gdkMultiplier = $assignment->gdkFlowchart ? $assignment->gdkFlowchart->total_multiplier : 0;
+            $pi = ($hasSubmission ? 1 : 0) * $gdkMultiplier;
+            
+            return [
+                'user_id' => $member->id,
+                'has_submission' => $hasSubmission,
+                'gdk_multiplier' => $gdkMultiplier,
+                'pi' => $pi,
+            ];
+        })->keyBy('user_id');
         
         return view('scores.index', compact('assignment', 'members', 'scores'));
-    }
-
-    /**
-     * Store or update scores for assignment
-     */
-    public function store(Request $request, Assignment $assignment)
-    {
-        $request->validate([
-            'scores' => 'required|array',
-            'scores.*' => 'nullable|numeric|min:0|max:100',
-            'notes' => 'nullable|array',
-            'notes.*' => 'nullable|string',
-        ]);
-
-        foreach ($request->scores as $userId => $scoreValue) {
-            if ($scoreValue !== null) {
-                Score::updateOrCreate(
-                    [
-                        'user_id' => $userId,
-                        'assignment_id' => $assignment->id,
-                    ],
-                    [
-                        'score' => $scoreValue,
-                        'notes' => $request->notes[$userId] ?? null,
-                    ]
-                );
-            }
-        }
-
-        return redirect()->route('scores.index', $assignment)
-            ->with('success', 'Nilai berhasil disimpan!');
     }
 
     /**
@@ -74,7 +62,7 @@ class ScoreController extends Controller
         $sortOrder = $request->input('sort_order', 'desc');
         
         $members = User::where('role', 'member')
-            ->with(['scores.assignment'])
+            ->with(['submissions.assignment.gdkFlowchart.metode.materi.nilai'])
             ->get()
             ->map(function($user) {
                 $user->total_kpi = $user->kpi;
@@ -92,8 +80,10 @@ class ScoreController extends Controller
             $members = $sortOrder === 'asc' ? $members->sortBy('kelompok') : $members->sortByDesc('kelompok');
         }
         
-        $assignments = Assignment::orderBy('created_at', 'desc')->get();
+        $assignments = Assignment::with('gdkFlowchart.metode.materi.nilai')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        return view('scores.leaderboard', compact('members', 'assignments'));
+        return view('kpi.index', compact('members', 'assignments'));
     }
 }

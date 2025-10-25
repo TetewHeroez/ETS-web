@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('assignments', function (Blueprint $table) {
-            // Note: weight column was removed and will use multiplier from GDK instead
-            // This migration is now a no-op to maintain migration history
+            // Add relationship to GDK flowchart (metode)
+            // Note: position without 'after' to avoid referencing non-existent weight column
+            $table->foreignId('gdk_flowchart_id')->nullable()->constrained('gdk_flowchart')->onDelete('set null');
         });
     }
 
@@ -22,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // No-op: weight was removed in a later migration
+        Schema::table('assignments', function (Blueprint $table) {
+            $table->dropForeignIdFor('gdk_flowchart');
+        });
     }
 };

@@ -13,14 +13,10 @@ class GdkMateri extends Model
         'nama_materi',
         'deskripsi',
         'multiplier',
-        'urutan',
-        'is_active',
     ];
 
     protected $casts = [
         'multiplier' => 'float',
-        'is_active' => 'boolean',
-        'urutan' => 'integer',
         'gdk_nilai_id' => 'integer',
     ];
 
@@ -37,15 +33,7 @@ class GdkMateri extends Model
      */
     public function metodes()
     {
-        return $this->hasMany(GdkMetode::class, 'gdk_materi_id')->orderBy('urutan');
-    }
-
-    /**
-     * Scope: Only active records
-     */
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
+        return $this->hasMany(GdkMetode::class, 'gdk_materi_id');
     }
 
     /**

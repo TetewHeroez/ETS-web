@@ -19,8 +19,6 @@ return new class extends Migration
             $table->decimal('multiplier', 5, 2)->default(1.00); // Multiplier untuk metode
             $table->string('pa')->nullable(); // Program Activity
             $table->string('pi')->nullable(); // Performance Indicator
-            $table->integer('urutan')->default(0); // Urutan tampilan
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

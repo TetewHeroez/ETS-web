@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contracts', function (Blueprint $table) {
-            $table->id();
-            $table->string('title')->default('Kontrak Padamu HIMATIKA ITS 2024');
-            $table->text('description')->nullable();
-            $table->json('rules'); // Array of contract rules
-            $table->timestamps();
+        Schema::table('assignments', function (Blueprint $table) {
+            // Note: is_active was never added to assignments table
+            // This migration is a no-op to maintain migration history
         });
     }
 
@@ -25,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contracts');
+        // No-op: is_active was never in the table
     }
 };

@@ -85,12 +85,30 @@ class User extends Authenticatable
     
     /**
      * Hitung KPI (Kumulatif Poin Individu) = Total semua PI
+     * PI per assignment = (has_submission ? 1 : 0) × GDK total multiplier
      */
     public function getKpiAttribute()
     {
-        return $this->scores()->with('assignment')->get()->sum(function($score) {
-            return $score->score * $score->assignment->weight;
-        });
+        // Get all assignments
+        $assignments = Assignment::with('gdkFlowchart.metode.materi.nilai')->get();
+        
+        $totalPI = 0;
+        foreach ($assignments as $assignment) {
+            // Check if user has submitted this assignment
+            $hasSubmission = $this->submissions()->where('assignment_id', $assignment->id)->exists();
+            
+            // Get GDK multiplier
+            $gdkMultiplier = 0;
+            if ($assignment->gdkFlowchart && $assignment->gdkFlowchart->metode) {
+                $gdkMultiplier = $assignment->gdkFlowchart->total_multiplier;
+            }
+            
+            // Calculate PI for this assignment
+            $pi = ($hasSubmission ? 1 : 0) * $gdkMultiplier;
+            $totalPI += $pi;
+        }
+        
+        return $totalPI;
     }
 
     /**

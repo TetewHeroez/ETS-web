@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Attendance;
 use App\Models\Assignment;
 use App\Models\Submission;
-use App\Models\Score;
 
 class KpiController extends Controller
 {
@@ -37,42 +36,38 @@ class KpiController extends Controller
 
         // Get total attendances for calculation
         $totalAttendances = Attendance::count();
-        $totalAssignments = Assignment::where('is_active', true)->sum('weight');
+        
+        // Get all assignments with GDK data
+        $assignments = Assignment::with('gdkFlowchart.metode.materi.nilai')->get();
+        $totalGdkWeight = $assignments->sum(function($assignment) {
+            return $assignment->gdkFlowchart ? $assignment->gdkFlowchart->total_multiplier : 0;
+        });
 
         // Calculate KPI for each member
-        $members = $query->get()->map(function ($member) use ($totalAttendances, $totalAssignments) {
+        $members = $query->get()->map(function ($member) use ($totalAttendances, $assignments, $totalGdkWeight) {
             // Calculate attendance score
             $userAttendances = Attendance::where('user_id', $member->id)
                 ->where('status', 'hadir')
                 ->count();
             $attendanceScore = $totalAttendances > 0 ? ($userAttendances / $totalAttendances) * 100 : 0;
 
-            // Calculate submission score
-            $userSubmissions = Submission::where('user_id', $member->id)
-                ->whereHas('assignment', function ($q) {
-                    $q->where('is_active', true);
-                })
-                ->with('assignment')
-                ->get();
-
-            $submissionScore = 0;
-            if ($totalAssignments > 0) {
-                $userTotalWeight = $userSubmissions->sum(function ($submission) {
-                    return $submission->assignment->weight ?? 0;
-                });
-                $submissionScore = ($userTotalWeight / $totalAssignments) * 100;
+            // Calculate submission score based on GDK multipliers
+            $userGdkScore = 0;
+            foreach ($assignments as $assignment) {
+                $hasSubmission = $member->submissions()->where('assignment_id', $assignment->id)->exists();
+                $gdkMultiplier = $assignment->gdkFlowchart ? $assignment->gdkFlowchart->total_multiplier : 0;
+                $userGdkScore += ($hasSubmission ? 1 : 0) * $gdkMultiplier;
             }
+            
+            $submissionScore = $totalGdkWeight > 0 ? ($userGdkScore / $totalGdkWeight) * 100 : 0;
 
-            // Calculate average score from all graded assignments
-            $averageScore = Score::where('user_id', $member->id)->avg('score') ?? 0;
-
-            // Calculate total PI (Performance Indicator) - rata-rata dari attendance + submission + average score
-            $totalPI = round(($attendanceScore + $submissionScore + $averageScore) / 3, 2);
+            // Use KPI attribute from User model (which uses GDK multipliers)
+            $totalPI = round($member->kpi, 2);
 
             // Add calculated fields to member object
             $member->attendance_score = round($attendanceScore, 2);
             $member->submission_score = round($submissionScore, 2);
-            $member->average_score = round($averageScore, 2);
+            $member->gdk_score = round($userGdkScore, 2);
             $member->total_pi = $totalPI;
 
             return $member;
@@ -105,18 +100,16 @@ class KpiController extends Controller
         $totalActualAttendances = Attendance::where('status', 'hadir')->count();
         $kpiAttendance = $totalPossibleAttendances > 0 ? ($totalActualAttendances / $totalPossibleAttendances) * 100 : 0;
 
-        // KPI Tugas: Total pengumpulan tugas seluruh member
-        $totalPossibleSubmissions = $totalMembers * Assignment::where('is_active', true)->count();
-        $totalActualSubmissions = Submission::whereHas('assignment', function($q) {
-            $q->where('is_active', true);
-        })->count();
-        $kpiSubmission = $totalPossibleSubmissions > 0 ? ($totalActualSubmissions / $totalPossibleSubmissions) * 100 : 0;
+        // KPI Tugas: Total pengumpulan tugas berdasarkan GDK multiplier
+        $totalPossibleGdkScore = $totalMembers * $totalGdkWeight;
+        $totalActualGdkScore = $members->sum('gdk_score');
+        $kpiSubmission = $totalPossibleGdkScore > 0 ? ($totalActualGdkScore / $totalPossibleGdkScore) * 100 : 0;
 
-        // KPI Nilai: Rata-rata nilai seluruh member
-        $kpiScore = Score::avg('score') ?? 0;
+        // KPI Score: Total KPI dari semua member
+        $kpiScore = $members->sum('total_pi');
 
-        // Total KPI Organisasi
-        $totalKPI = round(($kpiAttendance + $kpiSubmission + $kpiScore) / 3, 2);
+        // Total KPI Organisasi (rata-rata PI semua member)
+        $totalKPI = round($averagePI, 2);
 
         // Get unique kelompoks for filter
         $kelompoks = User::where('role', 'member')

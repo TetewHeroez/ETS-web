@@ -17,12 +17,4 @@ class Contract extends Model
         'rules' => 'array',
         'is_active' => 'boolean'
     ];
-
-    /**
-     * Get the active contract
-     */
-    public static function getActive()
-    {
-        return self::where('is_active', true)->first();
-    }
 }

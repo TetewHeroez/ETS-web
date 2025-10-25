@@ -15,14 +15,10 @@ class GdkMetode extends Model
         'multiplier',
         'pa',
         'pi',
-        'urutan',
-        'is_active',
     ];
 
     protected $casts = [
         'multiplier' => 'float',
-        'is_active' => 'boolean',
-        'urutan' => 'integer',
         'gdk_materi_id' => 'integer',
     ];
 
@@ -32,14 +28,6 @@ class GdkMetode extends Model
     public function materi()
     {
         return $this->belongsTo(GdkMateri::class, 'gdk_materi_id');
-    }
-
-    /**
-     * Scope: Only active records
-     */
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
     }
 
     /**

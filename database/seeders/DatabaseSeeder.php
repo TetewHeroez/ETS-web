@@ -13,6 +13,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Call other seeders
+        $this->call([
+            GdkSeeder::class,
+            AssignmentSeeder::class,
+            ContractSeeder::class,
+        ]);
+
         // Superadmin
         User::factory()->create([
             'name' => 'Teosofi Hidayah Agung',
@@ -61,7 +68,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password123'),
             'role' => 'admin',
             'nrp' => '5002221121',
-            'jabatan' => '-',
+            'jabatan' => null,
             'status' => 'aktif',
         ]);
 
@@ -71,7 +78,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password123'),
             'role' => 'admin',
             'nrp' => '5002221140',
-            'jabatan' => '-',
+            'jabatan' => null,
             'status' => 'aktif',
         ]);
 

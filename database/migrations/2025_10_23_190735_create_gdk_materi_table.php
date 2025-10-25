@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('nama_materi'); // Nama materi/sub-nilai (Angkatan, Kehimatikaan, dll)
             $table->text('deskripsi')->nullable();
             $table->decimal('multiplier', 5, 2)->default(1.00); // Multiplier untuk materi
-            $table->integer('urutan')->default(0); // Urutan tampilan
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

@@ -22,8 +22,7 @@ class ContractSeeder extends Seeder
                 'Setiap peserta Padamu HIMATIKA ITS 2024 bertanggung jawab atas seluruh peserta Padamu HIMATIKA ITS 2024 yang lain',
                 'Tidak ada campur tangan dari pihak di luar HIMATIKA ITS',
                 'Tidak ada kegiatan Padamu HIMATIKA ITS 2024 di luar diskusi dan arahan yang telah disepakati'
-            ],
-            'is_active' => true
+            ]
         ]);
     }
 }

@@ -41,11 +41,6 @@
                         <input type="text" name="pi" id="edit_pi_metode"
                             class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-600 dark:bg-slate-700 dark:text-slate-100 transition">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Urutan</label>
-                        <input type="number" name="urutan" id="edit_urutan_metode" min="0" required
-                            class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-600 dark:bg-slate-700 dark:text-slate-100 transition">
-                    </div>
                 </div>
             </div>
             <div
@@ -71,7 +66,6 @@
         document.getElementById('edit_multiplier_metode').value = metode.multiplier;
         document.getElementById('edit_pa_metode').value = metode.pa || '';
         document.getElementById('edit_pi_metode').value = metode.pi || '';
-        document.getElementById('edit_urutan_metode').value = metode.urutan;
         document.getElementById('formEditMetode').action = `/gdk/metode/${metode.id}`;
         document.getElementById('modalEditMetode').classList.remove('hidden');
     }

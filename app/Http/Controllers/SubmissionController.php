@@ -11,14 +11,35 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 class SubmissionController extends Controller
 {
     /**
-     * Show the form for creating a new submission.
+     * Show all submissions available for current member to upload
      */
-    public function create()
+    public function index()
     {
-        $assignments = Assignment::where('is_active', true)->get();
-        $user = auth()->user();
-        
-        return view('submissions.create', compact('assignments', 'user'));
+        // Only members can access
+        if (auth()->user()->role !== 'member') {
+            abort(403, 'Unauthorized - Hanya member yang dapat melihat tugas.');
+        }
+
+        $assignments = Assignment::orderBy('created_at', 'desc')->get();
+
+        return view('assignments.my-submissions', compact('assignments'));
+    }
+
+    /**
+     * Show the form for uploading a new submission.
+     */
+    public function upload(Assignment $assignment)
+    {
+        // Only members can access
+        if (auth()->user()->role !== 'member') {
+            abort(403, 'Unauthorized - Hanya member yang dapat mengumpulkan tugas.');
+        }
+
+        $previousSubmission = auth()->user()->submissions()
+            ->where('assignment_id', $assignment->id)
+            ->first();
+
+        return view('assignments.upload', compact('assignment', 'previousSubmission'));
     }
 
     /**
@@ -26,30 +47,41 @@ class SubmissionController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'assignment_id' => 'required|exists:assignments,id',
-            'type' => 'required|in:pdf,image,link',
-            'file' => 'required_if:type,pdf,image|file|max:10240', // Max 10MB
-            'link' => 'required_if:type,link|url',
-        ]);
+        $assignment = Assignment::findOrFail($request->input('assignment_id'));
+
+        // Validate based on submission_type from assignment
+        if ($assignment->submission_type === 'link') {
+            $validated = $request->validate([
+                'assignment_id' => 'required|exists:assignments,id',
+                'link' => 'required|url',
+            ]);
+        } else {
+            $validated = $request->validate([
+                'assignment_id' => 'required|exists:assignments,id',
+                'file' => 'required|file|max:5120|mimes:' . ($assignment->submission_type === 'pdf' ? 'pdf' : 'jpeg,jpg,png,gif,svg'),
+            ]);
+        }
 
         // Cek apakah user sudah submit tugas ini sebelumnya
         $existingSubmission = Submission::where('user_id', auth()->id())
-            ->where('assignment_id', $validated['assignment_id'])
+            ->where('assignment_id', $assignment->id)
             ->first();
 
         if ($existingSubmission) {
+            if (request()->wantsJson()) {
+                return response()->json(['message' => 'Anda sudah mengumpulkan tugas ini sebelumnya!'], 422);
+            }
             return back()->with('error', 'Anda sudah mengumpulkan tugas ini sebelumnya!');
         }
 
         $content = null;
 
-        if ($validated['type'] === 'link') {
+        if ($assignment->submission_type === 'link') {
             $content = $validated['link'];
         } else {
             // Upload file ke Cloudinary
             $file = $request->file('file');
-            
+
             try {
                 // Upload dengan folder dan public_id custom
                 $uploadedFile = Cloudinary::uploadApi()->upload($file->getRealPath(), [
@@ -57,7 +89,7 @@ class SubmissionController extends Controller
                     'public_id' => 'submission_' . auth()->id() . '_' . time(),
                     'resource_type' => 'auto' // auto detect: image/pdf/raw
                 ]);
-                
+
                 // Extract secure URL dari response
                 $securePath = null;
                 if (is_array($uploadedFile)) {
@@ -71,19 +103,29 @@ class SubmissionController extends Controller
                 }
 
                 $content = $securePath;
+                \Log::info('Submission uploaded to Cloudinary', ['url' => $content]);
             } catch (\Exception $e) {
-                return back()->with('error', 'Gagal upload file ke Cloudinary: ' . $e->getMessage());
+                \Log::error('Cloudinary upload error', ['error' => $e->getMessage()]);
+                if (request()->wantsJson()) {
+                    return response()->json(['message' => 'Gagal upload file: ' . $e->getMessage()], 500);
+                }
+                return back()->with('error', 'Gagal upload file: ' . $e->getMessage());
             }
         }
 
         Submission::create([
             'user_id' => auth()->id(),
-            'assignment_id' => $validated['assignment_id'],
-            'type' => $validated['type'],
+            'assignment_id' => $assignment->id,
+            'type' => $assignment->submission_type,
             'content' => $content,
         ]);
 
-        return redirect()->route('submissions.create')->with('success', 'Tugas berhasil dikumpulkan!');
+        if (request()->wantsJson()) {
+            return response()->json(['message' => 'Tugas berhasil dikumpulkan!'], 200);
+        }
+
+        return redirect()->route('assignments.upload', $assignment)
+            ->with('success', 'Tugas berhasil dikumpulkan!');
     }
 
     /**
@@ -91,7 +133,7 @@ class SubmissionController extends Controller
      */
     public function table(Request $request)
     {
-        $assignments = Assignment::where('is_active', true)->get();
+        $assignments = Assignment::all();
 
         // Support search by name or nrp via query param 'search'
         $search = $request->input('search');
@@ -116,6 +158,6 @@ class SubmissionController extends Controller
 
         $members = $membersQuery->orderBy($sortBy, $sortOrder)->get();
         
-        return view('submissions.table', compact('assignments', 'members'));
+        return view('assignments.submissions-progress', compact('assignments', 'members'));
     }
 }

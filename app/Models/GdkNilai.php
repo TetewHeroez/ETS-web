@@ -12,14 +12,10 @@ class GdkNilai extends Model
         'nama_nilai',
         'deskripsi',
         'multiplier',
-        'urutan',
-        'is_active',
     ];
 
     protected $casts = [
         'multiplier' => 'float',
-        'is_active' => 'boolean',
-        'urutan' => 'integer',
     ];
 
     /**
@@ -27,14 +23,7 @@ class GdkNilai extends Model
      */
     public function materis()
     {
-        return $this->hasMany(GdkMateri::class, 'gdk_nilai_id')->orderBy('urutan');
+        return $this->hasMany(GdkMateri::class, 'gdk_nilai_id');
     }
 
-    /**
-     * Scope: Only active records
-     */
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
-    }
 }

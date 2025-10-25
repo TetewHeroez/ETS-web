@@ -13,13 +13,11 @@ class AttendanceSchedule extends Model
         'date',
         'start_time',
         'end_time',
-        'is_active',
         'is_open'
     ];
 
     protected $casts = [
         'date' => 'date',
-        'is_active' => 'boolean',
         'is_open' => 'boolean'
     ];
 

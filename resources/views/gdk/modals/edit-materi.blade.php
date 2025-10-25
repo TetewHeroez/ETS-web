@@ -28,11 +28,6 @@
                             min="0" required
                             class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-600 dark:bg-slate-700 dark:text-slate-100 transition">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Urutan</label>
-                        <input type="number" name="urutan" id="edit_urutan_materi" min="0" required
-                            class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-600 dark:bg-slate-700 dark:text-slate-100 transition">
-                    </div>
                 </div>
             </div>
             <div
@@ -56,7 +51,6 @@
         document.getElementById('edit_nama_materi').value = materi.nama_materi;
         document.getElementById('edit_deskripsi_materi').value = materi.deskripsi || '';
         document.getElementById('edit_multiplier_materi').value = materi.multiplier;
-        document.getElementById('edit_urutan_materi').value = materi.urutan;
         document.getElementById('formEditMateri').action = `/gdk/materi/${materi.id}`;
         document.getElementById('modalEditMateri').classList.remove('hidden');
     }

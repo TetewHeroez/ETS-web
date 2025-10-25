@@ -9,23 +9,40 @@ class GdkFlowchart extends Model
     protected $table = 'gdk_flowchart';
 
     protected $fillable = [
+        'gdk_metode_id',
         'judul',
         'deskripsi',
         'image_path',
-        'urutan',
-        'is_active',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
-        'urutan' => 'integer',
+        'gdk_metode_id' => 'integer',
     ];
 
     /**
-     * Scope: Only active records
+     * Relationship: Flowchart belongs to Metode
      */
-    public function scopeActive($query)
+    public function metode()
     {
-        return $query->where('is_active', true);
+        return $this->belongsTo(GdkMetode::class, 'gdk_metode_id');
+    }
+
+    /**
+     * Get total multiplier (nilai × materi × metode)
+     */
+    public function getTotalMultiplierAttribute()
+    {
+        if (!$this->metode) {
+            return 0;
+        }
+        return $this->metode->total_multiplier;
+    }
+
+    /**
+     * Relationship: Flowchart has many Assignments
+     */
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class, 'gdk_flowchart_id');
     }
 }

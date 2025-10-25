@@ -27,11 +27,6 @@
                             required
                             class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-600 dark:bg-slate-700 dark:text-slate-100 transition">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Urutan</label>
-                        <input type="number" name="urutan" id="edit_urutan_nilai" min="0" required
-                            class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 focus:border-blue-500 dark:focus:border-blue-600 dark:bg-slate-700 dark:text-slate-100 transition">
-                    </div>
                 </div>
             </div>
             <div
@@ -54,7 +49,6 @@
         document.getElementById('edit_nama_nilai').value = nilai.nama_nilai;
         document.getElementById('edit_deskripsi_nilai').value = nilai.deskripsi || '';
         document.getElementById('edit_multiplier_nilai').value = nilai.multiplier;
-        document.getElementById('edit_urutan_nilai').value = nilai.urutan;
         document.getElementById('formEditNilai').action = `/gdk/nilai/${nilai.id}`;
         document.getElementById('modalEditNilai').classList.remove('hidden');
     }

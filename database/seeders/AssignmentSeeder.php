@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Assignment;
+use App\Models\GdkFlowchart;
 use Carbon\Carbon;
 
 class AssignmentSeeder extends Seeder
@@ -14,48 +15,98 @@ class AssignmentSeeder extends Seeder
      */
     public function run(): void
     {
+        // Get GDK Flowchart entries for linking - using filter instead of where
+        $flowcharts = GdkFlowchart::all();
+        
+        // Map flowcharts untuk assignment linking by judul
+        $flowchartTandaPengenal = $flowcharts->filter(function($f) {
+            return str_contains($f->judul, 'Tanda Pengenal');
+        })->first();
+        
+        $flowchartMalamInaugurasi = $flowcharts->filter(function($f) {
+            return str_contains($f->judul, 'Inaugurasi');
+        })->first();
+        
+        $flowchartSafariHIMATIKA = $flowcharts->filter(function($f) {
+            return str_contains($f->judul, 'Safari');
+        })->first();
+        
+        $flowchartForumAtribut = $flowcharts->filter(function($f) {
+            return str_contains($f->judul, 'Forum Atribut');
+        })->first();
+        
+        $flowchartFormula = $flowcharts->filter(function($f) {
+            return str_contains($f->judul, 'FORMULA');
+        })->first();
+        
+        $flowchartHIntern = $flowcharts->filter(function($f) {
+            return str_contains($f->judul, 'H-Intern');
+        })->first();
+        
+        $flowchartBiodata = $flowcharts->filter(function($f) {
+            return str_contains($f->judul, 'Biodata');
+        })->first();
+        
+        $flowchartHaloWarga = $flowcharts->filter(function($f) {
+            return str_contains($f->judul, 'Halo Warga');
+        })->first();
+
         $assignments = [
             [
-                'title' => 'Tugas 1 - Pengenalan Laravel',
-                'description' => 'Membuat aplikasi CRUD sederhana menggunakan Laravel dengan fitur create, read, update, dan delete untuk mengelola data mahasiswa.',
+                'title' => 'Tugas Tanda Pengenal Angkatan',
+                'description' => 'Upload foto menggunakan tanda pengenal angkatan dengan benar.',
+                'deadline' => Carbon::now()->addWeeks(1),
+                'submission_type' => 'image',
+                'gdk_flowchart_id' => $flowchartTandaPengenal?->id,
+            ],
+            [
+                'title' => 'Refleksi Malam Inaugurasi',
+                'description' => 'Tulis refleksi pribadi tentang pengalaman malam inaugurasi.',
                 'deadline' => Carbon::now()->addWeeks(2),
-                'weight' => 2,
-                'is_active' => true,
+                'submission_type' => 'pdf',
+                'gdk_flowchart_id' => $flowchartMalamInaugurasi?->id,
             ],
             [
-                'title' => 'Tugas 2 - Database Migration',
-                'description' => 'Membuat migration untuk tabel baru dan menjalankan seeder untuk mengisi data awal. Termasuk pembuatan relasi antar tabel.',
+                'title' => 'Laporan Safari HIMATIKA',
+                'description' => 'Membuat laporan hasil kegiatan safari HIMATIKA dengan analisis mendalam tentang organisasi.',
                 'deadline' => Carbon::now()->addWeeks(3),
-                'weight' => 1,
-                'is_active' => true,
+                'submission_type' => 'pdf',
+                'gdk_flowchart_id' => $flowchartSafariHIMATIKA?->id,
             ],
             [
-                'title' => 'Tugas 3 - Authentication & Authorization',
-                'description' => 'Implementasi sistem login, logout, dan middleware untuk mengatur akses berdasarkan role user (admin, member).',
-                'deadline' => Carbon::now()->addWeeks(4),
-                'weight' => 3,
-                'is_active' => true,
+                'title' => 'Essay Forum Atribut',
+                'description' => 'Tulis essay tentang makna atribut HIMATIKA.',
+                'deadline' => Carbon::now()->addWeeks(3),
+                'submission_type' => 'pdf',
+                'gdk_flowchart_id' => $flowchartForumAtribut?->id,
             ],
             [
-                'title' => 'Tugas 4 - API Development',
-                'description' => 'Membuat RESTful API dengan Laravel untuk mengelola data assignments dan submissions. Termasuk validasi dan response format yang konsisten.',
-                'deadline' => Carbon::now()->addWeeks(5),
-                'weight' => 2,
-                'is_active' => true,
+                'title' => 'Sertifikat FORMULA',
+                'description' => 'Upload sertifikat keikutsertaan seminar FORMULA.',
+                'deadline' => Carbon::now()->addMonth(),
+                'submission_type' => 'image',
+                'gdk_flowchart_id' => $flowchartFormula?->id,
             ],
             [
-                'title' => 'Project Akhir - Web Application',
-                'description' => 'Membuat aplikasi web lengkap dengan fitur-fitur yang telah dipelajari: CRUD, authentication, file upload, dan dashboard analytics.',
-                'deadline' => Carbon::now()->addWeeks(8),
-                'weight' => 4,
-                'is_active' => true,
+                'title' => 'Laporan H-Intern',
+                'description' => 'Laporan kegiatan internship yang telah dilakukan.',
+                'deadline' => Carbon::now()->addMonths(2),
+                'submission_type' => 'pdf',
+                'gdk_flowchart_id' => $flowchartHIntern?->id,
             ],
             [
-                'title' => 'Tugas Tambahan - Code Review',
-                'description' => 'Review kode dari rekan tim dan memberikan feedback konstruktif. Tugas ini tidak aktif untuk sementara.',
-                'deadline' => Carbon::now()->addWeeks(6),
-                'weight' => 1,
-                'is_active' => false,
+                'title' => 'Form Biodata Lengkap',
+                'description' => 'Upload biodata lengkap seluruh anggota angkatan.',
+                'deadline' => Carbon::now()->addWeeks(2),
+                'submission_type' => 'pdf',
+                'gdk_flowchart_id' => $flowchartBiodata?->id,
+            ],
+            [
+                'title' => 'Video Halo Warga',
+                'description' => 'Link video perkenalan untuk program Halo Warga.',
+                'deadline' => Carbon::now()->addWeeks(1),
+                'submission_type' => 'link',
+                'gdk_flowchart_id' => $flowchartHaloWarga?->id,
             ],
         ];
 

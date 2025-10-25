@@ -55,7 +55,8 @@ Route::middleware('auth')->group(function () {
     });
     
     // Routes untuk submissions (member bisa submit)
-    Route::get('/submissions/create', [SubmissionController::class, 'create'])->name('submissions.create');
+    Route::get('/submissions', [SubmissionController::class, 'index'])->name('submissions.index');
+    Route::get('/assignments/{assignment}/upload', [SubmissionController::class, 'upload'])->name('assignments.upload');
     Route::post('/submissions', [SubmissionController::class, 'store'])->name('submissions.store');
     
     // Routes untuk attendance/absensi
@@ -112,10 +113,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/gdk/flowchart/{flowchart}', [GdkController::class, 'destroyFlowchart'])->name('gdk.flowchart.destroy');
     });
     
-    // Routes untuk scoring/penilaian (admin dan superadmin)
+    // Routes untuk scoring/penilaian (admin dan superadmin) - READ ONLY
+    // Scores are now auto-calculated from submissions and GDK multipliers
     Route::middleware('role:admin,superadmin')->group(function () {
         Route::get('/scores/{assignment}', [ScoreController::class, 'index'])->name('scores.index');
-        Route::post('/scores/{assignment}', [ScoreController::class, 'store'])->name('scores.store');
     });
     
     // Route untuk leaderboard (semua user bisa akses)
