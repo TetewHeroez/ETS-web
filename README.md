@@ -1,4 +1,4 @@
-# MyHIMATIKA - Padamu HIMATIKA ITS 2024/2025
+# MyHIMATIKA - Padamu HIMATIKA ITS
 
 **HIMATIKA ITS** stands for _Himpunan Mahasiswa Matematika ITS_ (Mathematics Student Association, Institut Teknologi Sepuluh Nopember, Indonesia). This is a comprehensive information management system for Cadreritation/Regeneration of HIMATIKA ITS, providing full-featured tools to manage member data, attendance, assignments, and scoring.
 
