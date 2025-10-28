@@ -1,6 +1,6 @@
 # MyHIMATIKA - Padamu HIMATIKA ITS 2024/2025
 
-Sistem informasi manajemen anggota HIMATIKA (Himpunan Mahasiswa Teknik Informatika) ITS dengan fitur lengkap untuk mengelola data member, presensi, tugas, dan nilai.
+**HIMATIKA ITS** stands for _Himpunan Mahasiswa Matematika ITS_ (Mathematics Student Association, Institut Teknologi Sepuluh Nopember, Indonesia). This is a comprehensive information management system for Cadreritation/Regeneration of HIMATIKA ITS, providing full-featured tools to manage member data, attendance, assignments, and scoring.
 
 [![Laravel](https://img.shields.io/badge/Laravel-11.x-red.svg)](https://laravel.com)
 [![PHP](https://img.shields.io/badge/PHP-8.2+-blue.svg)](https://php.net)
@@ -9,58 +9,59 @@ Sistem informasi manajemen anggota HIMATIKA (Himpunan Mahasiswa Teknik Informati
 
 ---
 
-## 📋 Daftar Isi
+## 📋 Table of Contents
 
--   [Fitur Utama](#-fitur-utama)
--   [Tech Stack](#-tech-stack)
--   [Instalasi](#-instalasi)
--   [Konfigurasi](#-konfigurasi)
--   [Upload Foto/PDF ke Cloudinary](#-upload-fotopdf-ke-cloudinary)
--   [Troubleshooting](#-troubleshooting)
--   [Deployment](#-deployment)
--   [Contributing](#-contributing)
+-   [Key Features](#key-features)
+-   [Tech Stack](#tech-stack)
+-   [Installation](#installation)
+-   [Configuration](#configuration)
+-   [Cloudinary Upload (Photo/PDF)](#cloudinary-upload-photopdf)
+-   [Troubleshooting](#troubleshooting)
+-   [Deployment](#deployment)
+-   [Contributing](#contributing)
 
 ---
 
-## 🚀 Fitur Utama
+## 🚀 Key Features
 
 ### 📊 Dashboard & Analytics
 
--   Dashboard interaktif dengan statistik real-time
--   Grafik kehadiran, tugas, dan performa member
--   Dark mode support
+-   Interactive dashboard with real-time statistics
+-   Visual charts for attendance, assignments, and member performance
+-   Full dark mode support
 
-### 👥 Manajemen User
+### 👥 User Management
 
--   **Member**: Profile lengkap (data pribadi, alamat, orang tua, kesehatan)
--   **Admin**: Manajemen data member, import Excel
--   **Superadmin**: Full control system
+-   **Member**: Complete profile (personal data, address, parents, health)
+-   **Admin**: Member data management, Excel import
+-   **Superadmin**: Full system control
 
-### 📸 Upload Cloudinary
+### 📸 Cloudinary Upload
 
--   ✅ Upload foto profil ke Cloudinary CDN
--   ✅ Validasi real-time (ukuran, format)
--   ✅ Status indicator (loading, sukses, gagal)
+-   ✅ Profile photo upload to Cloudinary CDN
+-   ✅ Real-time validation (size, format)
+-   ✅ Status indicators (loading, success, failure)
 -   ✅ Auto-resize & optimization (500x500, auto-quality, WebP/AVIF)
--   ✅ Auto-delete foto lama
--   📄 Siap extend untuk upload PDF (rapor, transkrip, dll)
+-   ✅ Auto-delete old photos
+-   📄 Ready to extend for PDF uploads (report cards, transcripts, etc.)
 
-### 📅 Presensi & Attendance
+### 📅 Attendance Management
 
--   Sistem check-in/check-out
--   Riwayat kehadiran per member
--   Export laporan kehadiran
+-   Check-in/check-out system
+-   Attendance history per member
+-   Export attendance reports
 
 ### 📝 Assignment & Submission
 
--   Manajemen tugas dengan bobot nilai
--   Upload submission dengan deadline
--   Scoring system otomatis
+-   Assignment management with weighted scores
+-   Submission upload with deadlines
+-   Automatic scoring system
 
-### 🎯 GDK (Gugus Depan Kampus)
+### 🎯 GDK (Cadreritation Grand Design)
 
--   Sistem kontrak GDK
--   Visual hierarchy untuk prioritas tugas
+-   Contract system
+-   Flowchart of Methods
+-   Visual hierarchy for task prioritization
 -   Progress tracking
 
 ---
@@ -71,42 +72,39 @@ Sistem informasi manajemen anggota HIMATIKA (Himpunan Mahasiswa Teknik Informati
 | ------------------- | ------------------------------------------- |
 | **Backend**         | Laravel 11.x (PHP 8.2+)                     |
 | **Frontend**        | Blade Templates, Tailwind CSS v4, Alpine.js |
-| **Database**        | MySQL (Aiven Cloud)                         |
+| **Database**        | MySQL (Aiven Cloud, PlanetScale, Railway)   |
 | **Storage**         | Cloudinary CDN                              |
 | **Icons**           | Feather Icons                               |
 | **Package Manager** | Composer, npm                               |
 | **Dev Tools**       | Laravel Tinker, Vite                        |
 
-### Dependencies Utama
+### Main Dependencies
 
-```json
+````json
 {
     "laravel/framework": "^11.0",
     "maatwebsite/excel": "^3.1",
     "cloudinary-labs/cloudinary-laravel": "^2.0"
 }
-```
 
----
-
-## 📦 Instalasi
+## 📦 Installation
 
 ### Requirements
 
--   PHP >= 8.2
--   Composer
--   Node.js & npm
--   MySQL
--   Cloudinary Account (Free tier)
+- PHP >= 8.2
+- Composer
+- Node.js & npm
+- MySQL
+- Cloudinary Account (Free tier)
 
 ### Step-by-Step
 
-1. **Clone Repository**
+1. **Clone the Repository**
 
 ```bash
 git clone https://github.com/TetewHeroez/ETS-web.git
 cd ETS-web
-```
+````
 
 2. **Install Dependencies**
 
@@ -122,10 +120,10 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-4. **Konfigurasi Database & Cloudinary** (edit `.env`)
+4. **Configure Database & Cloudinary** (edit `.env`)
 
 ```env
-# Database (Aiven Cloud atau Local)
+# Database (Aiven Cloud, PlanetScale, Railway, or Local)
 DB_CONNECTION=mysql
 DB_HOST=your-host.aivencloud.com
 DB_PORT=13530
@@ -140,33 +138,33 @@ CLOUDINARY_API_SECRET=your-api-secret
 CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name
 ```
 
-5. **Run Migration & Seeder**
+5. **Run Migrations & Seeders**
 
 ```bash
 php artisan migrate --seed
 ```
 
-6. **Build Assets**
+6. **Build Frontend Assets**
 
 ```bash
 npm run build
-# atau untuk development:
-npm run dev
+# For development:
+Member:
 ```
 
-7. **Start Server**
+7. **Start the Server**
 
 ```bash
 php artisan serve
 ```
 
-8. **Akses Aplikasi**
+8. **Access the Application**
 
 ```
 http://localhost:8000
 ```
 
-### Default Login
+### Default Login Credentials
 
 ```
 Superadmin:
@@ -182,31 +180,33 @@ Member:
 - Password: member123
 ```
 
+-   Email: member@himatika.its.ac.id
+-   Password: member123
+
+````
+
 ---
 
-## ⚙️ Konfigurasi
+
+## ⚙️ Configuration
 
 ### Cloudinary Setup
 
-1. **Buat Akun Cloudinary** (Free Tier)
-
-    - Daftar: https://cloudinary.com/users/register_free
+1. **Create a Cloudinary Account** (Free Tier)
+    - Register: https://cloudinary.com/users/register_free
     - Dashboard: https://cloudinary.com/console
-
-2. **Dapatkan Credentials**
-
-    - Cloud Name: Terlihat di dashboard
+2. **Get Your Credentials**
+    - Cloud Name: Shown in dashboard
     - API Key: Settings → Security → API Keys
     - API Secret: Settings → Security → API Keys
-
-3. **Tambahkan ke `.env`**
+3. **Add to `.env`**
 
 ```env
-CLOUDINARY_CLOUD_NAME=dg71hpqya
-CLOUDINARY_API_KEY=943565982761512
-CLOUDINARY_API_SECRET=6-rASrAKEmaqPXa52wWwnn_IPNQ
-CLOUDINARY_URL=cloudinary://943565982761512:6-rASrAKEmaqPXa52wWwnn_IPNQ@dg71hpqya
-```
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name
+````
 
 4. **Clear Config Cache**
 
@@ -214,7 +214,7 @@ CLOUDINARY_URL=cloudinary://943565982761512:6-rASrAKEmaqPXa52wWwnn_IPNQ@dg71hpqy
 php artisan config:clear
 ```
 
-5. **Test Koneksi**
+5. **Test Connection**
 
 ```
 http://localhost:8000/test-cloudinary.php
@@ -246,75 +246,75 @@ DB_PASSWORD=
 
 ---
 
-## 📤 Upload Foto/PDF ke Cloudinary
+## 📤 Cloudinary Upload (Photo/PDF)
 
-### Fitur Upload yang Sudah Terimplementasi
+### Implemented Upload Features
 
-#### ✅ Status Indicator Real-time
+#### ✅ Real-time Status Indicators
 
-**1. Validasi File (Saat Pilih File)**
-
-```
-✅ Siap diupload: profile.jpg (256 KB) - Klik "Simpan Perubahan" untuk upload ke Cloudinary
-❌ Gagal: File terlalu besar (3.5MB). Maksimal 2MB.
-❌ Gagal: Format file tidak valid. Hanya JPG, PNG, atau GIF yang diizinkan.
-```
-
-**2. Status Upload (Saat Submit)**
+**1. File Validation (On File Selection)**
 
 ```
-⏳ Sedang mengupload ke Cloudinary... Mohon tunggu, jangan tutup halaman ini.
-[Tombol: 🔄 Mengupload ke Cloudinary...] (disabled)
+✅ Ready to upload: profile.jpg (256 KB) - Click "Save Changes" to upload to Cloudinary
+❌ Failed: File too large (3.5MB). Maximum 2MB.
+❌ Failed: Invalid file format. Only JPG, PNG, or GIF allowed.
 ```
 
-**3. Hasil Upload**
+**2. Upload Status (On Submit)**
 
--   **Berhasil**: Redirect ke halaman profil dengan foto baru
--   **Gagal**: Error message detail dengan icon alert:
+```
+⏳ Uploading to Cloudinary... Please wait, do not close this page.
+[Button: 🔄 Uploading to Cloudinary...] (disabled)
+```
+
+**3. Upload Result**
+
+-   **Success**: Redirects to profile page with new photo
+-   **Failure**: Detailed error message with alert icon:
     ```
-    ⚠️ Gagal upload foto ke Cloudinary: Connection timeout
-    ⚠️ Gagal upload foto ke Cloudinary: Cloudinary configuration not found
-    ⚠️ Gagal upload foto ke Cloudinary: Invalid credentials
+    ⚠️ Failed to upload photo to Cloudinary: Connection timeout
+    ⚠️ Failed to upload photo to Cloudinary: Cloudinary configuration not found
+    ⚠️ Failed to upload photo to Cloudinary: Invalid credentials
     ```
 
-### Cara Testing Upload
+### How to Test Upload
 
-#### 1. Test Konfigurasi
+#### 1. Test Configuration
 
 ```
 http://localhost:8000/test-cloudinary.php
 ```
 
-**Harus muncul:**
+**Expected Output:**
 
 -   ✅ Cloudinary Config OK!
--   ✅ Koneksi ke Cloudinary API Berhasil!
+-   ✅ Successfully connected to Cloudinary API!
 
-#### 2. Test Upload di Edit Profil
+#### 2. Test Upload in Edit Profile
 
-**Step 1: Pilih File**
+**Step 1: Select File**
 
--   Buka: http://localhost:8000/profile/edit
--   Klik "Choose File" di form Foto Profil
--   Pilih foto (max 2MB, format JPG/PNG/GIF)
+-   Open: http://localhost:8000/profile/edit
+-   Click "Choose File" in the Profile Photo form
+-   Select a photo (max 2MB, JPG/PNG/GIF)
 
-**Step 2: Lihat Validasi**
+**Step 2: View Validation**
 
--   ✅ File valid → Status hijau: "✅ Siap diupload..."
--   ❌ File invalid → Status merah: "❌ Gagal: ..." + input clear otomatis
+-   ✅ Valid file → Green status: "✅ Ready to upload..."
+-   ❌ Invalid file → Red status: "❌ Failed: ..." + input auto-cleared
 
 **Step 3: Submit Form**
 
--   Klik tombol "Simpan Perubahan"
--   Tombol berubah: Disabled + Spinner + "Mengupload ke Cloudinary..."
--   Status text: "⏳ Sedang mengupload ke Cloudinary..."
+-   Click "Save Changes"
+-   Button changes: Disabled + Spinner + "Uploading to Cloudinary..."
+-   Status text: "⏳ Uploading to Cloudinary..."
 
-**Step 4: Cek Hasil**
+**Step 4: Check Result**
 
--   **Berhasil**: Redirect ke `/profile` dengan foto baru
--   **Gagal**: Tetap di halaman dengan error message
+-   **Success**: Redirects to `/profile` with new photo
+-   **Failure**: Remains on page with error message
 
-#### 3. Cek Log (Jika Gagal)
+#### 3. Check Logs (If Failed)
 
 **Windows PowerShell:**
 
@@ -328,33 +328,33 @@ Get-Content "storage/logs/laravel.log" -Tail 50
 tail -f storage/logs/laravel.log
 ```
 
-**Cari keyword:**
+**Look for keywords:**
 
--   `Cloudinary config loaded` → Config berhasil dimuat
--   `Profile photo upload started` → Info file yang diupload
--   `Profile photo uploaded successfully` → URL Cloudinary
--   `Failed to upload profile photo` → Error detail + stack trace
+-   `Cloudinary config loaded` → Config loaded successfully
+-   `Profile photo upload started` → Info about uploaded file
+-   `Profile photo uploaded successfully` → Cloudinary URL
+-   `Failed to upload profile photo` → Error details + stack trace
 
-### File-File yang Terlibat
+### Involved Files
 
 ```
 resources/views/profile/edit.blade.php
-├── Input file dengan ID: profile_photo_member / profile_photo_admin
+├── Input file with ID: profile_photo_member / profile_photo_admin
 ├── Status element: <p id="file-info-member">
 └── Error display: @error('profile_photo')
 
 public/js/profile-upload.js
-├── validateAndPreviewFile() → Validasi ukuran & format
+├── validateAndPreviewFile() → Size & format validation
 └── Form submit handler → Loading state
 
 app/Http/Controllers/ProfileController.php
-├── Validasi: 'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-├── Upload ke Cloudinary dengan transformasi
-├── Auto-delete foto lama
+├── Validation: 'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+├── Upload to Cloudinary with transformation
+├── Auto-delete old photo
 └── Enhanced logging & error handling
 
 public/test-cloudinary.php
-└── Test page untuk verify config & koneksi
+└── Test page to verify config & connection
 ```
 
 ---
@@ -401,153 +401,147 @@ CLOUDINARY_API_SECRET=6-rASrAKEmaqPXa52wWwnn_IPNQ
 1. Cek koneksi internet
 2. Test ping: `ping api.cloudinary.com`
 3. Coba upload file lebih kecil
-4. Cek status Cloudinary: https://status.cloudinary.com
 
-### ❌ "Gagal upload foto ke Cloudinary: Invalid credentials"
+````
 
-**Penyebab**: API Key atau Secret salah
+'rapor_pdf' => 'nullable|mimes:pdf|max:5120', // 5MB
 
-**Solusi**:
+## 🚀 Deployment
 
-1. Login ke Cloudinary Dashboard
-2. Settings → Security → API Keys
-3. Copy credentials yang benar
-4. Update `.env`:
+### Pre-Deployment Checklist
+
+```bash
+# 1. Update .env for production
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://your-domain.com
+
+# 2. Clear & cache config
+php artisan config:clear
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# 3. Optimize autoloader
+composer install --optimize-autoloader --no-dev
+
+# 4. Build assets
+npm run build
+
+# 5. Set permissions (Linux)
+chmod -R 755 storage
+chmod -R 755 bootstrap/cache
+
+# 6. Test upload
+# Open: https://your-domain.com/test-cloudinary.php
+````
+
+### Environment Variables (Production)
 
 ```env
-CLOUDINARY_API_KEY=your-correct-api-key
-CLOUDINARY_API_SECRET=your-correct-api-secret
+APP_NAME="MyHIMATIKA"
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://myhimatika.himatika.its.ac.id
+
+DB_CONNECTION=mysql
+DB_HOST=your-prod-host.aivencloud.com
+DB_PORT=13530
+DB_DATABASE=myhimatika_production
+DB_USERNAME=your-prod-user
+DB_PASSWORD=your-prod-password
+
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name
+
+SESSION_DRIVER=database
+QUEUE_CONNECTION=database
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-app-password
 ```
 
-5. Run: `php artisan config:clear`
-6. Restart server
+### Deploy to cPanel
 
-### ❌ "Gagal upload foto ke Cloudinary: Cloudinary configuration not found"
+1. **Upload Files**
+    - Zip project: `zip -r myhimatika.zip . -x "node_modules/*" -x ".git/*"`
+    - Upload via File Manager or FTP
+    - Extract in `public_html/myhimatika`
+2. **Setup Database**
+    - Create database in cPanel → MySQL Databases
+    - Import SQL or run migration:
+    ```bash
+    php artisan migrate --force
+    ```
+3. **Configure .env**
+    - Copy `.env.example` to `.env`
+    - Update database credentials
+    - Generate key: `php artisan key:generate`
+4. **Set Public Directory**
+    - cPanel → Domains → Setup
+    - Document Root: `/home/username/public_html/myhimatika/public`
+5. **Test Upload**
+    - Open: `https://your-domain.com/test-cloudinary.php`
+    - Test photo upload at `/profile/edit`
 
-**Penyebab**: File `config/cloudinary.php` tidak ada atau corrupt
-
-**Solusi**:
+### Deploy to VPS (Ubuntu)
 
 ```bash
-# Reinstall package
-composer remove cloudinary-labs/cloudinary-laravel
-composer require cloudinary-labs/cloudinary-laravel
+# 1. Clone repository
 
-# Publish config
-php artisan vendor:publish --provider="CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider"
+cd ETS-web
 
-# Clear cache
-php artisan config:clear
+# 2. Install dependencies
+composer install --optimize-autoloader --no-dev
+npm install && npm run build
+
+# 3. Setup .env
+cp .env.example .env
+nano .env  # Edit database & cloudinary config
+
+# 4. Generate key
+php artisan key:generate
+
+# 5. Run migration
+php artisan migrate --force
+
+# 6. Set permissions
+sudo chown -R www-data:www-data storage bootstrap/cache
+sudo chmod -R 775 storage bootstrap/cache
+
+# 7. Setup Nginx/Apache
+sudo nano /etc/nginx/sites-available/myhimatika
+# Configure virtual host
+
+# 8. Restart services
+sudo systemctl restart nginx
+sudo systemctl restart php8.2-fpm
+
+# 9. Test upload
+curl https://your-domain.com/test-cloudinary.php
 ```
 
-### ❌ File terlalu besar
+### Monitoring Production
 
-**Penyebab**: File > 2MB
-
-**Solusi**:
-
--   Compress foto (tinypng.com, squoosh.app)
--   Atau ubah limit di `ProfileController.php`:
-
+````bash
+# Check error log
 ```php
-'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120' // 5MB
-```
 
-### ❌ Status indicator tidak muncul
-
-**Penyebab**: JavaScript tidak load
-
-**Solusi**:
-
-1. Cek console browser (F12)
-2. Pastikan `public/js/profile-upload.js` exists
-3. Hard refresh: Ctrl+Shift+R (Windows) / Cmd+Shift+R (Mac)
-4. Clear Laravel cache: `php artisan cache:clear`
-
-### ❌ Upload sukses tapi foto tidak muncul
-
-**Penyebab**: Old local storage URL masih di database
-
-**Solusi**:
-
-```bash
-php artisan profile:clean-old-photos
-```
-
-### ❌ Error 500 saat upload
-
-**Penyebab**: PHP memory limit atau timeout
-
-**Solusi**:
-
-**Edit `php.ini`:**
-
-```ini
-upload_max_filesize = 10M
-post_max_size = 10M
-memory_limit = 256M
-max_execution_time = 300
-```
-
-**Atau tambah di `.htaccess`:**
-
-```apache
-php_value upload_max_filesize 10M
-php_value post_max_size 10M
-php_value memory_limit 256M
-```
-
----
-
-## 📚 Extend untuk Upload PDF
-
-Untuk menambahkan upload PDF (rapor, transkrip, surat, dll):
-
-### 1. Migration
-
-```bash
-php artisan make:migration add_documents_to_users_table
-```
-
-```php
-// database/migrations/xxxx_add_documents_to_users_table.php
-public function up()
-{
-    Schema::table('users', function (Blueprint $table) {
-        $table->string('rapor_pdf')->nullable();
-        $table->string('transkrip_pdf')->nullable();
-        $table->string('ktp_pdf')->nullable();
-    });
-}
-```
-
-Run: `php artisan migrate`
-
-### 2. Update Model
-
-```php
-// app/Models/User.php
-protected $fillable = [
-    'rapor_pdf',
-    'transkrip_pdf',
-    'ktp_pdf',
-    // ... existing fields
-];
-```
-
-### 3. Update Controller Validation
-
-```php
-// app/Http/Controllers/ProfileController.php
-'rapor_pdf' => 'nullable|mimes:pdf|max:5120', // 5MB
-'transkrip_pdf' => 'nullable|mimes:pdf|max:5120',
-```
-
-### 4. Upload Logic
-
-```php
+# Check Nginx/Apache log
 // Handle PDF upload
+
+# Monitor upload
 if ($request->hasFile('rapor_pdf') && $request->file('rapor_pdf')->isValid()) {
+
+# Check Cloudinary usage
+# Login: https://cloudinary.com/console
+````
+
     try {
         $uploadedFile = Cloudinary::upload($request->file('rapor_pdf')->getRealPath(), [
             'folder' => 'myhimatika/documents',
@@ -560,8 +554,10 @@ if ($request->hasFile('rapor_pdf') && $request->file('rapor_pdf')->isValid()) {
         \Log::error('Failed to upload PDF: ' . $e->getMessage());
         return redirect()->back()->withErrors(['rapor_pdf' => 'Gagal upload PDF: ' . $e->getMessage()]);
     }
+
 }
-```
+
+````
 
 ### 5. Update View
 
@@ -584,7 +580,7 @@ if ($request->hasFile('rapor_pdf') && $request->file('rapor_pdf')->isValid()) {
         </p>
     @enderror
 </div>
-```
+````
 
 ### 6. Update JavaScript
 
@@ -650,17 +646,23 @@ function validateAndPreviewPDF(input, section) {
     - Bandwidth (GB/month)
     - Transformation credits
 
-### Tips Hemat Quota
+### Quota Saving Tips
 
--   Compress foto sebelum upload
--   Gunakan transformations (auto-quality, auto-format)
--   Hapus foto lama yang tidak terpakai:
+-   Compress photos before uploading
+-   Use transformations (auto-quality, auto-format)
+-   Delete unused old photos:
 
 ```bash
 php artisan profile:clean-old-photos
 ```
 
--   Set auto-delete untuk file temporary
+-   Set auto-delete for temporary files
+
+### Upgrade Plan (If Needed)
+
+-   **Plus Plan**: $99/month → 100 GB storage, 100 GB bandwidth
+-   **Advanced Plan**: $249/month → 300 GB storage, 300 GB bandwidth
+-   More info: https://cloudinary.com/pricing
 
 ### Upgrade Plan (Jika Perlu)
 
@@ -729,39 +731,30 @@ MAIL_USERNAME=your-email@gmail.com
 MAIL_PASSWORD=your-app-password
 ```
 
-### Deploy ke cPanel
+### Deploy to cPanel
 
 1. **Upload Files**
-
-    - Zip project: `zip -r myhimatika.zip . -x "node_modules/*" -x ".git/*"`
-    - Upload via File Manager atau FTP
-    - Extract di `public_html/myhimatika`
-
+    - Zip the project: `zip -r myhimatika.zip . -x "node_modules/*" -x ".git/*"`
+    - Upload via File Manager or FTP
+    - Extract in `public_html/myhimatika`
 2. **Setup Database**
-
-    - Create database di cPanel → MySQL Databases
-    - Import SQL atau run migration:
-
+    - Create a database in cPanel → MySQL Databases
+    - Import SQL or run migration:
     ```bash
     php artisan migrate --force
     ```
-
 3. **Configure .env**
-
     - Copy `.env.example` to `.env`
     - Update database credentials
     - Generate key: `php artisan key:generate`
-
 4. **Set Public Directory**
-
     - cPanel → Domains → Setup
     - Document Root: `/home/username/public_html/myhimatika/public`
-
 5. **Test Upload**
-    - Buka: `https://your-domain.com/test-cloudinary.php`
-    - Test upload foto di `/profile/edit`
+    - Open: `https://your-domain.com/test-cloudinary.php`
+    - Test photo upload at `/profile/edit`
 
-### Deploy ke VPS (Ubuntu)
+### Deploy to VPS (Ubuntu)
 
 ```bash
 # 1. Clone repository
@@ -801,10 +794,10 @@ curl https://your-domain.com/test-cloudinary.php
 ### Monitoring Production
 
 ```bash
-# Cek error log
+# Check error log
 tail -f storage/logs/laravel.log
 
-# Cek Nginx/Apache log
+# Check Nginx/Apache log
 tail -f /var/log/nginx/error.log
 
 # Monitor upload
@@ -818,28 +811,22 @@ grep "Profile photo upload" storage/logs/laravel.log
 
 ## 🤝 Contributing
 
-Kontribusi sangat diterima! Untuk berkontribusi:
+Contributions are very welcome! To contribute:
 
-1. Fork repository ini
-2. Buat branch fitur: `git checkout -b feature/AmazingFeature`
-3. Commit changes: `git commit -m 'Add some AmazingFeature'`
-4. Push ke branch: `git push origin feature/AmazingFeature`
-5. Buat Pull Request
+1. Fork this repository
+2. Create a feature branch: `git checkout -b feature/AmazingFeature`
+3. Commit your changes: `git commit -m 'Add some AmazingFeature'`
+4. Push to the branch: `git push origin feature/AmazingFeature`
+5. Open a Pull Request
 
 ### Coding Standards
 
--   Follow PSR-12 coding standard
+-   Follow the PSR-12 coding standard
 -   Write clear commit messages
--   Add comments untuk kode kompleks
--   Test sebelum push
+-   Add comments for complex code
+-   Test before pushing
 
 ---
-
-## 📞 Support & Contact
-
-**Developer**: Teosofi Hidayah Agung (Tetew)
-**Organization**: HIMATIKA ITS 2024/2025
-**Repository**: https://github.com/TetewHeroez/ETS-web
 
 ### Useful Links
 
@@ -861,17 +848,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 -   Laravel Framework
 -   Cloudinary for CDN storage
 -   Aiven for MySQL hosting
--   HIMATIKA ITS 2024/2025
+-   HIMATIKA ITS 2024/2025 (Mathematics Student Association, ITS)
 
 ---
 
-**Last Updated**: October 24, 2025  
-**Version**: 1.0.0  
+**Last Updated**: October 28, 2025
+**Version**: 1.0.0
 **Status**: Production Ready ✅
 
 ## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+To ensure the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
 ## Security Vulnerabilities
 
