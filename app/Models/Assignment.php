@@ -13,8 +13,8 @@ class Assignment extends Model
         'title',
         'description',
         'deadline',
-        'submission_type', // 'pdf', 'image', or 'link'
-        'gdk_flowchart_id', // Link ke metode GDK untuk perhitungan PI
+        'submission_type', 
+        'gdk_flowchart_id', 
     ];
 
     protected $casts = [

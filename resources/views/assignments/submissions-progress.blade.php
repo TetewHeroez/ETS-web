@@ -403,8 +403,16 @@
                                                     </div>
                                                 @endif
                                                 <div>
-                                                    <div class="text-sm font-bold text-gray-900 dark:text-slate-100">
-                                                        {{ $member->name }}</div>
+                                                    @if (auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
+                                                        <a href="{{ route('users.submissions', $member) }}"
+                                                            class="text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline">
+                                                            {{ $member->name }}
+                                                        </a>
+                                                    @else
+                                                        <div class="text-sm font-bold text-gray-900 dark:text-slate-100">
+                                                            {{ $member->name }}
+                                                        </div>
+                                                    @endif
                                                     <div
                                                         class="text-xs text-gray-500 dark:text-slate-400 flex items-center gap-2">
                                                         <span>{{ $member->jabatan }}</span>
@@ -434,11 +442,20 @@
                                         @foreach ($assignments as $assignment)
                                             <td class="px-6 py-5 whitespace-nowrap text-center">
                                                 @if ($assignment->hasSubmissionFrom($member->id))
-                                                    <span
-                                                        class="status-badge-completed inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold">
-                                                        <i data-feather="check-circle" class="w-4 h-4 mr-2"></i>
-                                                        Sudah
-                                                    </span>
+                                                    <div class="flex items-center justify-center gap-2">
+                                                        <span
+                                                            class="status-badge-completed inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold">
+                                                            <i data-feather="check-circle" class="w-4 h-4 mr-2"></i>
+                                                            Sudah
+                                                        </span>
+                                                        @if (auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
+                                                            <a href="{{ route('users.submissions', ['user' => $member, 'assignment' => $assignment->id]) }}"
+                                                                class="inline-flex items-center p-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors"
+                                                                title="Lihat tugas">
+                                                                <i data-feather="eye" class="w-3 h-3"></i>
+                                                            </a>
+                                                        @endif
+                                                    </div>
                                                 @else
                                                     <span
                                                         class="status-badge-pending inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold">
@@ -480,8 +497,16 @@
                                 </div>
                             @endif
                             <div class="flex-1 min-w-0">
-                                <h3 class="font-bold text-white text-sm sm:text-base truncate">
-                                    {{ $member->name }}</h3>
+                                @if (auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
+                                    <a href="{{ route('users.submissions', $member) }}"
+                                        class="font-bold text-white text-sm sm:text-base truncate hover:text-cyan-200 hover:underline">
+                                        {{ $member->name }}
+                                    </a>
+                                @else
+                                    <h3 class="font-bold text-white text-sm sm:text-base truncate">
+                                        {{ $member->name }}
+                                    </h3>
+                                @endif
                                 <div class="flex items-center gap-2 mt-1">
                                     <p class="text-white/80 text-xs sm:text-sm">{{ $member->nrp ?? '-' }}</p>
                                     @if ($member->status)
@@ -510,11 +535,20 @@
                                     </div>
                                     <div class="flex-shrink-0 ml-2">
                                         @if ($assignment->hasSubmissionFrom($member->id))
-                                            <span
-                                                class="status-badge-completed inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold">
-                                                <i data-feather="check-circle" class="w-3 h-3 mr-1"></i>
-                                                <span>Sudah</span>
-                                            </span>
+                                            <div class="flex items-center gap-1">
+                                                <span
+                                                    class="status-badge-completed inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold">
+                                                    <i data-feather="check-circle" class="w-3 h-3 mr-1"></i>
+                                                    <span>Sudah</span>
+                                                </span>
+                                                @if (auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
+                                                    <a href="{{ route('users.submissions', ['user' => $member, 'assignment' => $assignment->id]) }}"
+                                                        class="inline-flex items-center p-1 bg-blue-500 hover:bg-blue-600 text-white rounded text-xs transition-colors"
+                                                        title="Lihat tugas">
+                                                        <i data-feather="eye" class="w-3 h-3"></i>
+                                                    </a>
+                                                @endif
+                                            </div>
                                         @else
                                             <span
                                                 class="status-badge-pending inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold">

@@ -55,9 +55,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Routes untuk submissions (member bisa submit)
-    Route::get('/submissions', [SubmissionController::class, 'index'])->name('submissions.index');
+    Route::get('/upload', [SubmissionController::class, 'selectAssignment'])->name('upload');
     Route::get('/assignments/{assignment}/upload', [SubmissionController::class, 'upload'])->name('assignments.upload');
     Route::post('/submissions', [SubmissionController::class, 'store'])->name('submissions.store');
+    
+    // Routes untuk melihat submission per user (admin dan superadmin)
+    Route::middleware('role:admin,superadmin')->group(function () {
+        Route::get('/users/{user}/submissions', [SubmissionController::class, 'showUserSubmissions'])->name('users.submissions');
+    });
     
     // Routes untuk attendance/absensi
     Route::middleware('role:admin,superadmin')->group(function () {

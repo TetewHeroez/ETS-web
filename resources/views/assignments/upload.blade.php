@@ -87,7 +87,7 @@
 
                                 <div class="border-2 border-dashed border-gray-300 dark:border-slate-600 rounded-lg p-8 text-center cursor-pointer hover:border-blue-400 dark:hover:border-blue-500 transition"
                                     id="uploadArea">
-                                    <i data-feather="cloud-upload" class="w-12 h-12 mx-auto text-gray-400 mb-3"></i>
+                                    <i data-feather="upload" class="w-12 h-12 mx-auto text-gray-400 mb-3"></i>
                                     <p class="text-gray-600 dark:text-gray-400 mb-1">
                                         Drag & drop file di sini atau klik untuk memilih
                                     </p>
@@ -135,8 +135,7 @@
                                     URL Link <span class="text-red-500">*</span>
                                 </label>
                                 <input type="url" name="link" id="link"
-                                    placeholder="https://drive.google.com/... atau https://github.com/..."
-                                    value="{{ old('link') }}"
+                                    placeholder="https://drive.google.com/..." value="{{ old('link') }}"
                                     class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                                     required>
                                 @error('link')
@@ -144,6 +143,21 @@
                                 @enderror
                             </div>
                         @endif
+
+                        <!-- Notes Input -->
+                        <div class="mb-6">
+                            <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Catatan (Opsional)
+                            </label>
+                            <textarea name="notes" id="notes" rows="3"
+                                placeholder="Tambahkan catatan atau penjelasan tambahan untuk tugas ini..."
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 resize-vertical"
+                                maxlength="1000">{{ old('notes') }}</textarea>
+                            <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">Maksimal 1000 karakter</p>
+                            @error('notes')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
 
                         <!-- Submit Button -->
                         <button type="submit"
@@ -168,22 +182,29 @@
                                 {{ $previousSubmission->created_at->format('d M Y, H:i') }}
                             </p>
                             @if ($previousSubmission->type !== 'link')
-                                <p class="text-gray-600 dark:text-gray-400">
-                                    <span class="font-medium">File:</span>
-                                    <a href="{{ $previousSubmission->file_url }}" target="_blank"
-                                        class="text-blue-600 dark:text-blue-400 hover:underline">
-                                        Lihat File
-                                        <i data-feather="external-link" class="w-3 h-3 inline ml-1"></i>
-                                    </a>
-                                </p>
+                                <div class="mt-2">
+                                    @if ($previousSubmission->type === 'image')
+                                        <img src="{{ $previousSubmission->content }}" alt="Submitted image"
+                                            class="max-w-full h-auto rounded-lg border border-gray-300 dark:border-slate-600">
+                                    @elseif ($previousSubmission->type === 'pdf')
+                                        <iframe src="{{ $previousSubmission->content }}"
+                                            class="w-full h-96 border border-gray-300 dark:border-slate-600 rounded-lg"></iframe>
+                                    @endif
+                                </div>
                             @else
                                 <p class="text-gray-600 dark:text-gray-400">
                                     <span class="font-medium">Link:</span>
-                                    <a href="{{ $previousSubmission->link }}" target="_blank"
+                                    <a href="{{ $previousSubmission->content }}" target="_blank"
                                         class="text-blue-600 dark:text-blue-400 hover:underline">
-                                        {{ $previousSubmission->link }}
+                                        {{ $previousSubmission->content }}
                                         <i data-feather="external-link" class="w-3 h-3 inline ml-1"></i>
                                     </a>
+                                </p>
+                            @endif
+                            @if ($previousSubmission->notes)
+                                <p class="text-gray-600 dark:text-gray-400 mt-2">
+                                    <span class="font-medium">Catatan:</span>
+                                    <span class="italic">{{ $previousSubmission->notes }}</span>
                                 </p>
                             @endif
                         </div>
@@ -291,11 +312,16 @@
             document.getElementById('fileName').textContent = file.name;
             document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(2) + ' KB';
             filePreview.classList.remove('hidden');
+
+            // Hide upload area
+            uploadArea.classList.add('hidden');
         }
 
         function clearFile() {
             fileInput.value = '';
             filePreview.classList.add('hidden');
+            // Show upload area again
+            uploadArea.classList.remove('hidden');
         }
 
         // Form submission

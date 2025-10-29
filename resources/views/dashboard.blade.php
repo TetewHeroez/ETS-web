@@ -113,7 +113,7 @@
 
                 <div class="px-4 sm:px-0 mb-8">
                     <div
-                        class="bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-700 dark:to-cyan-600 rounded-lg shadow-lg p-6 mb-6">
+                        class="bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-slate-700 dark:to-cyan-600 rounded-lg shadow-lg p-6 mb-6">
                         <h3 class="text-xl font-heading font-bold text-white mb-4 flex items-center">
                             <i data-feather="user-check" class="w-6 h-6 mr-2"></i>
                             Statistik Kehadiran Anda
@@ -176,10 +176,8 @@
                     <!-- Deadline Reminder (Ringkas dengan Slider) -->
                     @php
                         $now = \Carbon\Carbon::now();
-                        $upcomingAssignments = \App\Models\Assignment::where('is_active', true)
-                            ->where('deadline', '>=', $now->toDateString())
+                        $upcomingAssignments = \App\Models\Assignment::where('deadline', '>=', $now->toDateString())
                             ->orderBy('deadline', 'asc')
-                            ->take(5)
                             ->get();
                     @endphp
 
@@ -199,7 +197,7 @@
                                             <i data-feather="chevron-left" class="h-4 w-4 text-white"></i>
                                         </button>
                                         <span class="text-xs text-white font-semibold">
-                                            <span id="currentSlide">1</span>-<span id="maxSlide">2</span> /
+                                            <span id="currentSlide">1</span>-<span id="maxSlide">3</span> /
                                             {{ $upcomingAssignments->count() }}
                                         </span>
                                         <button onclick="slideAssignments('next')"
@@ -238,13 +236,12 @@
                                                 $badgeColor = 'bg-cyan-100';
                                                 $iconColor = 'text-cyan-600';
                                             }
-
                                             $timeLeft = $daysLeft < 1 ? 'Hari ini!' : $daysLeft . ' hari lagi';
                                         @endphp
 
                                         <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 px-2 assignment-card">
                                             <div
-                                                class="{{ $bgColor }} rounded-lg p-4 h-full border-l-4 border-{{ substr($iconColor, 5) }}">
+                                                class="{{ $bgColor }} rounded-lg p-4 h-full border-l-4 border-indigo-500 dark:border-cyan-500">
                                                 <div class="flex items-start justify-between mb-2">
                                                     <div class="flex-1">
                                                         <h5 class="font-bold {{ $textColor }} text-sm mb-1">
@@ -267,7 +264,7 @@
                                                         </span>
                                                     </div>
                                                     @if (Auth::user()->isMember())
-                                                        <a href="{{ route('submissions.index') }}"
+                                                        <a href="{{ route('submissions.table') }}"
                                                             class="px-3 py-1 bg-blue-700 text-white rounded hover:bg-blue-800 transition text-xs font-semibold">
                                                             Kumpulkan
                                                         </a>

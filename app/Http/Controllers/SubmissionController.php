@@ -6,23 +6,26 @@ use App\Models\Assignment;
 use App\Models\Submission;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class SubmissionController extends Controller
 {
     /**
-     * Show all submissions available for current member to upload
+     * Show assignment selection page for members to choose which assignment to upload.
      */
-    public function index()
+    public function selectAssignment()
     {
         // Only members can access
         if (auth()->user()->role !== 'member') {
-            abort(403, 'Unauthorized - Hanya member yang dapat melihat tugas.');
+            abort(403, 'Unauthorized - Hanya member yang dapat mengumpulkan tugas.');
         }
 
-        $assignments = Assignment::orderBy('created_at', 'desc')->get();
+        $assignments = Assignment::orderBy('deadline', 'asc')->get();
 
-        return view('assignments.my-submissions', compact('assignments'));
+        return view('assignments.select', compact('assignments'));
     }
 
     /**
@@ -48,85 +51,105 @@ class SubmissionController extends Controller
     public function store(Request $request)
     {
         $assignment = Assignment::findOrFail($request->input('assignment_id'));
+        $userId = Auth::id();
 
-        // Validate based on submission_type from assignment
+        // --- 1. Validasi ---
+        $rules = [
+            'assignment_id' => 'required|exists:assignments,id',
+            'notes' => 'nullable|string|max:1000',
+        ];
+
         if ($assignment->submission_type === 'link') {
-            $validated = $request->validate([
-                'assignment_id' => 'required|exists:assignments,id',
-                'link' => 'required|url',
-            ]);
+            $rules['link'] = 'required|url|max:2048';
         } else {
-            $validated = $request->validate([
-                'assignment_id' => 'required|exists:assignments,id',
-                'file' => 'required|file|max:5120|mimes:' . ($assignment->submission_type === 'pdf' ? 'pdf' : 'jpeg,jpg,png,gif,svg'),
-            ]);
+            $rules['file'] = 'required|file|max:5120|mimes:' . ($assignment->submission_type === 'pdf' ? 'pdf' : 'jpeg,jpg,png,gif,svg');
         }
 
-        // Cek apakah user sudah submit tugas ini sebelumnya
-        $existingSubmission = Submission::where('user_id', auth()->id())
-            ->where('assignment_id', $assignment->id)
-            ->first();
+        $validator = Validator::make($request->all(), $rules);
 
-        if ($existingSubmission) {
-            if (request()->wantsJson()) {
-                return response()->json(['message' => 'Anda sudah mengumpulkan tugas ini sebelumnya!'], 422);
+        // Handle validasi gagal untuk AJAX
+        if ($validator->fails()) {
+            if ($request->wantsJson()) {
+                // Kirim error validasi pertama sebagai JSON
+                return response()->json(['message' => $validator->errors()->first()], 422);
             }
-            return back()->with('error', 'Anda sudah mengumpulkan tugas ini sebelumnya!');
+            return back()->withErrors($validator)->withInput();
         }
 
+        $validated = $validator->validated();
         $content = null;
 
-        if ($assignment->submission_type === 'link') {
-            $content = $validated['link'];
-        } else {
-            // Upload file ke Cloudinary
-            $file = $request->file('file');
+        try {
+            if ($assignment->submission_type === 'link') {
+                $content = $validated['link'];
+            } else {
+                // --- 2. Logika Upload (Cara Bersih) ---
+                $file = $request->file('file');
 
-            try {
-                // Upload dengan folder dan public_id custom
+                // Buat Public ID KONSISTEN (TANPA time())
+                // Ini adalah "nama file" unik di Cloudinary untuk user ini & tugas ini.
+                $publicId = 'myhimatika/submissions/user_' . $userId . '_assignment_' . $assignment->id;
+
+                // Upload menggunakan 'Cloudinary::upload' (lebih sederhana)
                 $uploadedFile = Cloudinary::uploadApi()->upload($file->getRealPath(), [
-                    'folder' => 'myhimatika/submissions',
-                    'public_id' => 'submission_' . auth()->id() . '_' . time(),
-                    'resource_type' => 'auto' // auto detect: image/pdf/raw
-                ]);
+                    'public_id' => $publicId,
+                    'overwrite' => true,      // SURUH CLOUDINARY TIMPA FILE LAMA
+                    'resource_type' => 'auto'
+                ])->getArrayCopy();
 
-                // Extract secure URL dari response
-                $securePath = null;
-                if (is_array($uploadedFile)) {
-                    $securePath = $uploadedFile['secure_url'] ?? $uploadedFile['url'] ?? null;
-                } elseif (is_object($uploadedFile)) {
-                    $securePath = $uploadedFile->secure_url ?? $uploadedFile->url ?? null;
-                }
+                $securePath = $uploadedFile['secure_url'] ?? $uploadedFile['url'] ?? null;
 
-                if (!$securePath) {
-                    throw new \Exception('Failed to get file URL from Cloudinary');
-                }
+            if (!$securePath) {
 
-                $content = $securePath;
-                \Log::info('Submission uploaded to Cloudinary', ['url' => $content]);
-            } catch (\Exception $e) {
-                \Log::error('Cloudinary upload error', ['error' => $e->getMessage()]);
-                if (request()->wantsJson()) {
-                    return response()->json(['message' => 'Gagal upload file: ' . $e->getMessage()], 500);
-                }
-                return back()->with('error', 'Gagal upload file: ' . $e->getMessage());
+                throw new \Exception('Failed to get file URL from Cloudinary');
+
             }
+
+
+
+            $content = $securePath;
+
+            \Log::info('Submission uploaded to Cloudinary', ['url' => $content]);
+            }
+
+            // --- 3. Simpan ke DB (Cara Bersih) ---
+            // 'updateOrCreate' menggantikan blok if/else Anda di akhir.
+            Submission::updateOrCreate(
+                [
+                    'user_id' => $userId,               // Kunci pencarian
+                    'assignment_id' => $assignment->id, // Kunci pencarian
+                ],
+                [
+                    'type' => $assignment->submission_type, // Data untuk di-update/create
+                    'content' => $content,
+                    'notes' => $request->input('notes'), // Tambahkan notes
+                ]
+            );
+
+            $message = 'Tugas berhasil dikumpulkan/diperbarui!';
+
+            // === 4. INI PERBAIKAN ERROR ANDA ===
+            // Kembalikan JSON jika diminta oleh 'fetch'
+            if ($request->wantsJson()) {
+                return response()->json(['message' => $message], 200);
+            }
+
+            // Jika tidak, baru redirect (untuk form submit biasa)
+            return redirect()->route('assignments.upload', $assignment)
+                ->with('success', $message);
+
+        } catch (\Exception $e) {
+            Log::error('Cloudinary upload error', ['error' => $e->getMessage()]);
+            $errorMessage = 'Gagal upload file: ' . $e->getMessage();
+            
+            // Pastikan catch juga mengembalikan JSON
+            if ($request->wantsJson()) {
+                return response()->json(['message' => $errorMessage], 500);
+            }
+            return back()->with('error', $errorMessage);
         }
-
-        Submission::create([
-            'user_id' => auth()->id(),
-            'assignment_id' => $assignment->id,
-            'type' => $assignment->submission_type,
-            'content' => $content,
-        ]);
-
-        if (request()->wantsJson()) {
-            return response()->json(['message' => 'Tugas berhasil dikumpulkan!'], 200);
-        }
-
-        return redirect()->route('assignments.upload', $assignment)
-            ->with('success', 'Tugas berhasil dikumpulkan!');
     }
+
 
     /**
      * Display the submission progress table.
@@ -159,5 +182,29 @@ class SubmissionController extends Controller
         $members = $membersQuery->orderBy($sortBy, $sortOrder)->get();
         
         return view('assignments.submissions-progress', compact('assignments', 'members'));
+    }
+
+    /**
+     * Show all submissions for a specific user (admin and superadmin only)
+     */
+    public function showUserSubmissions(Request $request, User $user)
+    {
+        // Only admin and superadmin can access
+        if (!in_array(auth()->user()->role, ['admin', 'superadmin'])) {
+            abort(403, 'Unauthorized - Hanya admin dan superadmin yang dapat melihat detail submission user.');
+        }
+
+        $assignmentId = $request->query('assignment');
+        
+        $query = Submission::with(['assignment', 'user'])
+            ->where('user_id', $user->id);
+            
+        if ($assignmentId) {
+            $query->where('assignment_id', $assignmentId);
+        }
+        
+        $submissions = $query->orderBy('created_at', 'desc')->get();
+
+        return view('assignments.user-submissions', compact('user', 'submissions', 'assignmentId'));
     }
 }
