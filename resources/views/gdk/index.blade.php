@@ -114,9 +114,6 @@
                                                             class="px-2 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-300 text-xs font-semibold rounded">
                                                             ×{{ number_format($materi->multiplier, 2) }}
                                                         </span>
-                                                        <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">
-                                                            Total: ×{{ number_format($materi->total_multiplier, 2) }}
-                                                        </span>
                                                     </div>
                                                     @if ($materi->deskripsi)
                                                         <p class="text-sm text-slate-600 dark:text-slate-400">

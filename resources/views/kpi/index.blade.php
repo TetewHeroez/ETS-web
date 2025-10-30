@@ -20,7 +20,7 @@
                     <i data-feather="trending-up" class="w-8 h-8 mr-3 text-green-600 dark:text-green-400"></i>
                     Key Performance Indicator (KPI)
                 </h1>
-                <p class="mt-2 text-slate-600 dark:text-slate-400 font-body">Monitoring kinerja kumulatif organisasi dan
+                <p class="mt-2 text-slate-600 dark:text-slate-400 font-body">Monitoring penilaian kumulatif dan
                     performa individu PPH</p>
             </div>
 
@@ -32,7 +32,8 @@
                         <i data-feather="award" class="w-7 h-7 mr-2"></i>
                         KPI Organisasi (Kumulatif Seluruh PPH)
                     </h2>
-                    <p class="text-green-50 text-sm">Key Performance Indicator - Indikator pencapaian strategis organisasi
+                    <p class="text-green-50 text-sm">Key Performance Indicator - Indikator pencapaian keberhasilan
+                        kaderisasi
                     </p>
                 </div>
 

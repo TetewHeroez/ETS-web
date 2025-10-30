@@ -74,7 +74,7 @@
             <!-- Attendance History -->
             <div
                 class="bg-white dark:bg-slate-800 rounded-lg shadow-md border border-slate-200 dark:border-slate-700 overflow-hidden transition-colors duration-300">
-                <div class="bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 px-6 py-4">
+                <div class="bg-gradient-to-r from-blue-500 to-cyan-600 dark:from-blue-700 dark:to-cyan-800 px-6 py-4">
                     <h2 class="text-xl font-bold text-white flex items-center">
                         <i data-feather="list" class="w-6 h-6 mr-2"></i>
                         Riwayat Kehadiran
@@ -91,29 +91,29 @@
                                         Tanggal
                                     </th>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-slate-300 uppercase tracking-wider">
                                         Hari
                                     </th>
                                     <th
-                                        class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        class="px-6 py-3 text-center text-xs font-semibold text-gray-600 dark:text-slate-300 uppercase tracking-wider">
                                         Status
                                     </th>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-slate-300 uppercase tracking-wider">
                                         Keterangan
                                     </th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-200 dark:divide-slate-600">
                                 @foreach ($attendances as $attendance)
-                                    <tr class="hover:bg-gray-50 transition">
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                                         <td class="px-6 py-4">
-                                            <span class="text-sm font-semibold text-gray-900">
+                                            <span class="text-sm font-semibold text-gray-900 dark:text-slate-100">
                                                 {{ $attendance->date->format('d M Y') }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <span class="text-sm text-gray-700">
+                                            <span class="text-sm text-gray-700 dark:text-slate-400">
                                                 {{ $attendance->date->locale('id')->isoFormat('dddd') }}
                                             </span>
                                         </td>
@@ -139,7 +139,7 @@
                                             @endif
                                         </td>
                                         <td class="px-6 py-4">
-                                            <span class="text-sm text-gray-600">
+                                            <span class="text-sm text-gray-600 dark:text-slate-300">
                                                 {{ $attendance->keterangan ?? '-' }}
                                             </span>
                                         </td>

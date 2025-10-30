@@ -30,9 +30,9 @@
                 <h1
                     class="text-5xl font-heading font-bold mb-4 bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
                     MyHIMATIKA</h1>
-                <p class="text-xl text-white/90 mb-6 font-medium">Sistem Manajemen Organisasi</p>
+                <p class="text-xl text-white/90 mb-6 font-medium">Sistem Manajemen Kaderisasi</p>
                 <p class="text-white/80 text-lg leading-relaxed max-w-md font-body">
-                    Platform digital untuk mengelola data anggota, kehadiran, tugas, dan penilaian organisasi HIMATIKA.
+                    Platform digital untuk mengelola kehadiran, tugas, dan penilaian Padamu HIMATIKA.
                 </p>
             </div>
         </div>
@@ -110,15 +110,35 @@
                                 <i data-feather="lock" class="inline-block w-4 h-4 mr-1"></i>
                                 Password
                             </label>
-                            <input type="password" id="password" name="password" required placeholder="Enter your password"
-                                class="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-700 placeholder-slate-400 dark:placeholder-slate-500">
+
+                            <div class="relative">
+                                <input type="password" id="password" name="password" required
+                                    placeholder="Enter your password"
+                                    class="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-700 placeholder-slate-400 dark:placeholder-slate-500 pr-12">
+
+                                <!-- Eye icon (hold to show password) -->
+                                <button type="button" id="holdShowPassword" aria-label="Tahan untuk melihat password"
+                                    class="absolute inset-y-0 right-2 flex items-center px-2 text-slate-500 dark:text-slate-300 hover:text-slate-700 transition-opacity duration-150">
+                                    <i data-feather="eye" id="holdEyeIcon" class="w-5 h-5"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="flex items-center justify-between">
                             <div class="flex items-center">
-                                <input type="checkbox" id="remember" name="remember"
-                                    class="h-4 w-4 text-cyan-600 focus:ring-cyan-500 border-slate-300 dark:border-slate-600 rounded bg-white dark:bg-slate-700">
-                                <label for="remember" class="ml-2 block text-sm text-slate-700 dark:text-slate-300">Remember
+                                <!-- Styled switch for Remember Me -->
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input id="remember" name="remember" type="checkbox" class="sr-only peer" />
+                                    <div id="rememberTrack"
+                                        class="relative w-11 h-6 bg-slate-200 dark:bg-slate-700 rounded-full peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-cyan-300 dark:peer-focus:ring-cyan-800 transition-colors duration-200">
+                                        <div id="rememberDot"
+                                            class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transform transition-all duration-200 translate-x-0">
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label for="remember"
+                                    class="ml-3 text-sm text-slate-700 dark:text-slate-300 select-none">Remember
                                     me</label>
                             </div>
                         </div>
@@ -138,5 +158,130 @@
         if (typeof feather !== 'undefined') {
             feather.replace();
         }
+
+        // Hold-to-show password behavior
+        (function() {
+            const holdBtn = document.getElementById('holdShowPassword');
+            const pwdInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('holdEyeIcon');
+
+            if (!holdBtn || !pwdInput) return;
+
+            const show = (e) => {
+                // try to prevent the button from stealing focus so we can restore caret
+                if (e && e.preventDefault) e.preventDefault();
+
+                // save current selection/caret
+                let sel = {
+                    start: null,
+                    end: null
+                };
+                try {
+                    sel.start = pwdInput.selectionStart;
+                    sel.end = pwdInput.selectionEnd;
+                } catch (err) {
+                    sel.start = null;
+                    sel.end = null;
+                }
+
+                // change to text and restore caret
+                pwdInput.type = 'text';
+                try {
+                    pwdInput.focus();
+                    if (sel.start !== null && sel.end !== null) {
+                        pwdInput.setSelectionRange(sel.start, sel.end);
+                    }
+                } catch (err) {
+                    // ignore
+                }
+
+                if (eyeIcon) {
+                    // show open eye when visible
+                    eyeIcon.setAttribute('data-feather', 'eye');
+                }
+            };
+
+            const hide = () => {
+                // save selection, switch type back and restore selection
+                let sel = {
+                    start: null,
+                    end: null
+                };
+                try {
+                    sel.start = pwdInput.selectionStart;
+                    sel.end = pwdInput.selectionEnd;
+                } catch (err) {
+                    sel.start = null;
+                    sel.end = null;
+                }
+
+                pwdInput.type = 'password';
+                try {
+                    pwdInput.focus();
+                    if (sel.start !== null && sel.end !== null) {
+                        pwdInput.setSelectionRange(sel.start, sel.end);
+                    }
+                } catch (err) {
+                    // ignore
+                }
+
+                if (eyeIcon) {
+                    // show closed eye when hidden
+                    eyeIcon.setAttribute('data-feather', 'eye-off');
+                }
+            };
+
+            // Mouse
+            holdBtn.addEventListener('mousedown', show);
+            holdBtn.addEventListener('mouseup', hide);
+            holdBtn.addEventListener('mouseleave', hide);
+
+            // Touch (non-passive so we can preventDefault and avoid focus stealing)
+            holdBtn.addEventListener('touchstart', show, {
+                passive: false
+            });
+            holdBtn.addEventListener('touchend', hide);
+            holdBtn.addEventListener('touchcancel', hide);
+
+            // Also allow keyboard: press and hold Space or Enter on the button
+            holdBtn.addEventListener('keydown', (e) => {
+                if (e.code === 'Space' || e.code === 'Enter') show(e);
+            });
+            holdBtn.addEventListener('keyup', (e) => {
+                if (e.code === 'Space' || e.code === 'Enter') hide();
+            });
+        })();
+
+        // Make the remember switch visually reflect the checkbox state (works even if Tailwind peer selector not applied)
+        (function() {
+            const rememberInput = document.getElementById('remember');
+            const rememberTrack = document.getElementById('rememberTrack');
+            const rememberDot = document.getElementById('rememberDot');
+
+            if (!rememberInput || !rememberTrack || !rememberDot) return;
+
+            const applyState = (checked) => {
+                if (checked) {
+                    rememberTrack.classList.remove('bg-slate-200');
+                    rememberTrack.classList.add('bg-cyan-600');
+                    // ensure visible in dark mode too (some Tailwind builds may not include dark:bg-cyan-600)
+                    rememberTrack.style.backgroundColor = '#0891b2';
+                    rememberDot.classList.add('translate-x-5');
+                } else {
+                    rememberTrack.classList.add('bg-slate-200');
+                    rememberTrack.classList.remove('bg-cyan-600');
+                    // remove inline override so Tailwind classes take effect again
+                    rememberTrack.style.backgroundColor = '';
+                    rememberDot.classList.remove('translate-x-5');
+                }
+            };
+
+            // Initialize based on current value (server may set checked)
+            applyState(rememberInput.checked);
+
+            rememberInput.addEventListener('change', (e) => {
+                applyState(e.target.checked);
+            });
+        })();
     </script>
 @endsection

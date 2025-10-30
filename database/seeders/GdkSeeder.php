@@ -45,7 +45,7 @@ class GdkSeeder extends Seeder
 
         $metodeTandaPengenalAngkatan = GdkMetode::create([
             'gdk_materi_id' => $materiAngkatan->id,
-            'nama_metode' => 'Angkatan - Tanda Pengenal',
+            'nama_metode' => 'Tanda Pengenal Angkatan',
             'deskripsi' => 'Metode angkatan untuk penilaian solidaritas',
             'pa' => 'Pengenalan Tanda Pengenal',
             'pi' => 'Memakai tanda pengenal dengan benar',
@@ -54,7 +54,7 @@ class GdkSeeder extends Seeder
 
         $metodeMalamInaugurasi = GdkMetode::create([
             'gdk_materi_id' => $materiAngkatan->id,
-            'nama_metode' => 'Angkatan - Malam Inaugurasi',
+            'nama_metode' => 'Malam Inaugurasi',
             'deskripsi' => 'Metode malam inaugurasi untuk penilaian solidaritas',
             'pa' => 'Malam Inaugurasi',
             'pi' => 'Memperkuat solidaritas angkatan',
@@ -63,7 +63,7 @@ class GdkSeeder extends Seeder
 
         $metodeIdentitasAngkatan = GdkMetode::create([
             'gdk_materi_id' => $materiAngkatan->id,
-            'nama_metode' => 'Angkatan - Identitas',
+            'nama_metode' => 'Identitas Angkatan',
             'deskripsi' => 'Metode identitas angkatan untuk penilaian solidaritas',
             'pa' => 'Identitas Angkatan',
             'pi' => 'Mengenal karakter angkatan',
@@ -72,7 +72,7 @@ class GdkSeeder extends Seeder
 
         $metodeBiodataAngkatan = GdkMetode::create([
             'gdk_materi_id' => $materiAngkatan->id,
-            'nama_metode' => 'Angkatan - Biodata',
+            'nama_metode' => 'Biodata Angkatan',
             'deskripsi' => 'Metode biodata angkatan untuk penilaian solidaritas',
             'pa' => 'Biodata Angkatan',
             'pi' => 'Mengenal setiap anggota',
@@ -89,7 +89,7 @@ class GdkSeeder extends Seeder
 
         $metodeSafariHIMATIKA = GdkMetode::create([
             'gdk_materi_id' => $materiKehimatikaan->id,
-            'nama_metode' => 'Kehimatikaan - Safari HIMATIKA',
+            'nama_metode' => 'Safari HIMATIKA',
             'deskripsi' => 'Metode safari untuk penilaian wawasan',
             'pa' => 'Safari HIMATIKA',
             'pi' => 'Memahami organisasi HIMATIKA',
@@ -98,7 +98,7 @@ class GdkSeeder extends Seeder
 
         $metodeForumAtribut = GdkMetode::create([
             'gdk_materi_id' => $materiKehimatikaan->id,
-            'nama_metode' => 'Kehimatikaan - Forum Atribut',
+            'nama_metode' => 'Forum Atribut',
             'deskripsi' => 'Metode forum atribut untuk penilaian wawasan',
             'pa' => 'Forum Atribut',
             'pi' => 'Memperdalam wawasan organisasi',

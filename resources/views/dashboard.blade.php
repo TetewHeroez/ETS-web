@@ -76,8 +76,6 @@
     <div
         class="main-content-wrapper ml-0 md:ml-64 mt-16 min-h-screen bg-slate-50 dark:bg-slate-900 transition-all duration-300">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <x-cloudinary::widget>Upload Files</x-cloudinary::widget>
-            <!-- Announcement Section (Paling Atas) -->
             <div class="px-4 sm:px-0 mb-6">
                 <div
                     class="bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500 dark:from-slate-700 dark:via-slate-800 dark:to-slate-600 rounded-lg shadow-lg overflow-hidden geometric-bg">
@@ -197,7 +195,7 @@
                                             <i data-feather="chevron-left" class="h-4 w-4 text-white"></i>
                                         </button>
                                         <span class="text-xs text-white font-semibold">
-                                            <span id="currentSlide">1</span>-<span id="maxSlide">3</span> /
+                                            <span id="currentSlide">1</span><span id="maxSlide">-3</span> /
                                             {{ $upcomingAssignments->count() }}
                                         </span>
                                         <button onclick="slideAssignments('next')"
@@ -217,49 +215,68 @@
                                             // Tentukan warna berdasarkan sisa waktu
                                             if ($daysLeft < 1) {
                                                 $bgColor = 'bg-red-50';
+                                                $darkbgColor = 'dark:bg-red-200/30';
                                                 $textColor = 'text-red-800';
+                                                $darktextColor = 'dark:text-red-200';
                                                 $badgeColor = 'bg-red-100';
+                                                $darkbadgeColor = 'dark:bg-red-900/30';
                                                 $iconColor = 'text-red-600';
+                                                $darkiconColor = 'dark:text-red-200';
                                             } elseif ($daysLeft <= 3) {
                                                 $bgColor = 'bg-orange-50';
+                                                $darkbgColor = 'dark:bg-orange-200/30';
                                                 $textColor = 'text-orange-800';
+                                                $darktextColor = 'dark:text-orange-200';
                                                 $badgeColor = 'bg-orange-100';
+                                                $darkbadgeColor = 'dark:bg-orange-900/30';
                                                 $iconColor = 'text-orange-600';
+                                                $darkiconColor = 'dark:text-orange-200';
                                             } elseif ($daysLeft <= 7) {
                                                 $bgColor = 'bg-yellow-50';
+                                                $darkbgColor = 'dark:bg-yellow-200/30';
                                                 $textColor = 'text-yellow-800';
+                                                $darktextColor = 'dark:text-yellow-200';
                                                 $badgeColor = 'bg-yellow-100';
+                                                $darkbadgeColor = 'dark:bg-yellow-900/30';
                                                 $iconColor = 'text-yellow-600';
+                                                $darkiconColor = 'dark:text-yellow-200';
                                             } else {
                                                 $bgColor = 'bg-cyan-50';
+                                                $darkbgColor = 'dark:bg-cyan-200/30';
                                                 $textColor = 'text-cyan-800';
+                                                $darktextColor = 'dark:text-cyan-200';
                                                 $badgeColor = 'bg-cyan-100';
+                                                $darkbadgeColor = 'dark:bg-cyan-900/30';
                                                 $iconColor = 'text-cyan-600';
+                                                $darkiconColor = 'dark:text-cyan-200';
                                             }
                                             $timeLeft = $daysLeft < 1 ? 'Hari ini!' : $daysLeft . ' hari lagi';
                                         @endphp
 
                                         <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 px-2 assignment-card">
                                             <div
-                                                class="{{ $bgColor }} rounded-lg p-4 h-full border-l-4 border-indigo-500 dark:border-cyan-500">
+                                                class="{{ $bgColor }} {{ $darkbgColor }} rounded-lg p-4 h-full border-l-4 border-indigo-500 dark:border-cyan-500">
                                                 <div class="flex items-start justify-between mb-2">
                                                     <div class="flex-1">
-                                                        <h5 class="font-bold {{ $textColor }} text-sm mb-1">
+                                                        <h5
+                                                            class="font-bold {{ $textColor }} {{ $darktextColor }} text-sm mb-1">
                                                             {{ $assignment->title }}</h5>
-                                                        <p class="text-xs {{ $textColor }} opacity-75">
+                                                        <p
+                                                            class="text-xs {{ $textColor }} {{ $darktextColor }} opacity-75">
                                                             {{ Str::limit($assignment->description, 50) }}
                                                         </p>
                                                     </div>
                                                     <i data-feather="clock"
-                                                        class="h-5 w-5 {{ $iconColor }} ml-2 flex-shrink-0"></i>
+                                                        class="h-5 w-5 {{ $iconColor }} {{ $darkiconColor }} ml-2 flex-shrink-0"></i>
                                                 </div>
                                                 <div class="flex items-center justify-between mt-3">
                                                     <div class="flex items-center space-x-2">
                                                         <span
-                                                            class="px-2 py-1 {{ $badgeColor }} {{ $textColor }} rounded text-xs font-semibold">
+                                                            class="px-2 py-1 {{ $badgeColor }} {{ $textColor }} {{ $darkbadgeColor }} {{ $darktextColor }} rounded text-xs font-semibold">
                                                             {{ $timeLeft }}
                                                         </span>
-                                                        <span class="text-xs {{ $textColor }} opacity-70">
+                                                        <span
+                                                            class="text-xs {{ $textColor }} {{ $darktextColor }} opacity-70">
                                                             {{ $deadline->format('d M Y') }}
                                                         </span>
                                                     </div>
@@ -405,17 +422,33 @@
         //     document.getElementById('contract-dialog').remove();
         // }
 
-        // Assignment Slider
-        let currentIndex = 0;
-        const assignmentSlider = document.getElementById('assignmentSlider');
-        const assignmentCards = document.querySelectorAll('.assignment-card');
-        const totalCards = assignmentCards.length;
-        const cardsPerView = window.innerWidth >= 768 ? 2 : 1; // 2 cards on desktop, 1 on mobile
-        const maxIndex = Math.max(0, totalCards - cardsPerView);
+        // Assignment Slider (responsive: phone=1, tablet=2, pc=3)
+        (function() {
+            let currentIndex = 0;
 
-        function updateSlider() {
-            if (assignmentSlider) {
-                const cardWidth = assignmentCards[0]?.offsetWidth || 0;
+            const getCardsPerView = () => {
+                const w = window.innerWidth;
+                // Use breakpoints: <768 => 1 (phone), 768-1023 => 2 (tablet), >=1024 => 3 (pc)
+                if (w < 768) return 1;
+                if (w < 1024) return 2;
+                return 3;
+            };
+
+            const updateSlider = () => {
+                const assignmentSlider = document.getElementById('assignmentSlider');
+                const assignmentCards = Array.from(document.querySelectorAll('.assignment-card'));
+                const totalCards = assignmentCards.length;
+                const cardsPerView = getCardsPerView();
+                const maxIndex = Math.max(0, totalCards - cardsPerView);
+
+                // ensure currentIndex in range
+                if (currentIndex > maxIndex) currentIndex = maxIndex;
+                if (currentIndex < 0) currentIndex = 0;
+
+                if (!assignmentSlider || totalCards === 0) return;
+
+                // card width (include gap) using bounding rect of wrapper
+                const cardWidth = assignmentCards[0].getBoundingClientRect().width || 0;
                 const offset = -(currentIndex * cardWidth);
                 assignmentSlider.style.transform = `translateX(${offset}px)`;
 
@@ -423,32 +456,54 @@
                 const currentSlideSpan = document.getElementById('currentSlide');
                 const maxSlideSpan = document.getElementById('maxSlide');
                 if (currentSlideSpan && maxSlideSpan) {
-                    currentSlideSpan.textContent = currentIndex + 1;
-                    maxSlideSpan.textContent = Math.min(currentIndex + cardsPerView, totalCards);
+                    currentSlideSpan.textContent = (currentIndex + 1).toString();
+                    maxSlideSpan.textContent = '-' + Math.min(currentIndex + cardsPerView, totalCards);
+                    if (maxSlideSpan.textContent === "-" + Math.min(currentIndex + cardsPerView, totalCards)
+                        .toString()) {
+                        maxSlideSpan.textContent = "";
+                    }
                 }
 
-                // Re-initialize feather icons
-                feather.replace();
-            }
-        }
+                // Re-initialize feather icons inside slider (if any)
+                if (typeof feather !== 'undefined') feather.replace();
+            };
 
-        function slideAssignments(direction) {
-            if (direction === 'next' && currentIndex < maxIndex) {
-                currentIndex++;
-            } else if (direction === 'prev' && currentIndex > 0) {
-                currentIndex--;
-            }
-            updateSlider();
-        }
+            window.slideAssignments = function(direction) {
+                const assignmentCards = Array.from(document.querySelectorAll('.assignment-card'));
+                const totalCards = assignmentCards.length;
+                const cardsPerView = getCardsPerView();
+                const maxIndex = Math.max(0, totalCards - cardsPerView);
 
-        // Update slider on window resize
-        window.addEventListener('resize', () => {
-            updateSlider();
-        });
+                if (direction === 'next') {
+                    if (currentIndex < maxIndex) {
+                        currentIndex++;
+                    } else {
+                        // wrap to the earliest (closest deadline) as requested
+                        currentIndex = 0;
+                    }
+                } else if (direction === 'prev') {
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                    } else {
+                        // wrap to last set
+                        currentIndex = maxIndex;
+                    }
+                }
 
-        // Initialize slider on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            updateSlider();
-        });
+                updateSlider();
+            };
+
+            // Update slider on window resize (recalculate sizes and cardsPerView)
+            window.addEventListener('resize', () => {
+                // brief debounce
+                clearTimeout(window._updateSliderTimeout);
+                window._updateSliderTimeout = setTimeout(() => updateSlider(), 120);
+            });
+
+            // Initialize slider on page load
+            document.addEventListener('DOMContentLoaded', () => {
+                updateSlider();
+            });
+        })();
     </script>
 @endsection
