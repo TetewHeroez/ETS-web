@@ -40,7 +40,7 @@ function validateAndPreviewFile(input, section) {
         file.name +
         " (" +
         sizeKB +
-        ' KB) - Klik "Simpan Perubahan" untuk upload ke Cloudinary';
+        ' KB) - Klik "Simpan Perubahan"';
     fileInfo.className =
         "text-xs text-green-600 dark:text-green-400 mt-1 font-medium";
 }
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (fileInfo) {
                     fileInfo.innerHTML =
-                        "⏳ <strong>Sedang mengupload ke Cloudinary...</strong> Mohon tunggu, jangan tutup halaman ini.";
+                        "⏳ <strong>Sedang mengupload gambar...</strong> Mohon tunggu, jangan tutup halaman ini.";
                     fileInfo.className =
                         "text-xs text-blue-600 dark:text-blue-400 mt-1 font-medium animate-pulse";
                 }
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Mengupload ke Cloudinary...
+                        Menyimpan...
                     `;
                 }
             }

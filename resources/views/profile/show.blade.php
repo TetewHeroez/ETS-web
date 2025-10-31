@@ -45,13 +45,12 @@
             <div
                 class="bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden transition-colors duration-300">
                 <!-- Header Section with Gradient -->
-                <div <div
+                <div
                     class="bg-gradient-to-r from-blue-700 to-cyan-600 dark:from-blue-800 dark:to-cyan-700 px-8 py-6 relative z-0">
                     <div class="flex items-center">
                         @if (
                             $user->profile_photo &&
                                 (str_starts_with($user->profile_photo, 'http://') || str_starts_with($user->profile_photo, 'https://')))
-                            {{-- Cloudinary URL --}}
                             <img src="{{ $user->profile_photo }}" alt="{{ $user->name }}"
                                 class="h-24 w-24 rounded-full object-cover shadow-lg border-4 border-white dark:border-slate-200"
                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
