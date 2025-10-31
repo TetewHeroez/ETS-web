@@ -181,11 +181,6 @@ Member:
 - Password: member123
 ```
 
--   Email: member@himatika.its.ac.id
--   Password: member123
-
-````
-
 ---
 
 
@@ -393,15 +388,15 @@ CLOUDINARY_API_KEY=943565982761512
 CLOUDINARY_API_SECRET=6-rASrAKEmaqPXa52wWwnn_IPNQ
 ```
 
-### ❌ "Gagal upload foto ke Cloudinary: Connection timeout"
+### ❌ "Failed to upload photo to Cloudinary: Connection timeout"
 
-**Penyebab**: Internet lambat atau Cloudinary down
+**Cause**: Slow internet connection or Cloudinary is down
 
-**Solusi**:
+**Solution**:
 
-1. Cek koneksi internet
+1. Check your internet connection
 2. Test ping: `ping api.cloudinary.com`
-3. Coba upload file lebih kecil
+3. Try uploading a smaller file
 
 ````
 
