@@ -86,6 +86,7 @@
     "maatwebsite/excel": "^3.1",
     "cloudinary-labs/cloudinary-laravel": "^2.0"
 }
+````
 
 ## 📦 Installation
 
@@ -104,7 +105,7 @@
 ```bash
 git clone https://github.com/TetewHeroez/ETS-web.git
 cd ETS-web
-````
+
 
 2. **Install Dependencies**
 
